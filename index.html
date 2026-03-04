@@ -11,6 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="מילון ערבית">
 <link rel="apple-touch-icon" href="icon-192.png">
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#0d1117;color:#e6edf3;font-family:'Segoe UI',Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px 16px;direction:rtl;background-image:radial-gradient(ellipse at 20% 20%,rgba(212,168,67,0.06) 0%,transparent 60%)}
@@ -608,6 +609,7 @@ function addWord(){
 function saveEditor(){
   const sorted=sortArabic(editorList);
   LISTS[listKey].words=[...sorted];
+  saveToStorage();
   resetGame(sorted);
   loadCurrentMode();
   const msg=document.getElementById('save-msg');
@@ -616,7 +618,26 @@ function saveEditor(){
 }
 function closeEditor(){loadCurrentMode();}
 
+// ── Persistence ──────────────────────────────────────────────
+function saveToStorage() {
+  try {
+    localStorage.setItem('vocab_bagrut', JSON.stringify(LISTS.bagrut.words));
+    localStorage.setItem('vocab_ansin', JSON.stringify(LISTS.ansin.words));
+  } catch(e) {}
+}
+
+function loadFromStorage() {
+  try {
+    const b = localStorage.getItem('vocab_bagrut');
+    const a = localStorage.getItem('vocab_ansin');
+    if (b) LISTS.bagrut.words = JSON.parse(b);
+    if (a) LISTS.ansin.words = JSON.parse(a);
+  } catch(e) {}
+}
+
 // ── Init ─────────────────────────────────────────────────────
+loadFromStorage();
+words = [...LISTS[listKey].words];
 document.getElementById('word-count-header').textContent=words.length;
 loadFlashcard();
 </script>
