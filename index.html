@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>רשימת מילים לבגרויות</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.ico">
+<meta name="theme-color" content="#d4a843">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="מילון ערבית">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0d1117;color:#e6edf3;font-family:'Segoe UI',Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px 16px;direction:rtl;background-image:radial-gradient(ellipse at 20% 20%,rgba(212,168,67,0.06) 0%,transparent 60%)}
+button{font-family:inherit;cursor:pointer}
+input{font-family:inherit}
+.hidden{display:none!important}
+#header{text-align:center;margin-bottom:12px;width:100%;max-width:420px}
+#title{font-size:20px;font-weight:700;color:#d4a843;letter-spacing:1px}
+#subtitle{color:#8b949e;font-size:12px;margin-top:2px}
+#list-selector{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;justify-content:center}
+.list-btn{background:#161b22;border:1.5px solid #30363d;color:#8b949e;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;transition:all .2s}
+.list-btn.active{background:rgba(45,212,191,0.15);border-color:#2dd4bf;color:#2dd4bf}
+#save-msg{background:rgba(74,222,128,0.15);border:1px solid #4ade80;color:#4ade80;border-radius:10px;padding:8px 20px;margin-bottom:12px;font-size:13px}
+#mode-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;justify-content:center}
+.mode-btn{background:#161b22;border:1.5px solid #30363d;color:#8b949e;padding:8px 16px;border-radius:30px;font-size:13px;font-weight:600;transition:all .2s}
+.mode-btn.active{border-color:#d4a843;color:#d4a843;background:rgba(212,168,67,0.08)}
+#dir-row{display:flex;background:#161b22;border-radius:20px;padding:3px;gap:2px;margin-bottom:14px}
+.dir-btn{padding:6px 14px;border-radius:17px;border:none;background:transparent;color:#8b949e;font-size:12px}
+.dir-btn.active{background:#d4a843;color:#0d1117;font-weight:700}
+#stats-row{display:flex;gap:12px;margin-bottom:12px}
+.stat{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:7px 14px;text-align:center;min-width:60px}
+.stat-val{font-size:20px;font-weight:700}
+.stat-label{font-size:11px;color:#8b949e}
+#streak-stat{cursor:pointer;user-select:none}
+#progress-bar{width:100%;max-width:380px;height:4px;background:#21262d;border-radius:2px;margin-bottom:16px;overflow:hidden}
+#progress-fill{height:100%;background:linear-gradient(90deg,#d4a843,#2dd4bf);border-radius:2px;transition:width .4s;width:0%}
+#game-area{width:100%;max-width:380px}
+#flashcard{border:1.5px solid rgba(212,168,67,0.3);border-radius:18px;padding:22px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:130px;cursor:pointer;background:linear-gradient(135deg,#161b22,#21262d);transition:all .3s}
+#flashcard.flipped{background:linear-gradient(135deg,#1a2a1a,#0f1f0f);border-color:rgba(74,222,128,0.3)}
+#fc-lang{font-size:11px;letter-spacing:2px;color:#8b949e;text-transform:uppercase;margin-bottom:10px}
+#fc-word{font-size:30px;font-weight:700;color:#e6edf3;text-align:center;line-height:1.3;transition:all .2s}
+#flashcard.flipped #fc-word{font-size:20px;color:#4ade80}
+#fc-hint{color:#8b949e;font-size:12px;margin-top:10px}
+#fc-controls{display:flex;gap:10px;justify-content:center;margin-top:14px}
+#fc-counter{text-align:center;color:#8b949e;font-size:12px;margin-top:10px}
+.card-box{border:1.5px solid rgba(212,168,67,0.3);border-radius:18px;padding:22px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:130px;margin-bottom:14px}
+#q-lang,#type-lang{font-size:11px;letter-spacing:2px;color:#d4a843;text-transform:uppercase;margin-bottom:8px}
+#q-word,#type-word{font-size:28px;font-weight:700;text-align:center}
+#options-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opt-btn{background:#161b22;border:1.5px solid #30363d;color:#e6edf3;border-radius:12px;padding:12px 10px;font-size:13px;font-weight:500;transition:all .15s;text-align:center;line-height:1.3}
+.opt-btn:disabled{cursor:default}
+.opt-btn.correct{background:rgba(74,222,128,0.12)!important;border-color:#4ade80!important;color:#4ade80!important}
+.opt-btn.wrong{background:rgba(248,113,113,0.1)!important;border-color:#f87171!important;color:#f87171!important}
+#quiz-next{display:flex;justify-content:center;margin-top:14px}
+#type-input{width:100%;border:1.5px solid #30363d;border-radius:12px;padding:11px 14px;font-size:14px;text-align:center;margin-bottom:10px;outline:none;color:#e6edf3;transition:border-color .2s;background:#21262d}
+#type-input.correct{border-color:#4ade80;background:rgba(74,222,128,0.07)}
+#type-input.wrong{border-color:#f87171;background:rgba(248,113,113,0.07)}
+#type-feedback{text-align:center;margin-bottom:10px;font-weight:600;font-size:14px;min-height:22px}
+#type-controls{display:flex;gap:10px;justify-content:center}
+#score-screen{text-align:center;padding:32px;background:#161b22;border-radius:24px;border:1.5px solid rgba(212,168,67,0.3);max-width:300px}
+#score-pct{font-size:44px;font-weight:700;color:#d4a843;margin-bottom:4px}
+#editor-wrap{width:100%;max-width:520px}
+#editor-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+#editor-title{font-weight:700;font-size:18px;color:#d4a843}
+#add-word-box{background:#161b22;border-radius:14px;padding:16px;margin-bottom:18px;border:1.5px solid rgba(212,168,67,0.25)}
+#add-word-row{display:flex;gap:8px;flex-wrap:wrap}
+#add-word-row input{flex:1;min-width:120px;background:#21262d;border:1.5px solid #30363d;border-radius:12px;padding:9px 12px;font-size:13px;color:#e6edf3;outline:none}
+#word-list-editor{display:flex;flex-direction:column;gap:8px;max-height:400px;overflow-y:auto;padding-left:4px}
+.word-row{display:flex;gap:8px;align-items:center;background:#161b22;border-radius:10px;padding:8px 12px;border:1px solid #30363d}
+.word-row input{flex:1;background:#21262d;border:1.5px solid #30363d;border-radius:10px;padding:7px 10px;font-size:13px;color:#e6edf3;outline:none;min-width:80px}
+.del-btn{background:rgba(248,113,113,0.1);border:1px solid #f87171;color:#f87171;border-radius:8px;padding:4px 10px;font-size:13px}
+#editor-footer{display:flex;gap:10px;justify-content:center;margin-top:18px;align-items:center}
+#editor-word-count{color:#8b949e;font-size:13px}
+.btn-primary{background:linear-gradient(135deg,#d4a843,#b8892a);color:#0d1117;border:none;padding:10px 24px;border-radius:30px;font-size:14px;font-weight:700;transition:all .2s}
+.btn-outline{background:transparent;color:#8b949e;border:1.5px solid #30363d;padding:10px 18px;border-radius:30px;font-size:14px;font-weight:600;transition:all .2s}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(212,168,67,0.25)}
+.btn-outline:hover{border-color:#e6edf3;color:#e6edf3}
+</style>
+</head>
+<body>
+
+<div id="main-ui">
+  <div id="header">
+    <div id="title">רשימת מילים לבגרויות</div>
+    <div id="subtitle">ערבית–עברית · <span id="word-count-header">0</span> מילים</div>
+  </div>
+  <div id="list-selector">
+    <button class="list-btn active" data-key="bagrut" onclick="handleListChange('bagrut')">רשימת מילים לבגרויות</button>
+    <button class="list-btn" data-key="ansin" onclick="handleListChange('ansin')">אוצר מילים שימושי לאנסין</button>
+  </div>
+  <div id="save-msg" class="hidden">✅ הרשימה נשמרה בהצלחה!</div>
+  <div id="mode-tabs">
+    <button class="mode-btn active" data-mode="flashcard" onclick="handleModeChange('flashcard')">🃏 כרטיסיות</button>
+    <button class="mode-btn" data-mode="quiz" onclick="handleModeChange('quiz')">❓ חידון</button>
+    <button class="mode-btn" data-mode="type" onclick="handleModeChange('type')">⌨️ הקלדה</button>
+  </div>
+  <div id="dir-row">
+    <button class="dir-btn active" data-dir="ar" onclick="handleDirChange('ar')">ערבית ← עברית</button>
+    <button class="dir-btn" data-dir="he" onclick="handleDirChange('he')">עברית ← ערבית</button>
+  </div>
+  <div id="stats-row">
+    <div class="stat"><div class="stat-val" id="stat-score" style="color:#d4a843">0</div><div class="stat-label">ניקוד</div></div>
+    <div class="stat"><div class="stat-val" id="stat-total" style="color:#e6edf3">0</div><div class="stat-label">סה"כ</div></div>
+    <div class="stat" id="streak-stat" onclick="handleStreakClick()"><div class="stat-val" id="stat-streak" style="color:#f97316">0</div><div class="stat-label">רצף 🔥</div></div>
+  </div>
+  <div id="progress-bar"><div id="progress-fill"></div></div>
+  <div id="game-area">
+    <div id="flashcard-section">
+      <div id="flashcard" onclick="flipCard()">
+        <div id="fc-lang">ערבית</div>
+        <div id="fc-word">—</div>
+        <div id="fc-hint">לחץ להפוך 👆</div>
+      </div>
+      <div id="fc-controls">
+        <button class="btn-outline" onclick="prevCard()">← הקודם</button>
+        <button class="btn-primary" onclick="nextCard()">הבא →</button>
+      </div>
+      <div id="fc-counter">1 / 1</div>
+    </div>
+    <div id="quiz-section" class="hidden">
+      <div class="card-box"><div id="q-lang">ערבית — מה הפירוש?</div><div id="q-word">—</div></div>
+      <div id="options-grid"></div>
+      <div id="quiz-next" class="hidden"><button class="btn-primary" onclick="nextQuiz()">הבא →</button></div>
+    </div>
+    <div id="type-section" class="hidden">
+      <div class="card-box"><div id="type-lang">ערבית — תרגם לעברית:</div><div id="type-word">—</div></div>
+      <input type="text" id="type-input" placeholder="תרגם..." onkeydown="if(event.key==='Enter')checkType()">
+      <div id="type-feedback"></div>
+      <div id="type-controls">
+        <button class="btn-outline" id="hint-btn" onclick="showHint()">💡 רמז</button>
+        <button class="btn-primary" id="type-submit" onclick="checkType()">בדוק ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="score-screen" class="hidden">
+  <div style="font-size:56px;margin-bottom:8px">🏆</div>
+  <div id="score-pct">—</div>
+  <div id="score-detail" style="color:#8b949e;margin-bottom:4px"></div>
+  <div id="score-streak-txt" style="color:#8b949e;margin-bottom:24px;font-size:13px"></div>
+  <button class="btn-primary" onclick="restart()">שחק שוב</button>
+</div>
+
+<div id="editor-ui" class="hidden">
+  <div id="editor-wrap">
+    <div id="editor-header">
+      <div id="editor-title">✏️ עריכת רשימה</div>
+      <button class="btn-outline" onclick="closeEditor()">← חזרה</button>
+    </div>
+    <div id="add-word-box">
+      <div style="font-size:12px;color:#8b949e;margin-bottom:10px;letter-spacing:1px">➕ הוסף מילה חדשה</div>
+      <div id="add-word-row">
+        <input type="text" id="new-ar" placeholder="ערבית..." onkeydown="if(event.key==='Enter')addWord()">
+        <input type="text" id="new-he" placeholder="עברית..." onkeydown="if(event.key==='Enter')addWord()">
+        <button class="btn-primary" onclick="addWord()">הוסף</button>
+      </div>
+    </div>
+    <div id="word-list-editor"></div>
+    <div id="editor-footer">
+      <span id="editor-word-count">0 מילים</span>
+      <button class="btn-primary" onclick="saveEditor()">💾 שמור שינויים</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function arabicSortKey(s){return s.replace(/[\u064B-\u065F\u0610-\u061A]/g,'').replace(/^(ال|اِ|اُ|اَ|ا)/u,'').replace(/[أإآؤئ]/g,'ا').trim();}
+function sortArabic(arr){return[...arr].sort((a,b)=>arabicSortKey(a.ar).localeCompare(arabicSortKey(b.ar),'ar'));}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+const BAGRUT_WORDS=sortArabic([
+  {ar:"أَب",he:"אב"},{ar:"اِبْن",he:"בן"},{ar:"أُخْت",he:"אחות"},{ar:"أَخ",he:"אח"},
+  {ar:"أَحَبَّ",he:"אהב"},{ar:"أَخَذَ",he:"לקח"},{ar:"أَرَادَ",he:"רצה"},{ar:"أَرْسَلَ",he:"שלח"},
+  {ar:"أَرْض",he:"אדמה"},{ar:"أَرْبَع",he:"ארבע"},{ar:"اِتَّحَدَ",he:"התאחד"},{ar:"اِتَّفَقَ",he:"הסכים"},
+  {ar:"اِتَّهَمَ",he:"האשים"},{ar:"اِجْتَمَعَ",he:"נפגש"},{ar:"اِحْتَرَمَ",he:"כיבד"},
+  {ar:"اِحْتَفَلَ",he:"חגג"},{ar:"اِحْتَلَّ",he:"כבש"},{ar:"اِخْتَار",he:"בחר"},
+  {ar:"اِخْتَطَفَ",he:"חטף"},{ar:"اِشْتَرَى",he:"קנה"},{ar:"اِسْم",he:"שם"},
+  {ar:"أَشَارَ",he:"ציין / הצביע"},{ar:"اِسْتَقَالَ",he:"התפטר"},{ar:"اِسْتَمَرَّ",he:"נמשך"},
+  {ar:"اِسْتَيْقَظَ",he:"התעורר"},{ar:"إِسْرَائِيل",he:"ישראל"},{ar:"أَسْعَار",he:"מחירים"},
+  {ar:"أَشْهُر",he:"חודשים"},{ar:"أَصَابَ",he:"פגע"},{ar:"الأَحَد",he:"יום ראשון"},
+  {ar:"الاثنين",he:"יום שני"},{ar:"الأَرْبِعَاء",he:"יום רביעי"},
+  {ar:"اِرْتَفَعَ",he:"עלה (מחיר/טמפרטורה)"},{ar:"إِرْهَاب",he:"טרור"},
+  {ar:"أُسْبُوع",he:"שבוע"},{ar:"أَبْوَاب",he:"דלתות / שערים"},{ar:"أَبْيَض",he:"לבן"},
+  {ar:"اِتَّجَهَ",he:"פנה אל"},{ar:"اِبْتَعَدَ",he:"התרחק"},{ar:"اِجْتِمَاع",he:"פגישה / אסיפה"},
+  {ar:"أَجَّلَ",he:"דחה"},{ar:"أَجْنَبِيّ",he:"זר"},{ar:"أُجُور",he:"שכר"},
+  {ar:"اِحْتَجَّ",he:"מחה"},{ar:"أَخَوَات",he:"אחיות"},{ar:"أَخِير",he:"אחרון"},
+  {ar:"اِسْتَأْنَفَ",he:"חידש (שיחות)"},{ar:"اِسْتَخْدَمَ",he:"השתמש"},
+  {ar:"اِسْتَعَدَّ",he:"התכונן"},{ar:"اِسْتَقَلَّ",he:"התנחל / ניצל"},
+  {ar:"اِشْتَرَكَ",he:"השתתף"},{ar:"اِشْتَاقَ",he:"התגעגע"},
+  {ar:"أَسَابِيع",he:"שבועות"},{ar:"أَسْئِلَة",he:"שאלות"},{ar:"الأُرْدُن",he:"ירדן"},
+  {ar:"أَصْوَات",he:"קולות"},{ar:"أَضَافَ",he:"הוסיף"},{ar:"أَضْرَبَ عَنْ",he:"שבת מ-"},
+  {ar:"أَطْعَمَ",he:"האכיל את"},{ar:"أَطْفَال",he:"תינוקות; ילדים"},{ar:"أَطْلَقَ",he:"שיגר"},
+  {ar:"أَطْلَقَ النَّارَ عَلَى",he:"ירה על"},{ar:"اِعْتَبَرَ",he:"החשיב את / כ-"},
+  {ar:"اِعْتَذَرَ عَنْ",he:"התנצל על"},{ar:"اِعْتُقِلَ",he:"(המשטרה וכד') עצר"},
+  {ar:"أَعْطَى",he:"נתן ל- את"},{ar:"أَعْلَى",he:"גבוה יותר"},
+  {ar:"أَعْلَنَ",he:"הודיע; הכריז"},{ar:"اِغْتَالَ",he:"(מתנקש) רצח את"},
+  {ar:"أَغْلَقَ",he:"סגר"},{ar:"أَفَادَ",he:"ציין, מסר"},
+  {ar:"اِفْتَتَحَ",he:"פתח (כנס וכד')"},{ar:"أَفْرَجَ عَنْ",he:"שחרר"},
+  {ar:"أَفْرِيقِيَا",he:"אפריקה"},{ar:"أَفْضَل",he:"טוב יותר, עדיף"},
+  {ar:"أَفْغَانِسْتَان",he:"אפגניסטאן"},{ar:"أَفْلَام",he:"סרטים"},
+  {ar:"أَقَامَ",he:"הקים"},{ar:"اِقْتَرَبَ مِنْ",he:"התקרב אל/ל-"},
+  {ar:"اِقْتِصَاد",he:"כלכלה"},{ar:"أَقَرَّ",he:"אישר"},{ar:"أَقَلّ",he:"פחות"},
+  {ar:"اِكْتَشَفَ",he:"גילה"},{ar:"أَكْثَر",he:"יותר"},
+  {ar:"أَكَّدَ",he:"הדגיש; אישר"},{ar:"أَكَلَ",he:"אכל"},
+  {ar:"أَلَّا",he:"שלא"},{ar:"إِلَى",he:"אל"},{ar:"أَلْبَسَ",he:"הלביש את"},
+  {ar:"... أَلَّتِي",he:"ש/ אשר (ליחידה)"},{ar:"... أَلَّذِي",he:"ש/ אשר (ליחיד)"},
+  {ar:"... أَلَّذِينَ",he:"ש/ אשר (לרבים)"},{ar:"أَلْعَاب",he:"משחקים"},
+  {ar:"أَلْف",he:"אלף"},{ar:"أَلْمَانِيَا",he:"גרמניה"},{ar:"أُمّ",he:"אם"},
+  {ar:"أَمَام",he:"לפני (מקום); מול"},{ar:"اِمْتِحَان",he:"מבחן"},
+  {ar:"أَمْر",he:"דבר, עניין"},{ar:"أَمْرَاض",he:"מחלות"},{ar:"أَمْس",he:"אתמול"},
+  {ar:"أَمْسِ الأَوَّل",he:"שלשום"},{ar:"أَمْطَار",he:"גשמים"},
+  {ar:"الأُمَم الْمُتَّحِدَة",he:'האו"ם'},{ar:"أَمْن",he:"ביטחון"},
+  {ar:"أَمِير",he:"נסיך"},{ar:"أَمِيرِكَا",he:"אמריקה"},{ar:"أَمِين",he:"מזכיר"},
+  {ar:"أَنْ",he:"ש(יעשה), ל(עשות)"},{ar:"إِنْ",he:"אכן, אמנם; אם"},
+  {ar:"أَنَّ",he:"ש/ כי"},{ar:"أَنَا",he:"אני"},{ar:"أَنْبَاء",he:"ידיעות"},
+  {ar:"اِنْتِخَابَات",he:"בחירות"},{ar:"اِنْتَخَبَ",he:"בחר"},
+  {ar:"اِنْتَشَرَ",he:"(המחלה) התפשט; (הכוחות) התפרס"},
+  {ar:"اِنْتَظَرَ",he:"חיכה ל-"},{ar:"اِنْتَقَلَ",he:"עבר (ממקום למקום)"},
+  {ar:"اِنْخَفَضَ",he:"(מעלות החום/המחיר) ירד"},{ar:"إِنْسَان",he:"אדם"},
+  {ar:"اِنْسَحَبَ",he:"נסוג"},{ar:"اِنْضَمَّ إِلَى",he:"הצטרף אל/ל-"},
+  {ar:"اِنْفَجَرَ",he:"התפוצץ"},{ar:"اِنْقَلَبَ",he:"התהפך"},
+  {ar:"اِنْكَسَرَ",he:"נשבר"},{ar:"اِهْتَمَّ بِـ",he:"התעניין ב-"},
+  {ar:"أَوْ",he:"או"},{ar:"أَوْرَثَ",he:"הוריש ל- את"},
+  {ar:"أُورُوبَّا",he:"אירופה"},{ar:"أَوْضَح",he:"הבהיר, הסביר"},
+  {ar:"أَوْفَدَ",he:"שלח, שיגר"},{ar:"أَوْلَاد",he:"ילדים"},{ar:"أَيَّام",he:"ימים"},
+  {ar:"حَاجَة",he:"צורך"},{ar:"حَاجِز",he:"מחסום"},{ar:"حَادِث",he:"תקרית"},
+  {ar:"حَادِث طَرِيق",he:"תאונת דרכים"},{ar:"حَاسُوب",he:"מחשב"},
+  {ar:"حَاضَرَ",he:"הרצה"},{ar:"الحَاضِر",he:"(בזמן) הנוכחי"},
+  {ar:"حَافِلَة",he:"אוטובוס"},{ar:"حَاوَلَ",he:"ניסה"},{ar:"حَبِيب",he:"אהוב"},
+  {ar:"حَتَّى",he:"עד; עד ש-; כדי ש-"},{ar:"حُجَّاج",he:"עולים לרגל (מוסלמים)"},
+  {ar:"حَدّ",he:"גבול"},{ar:"حُدُود",he:"גבול (בין מדינות)"},
+  {ar:"حَدِيث",he:"חדיש, מודרני"},{ar:"حَذَّرَ",he:"הזהיר (מפני)"},
+  {ar:"حَرْب",he:"מלחמה"},{ar:"حَرِيق",he:"שרפה"},{ar:"حِزْب",he:"מפלגה"},
+  {ar:"حَسَن",he:"טוב; יפה"},{ar:"حَصَلَ عَلَى",he:"קיבל; השיג"},
+  {ar:"حَضَرَ",he:"נכח ב-"},{ar:"حَضَّرَ",he:"הכין"},{ar:"حَفْلَة",he:"מסיבה"},
+  {ar:"حَفِيد",he:"נכד"},{ar:"حَقْل",he:"שדה"},{ar:"حُكُومَة",he:"ממשלה"},
+  {ar:"الخَارِج",he:'חו"ל'},{ar:"خَارِجِيّ",he:"חיצוני"},
+  {ar:"خَاصّ",he:"מיוחד; פרטי"},{ar:"خَافَ",he:"פחד"},
+  {ar:"خَبَر",he:"ידיעה, חדשה"},{ar:"خُبَرَاء",he:"מומחים"},
+  {ar:"خُبْز",he:"לחם"},{ar:"خَرَجَ",he:"יצא"},
+  {ar:"خُرُوج",he:"יציאה / לצאת"},{ar:"خَطِر",he:"מסוכן"},
+  {ar:"خَطَفَ",he:"חטף"},{ar:"خَفِيف",he:"קל"},{ar:"خِلَال",he:"במשך; במהלך"},
+  {ar:"خَوَاجِز",he:"מחסומים"},{ar:"خَوَادِث طُرُق",he:"תאונות דרכים"},
+  {ar:"حَوْل",he:"סביב; בעניין"},
+  {ar:"سِعْر",he:"מחיר"},{ar:"السُّعُودِيَّة",he:"ערב הסעודית"},
+  {ar:"سَفَارَة",he:"שגרירות"},{ar:"سَفَر",he:"נסיעה / לנסוע"},
+  {ar:"سَفِير",he:"שגריר"},{ar:"سَفِينَة",he:"ספינה, אנייה"},
+  {ar:"سُكَّان",he:"תושבים"},{ar:"سَكَنَ",he:"גר"},{ar:"سِلَاح",he:"נשק"},
+  {ar:"سَلَام",he:"שלום"},{ar:"سُلْطَة",he:"רשות; שלטון"},
+  {ar:"سِلْمِيّ",he:"של שלום"},{ar:"سَمَّى",he:"קרא ל- (שם כלשהו)"},
+  {ar:"سَمَحَ لِـ",he:"הרשה ל(מישהו) ל(עשות)"},
+  {ar:"سَمِعَ",he:"שמע"},{ar:"سَنَة",he:"שנה"},{ar:"سَهْل",he:"קל"},
+  {ar:"السُّودَان",he:"סודאן"},{ar:"سُورِيَا",he:"סוריה"},
+  {ar:"سُيَّاح",he:"תיירים"},{ar:"سِيَاحَة",he:"תיירות"},
+  {ar:"سَيَّارَة",he:"מכונית"},{ar:"سَيَّارَة إِسْعَاف",he:"אמבולנס"},
+  {ar:"سِيَاسِيّ",he:"מדיני, פוליטי"},{ar:"سَيِّد",he:"אדון / גברת"},
+  {ar:"سِينَمَا",he:"קולנוע"},
+  {ar:"شَابّ",he:"בחור, צעיר"},{ar:"شَاحِنَة",he:"משאית"},
+  {ar:"شَارِع",he:"רחוב"},{ar:"شَارَكَ فِي",he:"השתתף ב-"},
+  {ar:"شَاطِئ",he:"חוף"},{ar:"شَأْن",he:"עניין"},
+  {ar:"شَاهَدَ",he:"צפה ב-; ראה"},{ar:"شُؤُون",he:"עניינים"},
+  {ar:"شَبَكَة",he:"רשת"},{ar:"شَخْص",he:"איש"},{ar:"شَخْصِيّ",he:"אישי"},
+  {ar:"شَرِبَ",he:"שתה"},{ar:"شُرْطَة",he:"משטרה"},{ar:"شَرْق",he:"מזרח"},
+  {ar:"الشَّرْق الأَوْسَط",he:"המזרח התיכון"},{ar:"شَرَكَة",he:"חברה (מסחרית)"},
+  {ar:"شَقَّة",he:"דירה"},{ar:"شَكّ",he:"ספק"},
+  {ar:"شَكَّلَ",he:"הקים, הרכיב (ממשלה, ועדה וכד')"},
+  {ar:"شَمَال",he:"צפון"},{ar:"شَهْر",he:"חודש"},{ar:"شَيْء",he:"דבר"},
+  {ar:"صَاحِب",he:"חבר"},{ar:"صَارَ",he:"נעשה, הפך להיות"},
+  {ar:"صَارُوخ",he:"טיל"},{ar:"صَبَاح",he:"בוקר"},{ar:"صِحَّة",he:"בריאות"},
+  {ar:"صُحُفِيّ",he:"עיתונאי"},{ar:"صَحِيح",he:"נכון"},
+  {ar:"صَحِيفَة",he:"עיתון"},{ar:"صَدَرَ",he:"התפרסם, יצא לאור"},
+  {ar:"صَدِيق",he:"חבר"},{ar:"صَعْب",he:"קשה"},{ar:"صَغِير",he:"קטן"},
+  {ar:"صَفْحَة",he:"דף"},{ar:"صِنَاعَة",he:"ייצור; תעשייה"},
+  {ar:"صَوَارِيخ",he:"טילים"},{ar:"صَوْت",he:"קול"},
+  {ar:"صُورَة",he:"תמונה; צורה"},{ar:"صَوْم",he:"צום / לצום"},
+  {ar:"صَيْف",he:"קיץ"},{ar:"الصِّين",he:"סין"},{ar:"ضَرَائِب",he:"מסים"},
+  {ar:"فَتَحَ",he:"פתח"},{ar:"فَحَصَ",he:"בדק"},{ar:"فَرَّ",he:"ברח, נמלט"},
+  {ar:"فَرَض",he:"הטיל / להטיל"},{ar:"فَرَنْسَا",he:"צרפת"},
+  {ar:"فَضَّلَ",he:"העדיף"},{ar:"فَقِير",he:"עני"},{ar:"فَكَّرَ فِي",he:"חשב על"},
+  {ar:"فِلَسْطِين",he:"פלסטין/פלשתין"},{ar:"فَنَادِق",he:"מלונות"},
+  {ar:"فُنْدُق",he:"מלון"},{ar:"فَهِمَ",he:"הבין"},
+  {ar:"فَوْق",he:"מעל"},{ar:"فِي",he:"ב-; בתוך"},{ar:"فِيلْم",he:"סרט (קולנוע)"},
+  {ar:"قَابَل",he:"פגש"},{ar:"قَادَ",he:"נהג ב-"},
+  {ar:"القَادِم",he:"(השבוע / החודש) הבא / הקרוב"},
+  {ar:"قَاعَة",he:"אולם"},{ar:"قَاعِدَة",he:"בסיס"},
+  {ar:"قَالَ",he:"אמר"},{ar:"قَامَ",he:"קם"},
+  {ar:"قَامُوس",he:"מילון"},{ar:"قَانُون",he:"חוק"},
+  {ar:"الْقَاهِرَة",he:"קהיר (בירת מצרים)"},
+  {ar:"قَبَضَ عَلَى",he:"תפס; עצר את"},{ar:"قَبْل",he:"לפני (זמן)"},
+  {ar:"قَدَّمَ",he:"הגיש"},{ar:"قَدِيم",he:"ישן"},{ar:"قَرَأَ",he:"קרא"},
+  {ar:"قَرَار",he:"החלטה"},{ar:"قُرْب",he:"בקרבת"},
+  {ar:"قَرَّرَ",he:"החליט"},{ar:"قَرِيبًا",he:"בקרוב"},
+  {ar:"قِصَّة",he:"סיפור"},{ar:"قَصِير",he:"נמוך; קצר"},
+  {ar:"قِطَار",he:"רכבת"},{ar:"قُطَاع غَزَّة",he:"רצועת עזה"},
+  {ar:"قَلْب",he:"לב"},{ar:"قَلِيل",he:"מועט"},
+  {ar:"قُنْبُلَة",he:"פצצה"},{ar:"قَهْوَة",he:"קפה"},
+  {ar:"قَوَاعِد",he:"בסיסים"},{ar:"قُوَّة",he:"כוח"},{ar:"قَوِيّ",he:"חזק"},
+  {ar:"كَأْس",he:"גביע"},{ar:"كَافَحَ",he:"נאבק ב-, נלחם ב-"},
+  {ar:"كَانَ",he:"היה"},{ar:"كُؤُوس",he:"כוסות; גביעים"},
+  {ar:"كَبِير",he:"גדול; בכיר"},{ar:"كِتَاب",he:"ספר"},
+  {ar:"كَتَبَ",he:"כתב"},{ar:"كَثِير",he:"רב"},
+  {ar:"كُرَة الْقَدَم",he:"כדורגל"},{ar:"كُرَة الْيَد",he:"כדור-יד"},
+  {ar:"كَشَفَ",he:"חשף; גילה"},{ar:"كُلّ",he:"כל"},
+  {ar:"كَلِمَة",he:"מילה"},{ar:"كَيْفَ",he:"איך"},
+  {ar:"لِـ",he:"ל-/ שׁ; כדי ש-; בשל"},{ar:"لَا",he:"לא; אל"},
+  {ar:"لَاعِب",he:"שחקן"},{ar:"لِأَنَّ",he:"כי, מפני ש-"},
+  {ar:"لُبْنَان",he:"לבנון"},{ar:"لَجْنَة",he:"ועדה"},{ar:"لَعِبَ",he:"שיחק"},
+  {ar:"مُعْتَقَل",he:"עצור, עציר; אסיר"},{ar:"مُعَلِّم",he:"מורה"},
+  {ar:"مُفَاوَضَات",he:"משא ומתן"},{ar:"مِفْتَاح",he:"מפתח"},
+  {ar:"مُقَابَلَة",he:"פגישה; ריאיון"},{ar:"مَقَال",he:"מאמר"},
+  {ar:"الْمُقْبِل",he:"(השבוע / החודש) הבא"},
+  {ar:"مَكَان",he:"מקום"},{ar:"مَكْتَب",he:"משרד"},
+  {ar:"مَكْتَبَة",he:"ספרייה"},{ar:"مَلِك",he:"מלך"},
+  {ar:"مُمَثِّل",he:"נציג; שחקן (קולנוע)"},{ar:"مُمْكِن",he:"אפשרי"},
+  {ar:"مَمْلَكَة",he:"ממלכה"},{ar:"مِنْ",he:"מן"},{ar:"مَنْ",he:"מי"},
+  {ar:"مَنَازِل",he:"בתים; דירות"},{ar:"مُنَاوَرَات",he:"תמרונים, תרגילים (צבאיים)"},
+  {ar:"مُنْتَخَب",he:"נבחרת (בספורט)"},{ar:"مَنَحَ",he:"העניק ל- את"},
+  {ar:"مَنْدُوب",he:"נציג"},{ar:"مُنْذُ",he:"מאז, מזה"},
+  {ar:"مَنْزِل",he:"בית; דירה"},{ar:"مِنْطَقَة",he:"אזור"},
+  {ar:"مُنَظَّمَة",he:"ארגון"},{ar:"مَنَعَ",he:"אסר על (מישהו)"},
+  {ar:"مُوَاصَلَات",he:"תחבורה"},{ar:"مَوَاضِيع",he:"נושאים"},
+  {ar:"مُوَاطِن",he:"אזרח; תושב"},{ar:"مَوَاقِف",he:"עמדות"},
+  {ar:"مَوْضُوع",he:"נושא"},{ar:"مُوَظَّف",he:"פקיד"},
+  {ar:"مَوْعِد",he:"מועד"},{ar:"مِيزَانِيَّة",he:"תקציב"},
+  {ar:"نَائِب",he:"סגן; חבר פרלמנט"},{ar:"نَار",he:"אש"},
+  {ar:"نَاقَشَ",he:"דן ב-"},{ar:"نَامَ",he:"ישן"},
+  {ar:"نَتِيجَة",he:"תוצאה"},{ar:"نَجَحَ",he:"הצליח"},
+  {ar:"نَحْنُ",he:"אנחנו"},{ar:"نِزَاع",he:"סכסוך"},
+  {ar:"نَشَرَ",he:"פרסם"},{ar:"نَظَرَ",he:"הביט"},
+  {ar:"نَفْط",he:"נפט"},{ar:"نِقَاش",he:"דיון"},{ar:"نَقَلَ",he:"העביר"},
+  {ar:"نِهَايَة",he:"סוף"},{ar:"نَهْر",he:"נהר"},
+  {ar:"نَوْم",he:"שינה / לישון"},{ar:"نُوَوِيّ",he:"גרעיני, אטומי"},
+  {ar:"هَاتِف",he:"טלפון"},{ar:"هَاجَرَ",he:"היגר"},{ar:"هَاجَمَ",he:"תקף"},
+  {ar:"هَؤُلَاء",he:"אלה; האלה"},{ar:"هَامّ",he:"חשוב"},
+  {ar:"هَبَطَ",he:"נחת; ירד"},{ar:"هَدَّدَ",he:"איים על"},
+  {ar:"هَدَمَ",he:"הרס"},{ar:"هَذَا",he:"זה; הזה"},{ar:"هَذِهِ",he:"זאת; הזאת"},
+  {ar:"هَرَبَ",he:"ברח"},{ar:"هَزَّة أَرْضِيَّة",he:"רעידת אדמה"},
+  {ar:"هَلْ",he:"האם"},{ar:"هُمْ",he:"הם"},{ar:"هُنَّ",he:"הן"},
+  {ar:"هُنَاك",he:"שם; יש"},{ar:"الهِنْد",he:"הודו"},
+  {ar:"هُوَ",he:"הוא"},{ar:"هُولِنْدَا",he:"הולנד"},{ar:"هِيَ",he:"היא"},
+  {ar:"وَاحِد",he:"אחד"},{ar:"وَاسِع",he:"רחב; נרחב"},
+  {ar:"وَاصَلَ فِي",he:"המשיך ב-/ את"},{ar:"وَافَقَ عَلَى",he:"הסכים ל-; אישר"},
+  {ar:"وَالِد",he:"הורה; אב"},{ar:"وَثِيقَة",he:"מסמך"},
+  {ar:"وَجَدَ",he:"מצא"},{ar:"وِزَارَة",he:"משרד (ממשלתי)"},
+  {ar:"وُزَرَاء",he:"שרים"},{ar:"وَزَنَ",he:"שקל"},{ar:"وَزْن",he:"משקל"},
+  {ar:"وَزِير",he:"שר"},{ar:"وَزِير الخَارِجِيَّة",he:"שר החוץ"},
+  {ar:"وَزِير الدِّفَاع",he:"שר הביטחון"},
+  {ar:"وَزِير الْمَالِيَّة",he:"שר האוצר"},
+  {ar:"وَصَلَ",he:"הגיע, בא"},{ar:"وَضَعَ",he:"שם, הניח"},
+  {ar:"وَضْع",he:"מצב"},{ar:"وَطَنِيّ",he:"לאומי"},
+  {ar:"وَعَدَ",he:"הבטיח"},{ar:"وَفْد",he:"משלחת"},
+  {ar:"وَقْت",he:"זמן"},{ar:"وَقَعَ",he:"נפל; קרה; שכן"},
+  {ar:"وَقَّعَ عَلَى",he:"חתם על"},{ar:"وَقَفَ",he:"עמד"},
+  {ar:"وَقْف إِطْلَاق النَّار",he:"הפסקת אש"},
+  {ar:"وِكَالَة",he:"סוכנות"},{ar:"الْوِلَايَات الْمُتَّحِدَة",he:"ארצות הברית"},
+  {ar:"وَلَد",he:"ילד"},{ar:"وَلَكِنَّ",he:"אבל"},
+  {ar:"اليَابَان",he:"יפון"},{ar:"الْيَمَن",he:"תימן"},
+  {ar:"يَهُودِيّ",he:"יהודי"},{ar:"يَوْم",he:"יום"},{ar:"الْيُونَان",he:"יוון"},
+]);
+
+const ANSIN_WORDS=sortArabic([
+  {ar:"قِيمَة / قِيَم",he:"ערך"},
+  {ar:"نَصّ",he:"טקסט"},
+  {ar:"حَسَب النَّصّ",he:"לפי הטקסט"},
+  {ar:"جَوَاب / أجْوِبَة",he:"תשובה"},
+  {ar:"كُلَّ الأجْوِبَة صَحِيحَة",he:"כל התשובות נכונות"},
+  {ar:"ضَمِير",he:"כינוי גוף"},
+  {ar:"عَادَ إلَى",he:"חזר ל..."},
+  {ar:"عَوْدَة",he:"שיבה, חזרה"},
+  {ar:"إحْتِجَاج",he:"מחאה"},
+  {ar:"تَضَامُن",he:"סולידריות, ערבות הדדית"},
+  {ar:"دَوْلِيّ",he:"בינלאומי"},
+  {ar:"وَعَدَ",he:"הבטיח"},
+  {ar:"بَلَغَ من العُمْر",he:"הגיע לגיל..."},
+  {ar:"أقَامَ",he:"שהה, גר ב... / הקים / ערך"},
+  {ar:"عَلَى بُعْد",he:"במרחק"},
+  {ar:"مَكَان عَام / أماكِن عَامَّة",he:"מקום ציבורי"},
+  {ar:"عَام / أَعْوَام",he:"שנה"},
+  {ar:"يَجِبُ عَلَى",he:"חובה על"},
+  {ar:"إمْرَأة / نِساء",he:"אישה"},
+  {ar:"لَيْسَ",he:"אינו"},
+  {ar:"هذه لَيْسَتِ المَرَّة الأولَى",he:"זאת לא הפעם הראשונה"},
+  {ar:"خَارِج البِلَاد",he:'חו"ל'},
+  {ar:"أيّ قيمة تَنْعَكِسُ؟",he:"איזה ערך משתקף?"},
+]);
+
+const LISTS={
+  bagrut:{name:"רשימת מילים לבגרויות",words:BAGRUT_WORDS},
+  ansin:{name:"אוצר מילים שימושי לאנסין",words:ANSIN_WORDS},
+};
+
+// ── State ─────────────────────────────────────────────────────
+let listKey='bagrut',words=[...BAGRUT_WORDS];
+let mode='flashcard',dir='ar';
+let deck=shuffle(words),idx=0,isFlipped=false;
+let score=0,total=0,streak=0;
+let quizOptions=[],quizAnswered=false;
+let typeAnswered=false;
+let streakClicks=0,adminUnlocked=false;
+let editorList=[];
+
+function getShow(w){return dir==='ar'?w.ar:w.he;}
+function getAnswer(w){return dir==='ar'?w.he:w.ar;}
+function showLang(){return dir==='ar'?'ערבית':'עברית';}
+function ansLang(){return dir==='ar'?'עברית':'ערבית';}
+
+function updateStats(){
+  document.getElementById('stat-score').textContent=score;
+  document.getElementById('stat-total').textContent=total;
+  document.getElementById('stat-streak').textContent=streak;
+  document.getElementById('progress-fill').style.width=Math.min(100,(idx/Math.max(1,deck.length))*100)+'%';
+}
+
+function resetGame(newWords){
+  if(newWords)words=newWords;
+  deck=shuffle(words);idx=0;isFlipped=false;
+  score=0;total=0;streak=0;streakClicks=0;
+  quizAnswered=false;typeAnswered=false;
+  updateStats();
+  document.getElementById('word-count-header').textContent=words.length;
+}
+
+function showSection(id){
+  ['flashcard-section','quiz-section','type-section'].forEach(s=>
+    document.getElementById(s).classList.toggle('hidden',s!==id));
+}
+function showScreen(id){
+  ['main-ui','score-screen','editor-ui'].forEach(s=>
+    document.getElementById(s).classList.toggle('hidden',s!==id));
+}
+
+function handleListChange(key){
+  listKey=key;
+  document.querySelectorAll('.list-btn').forEach(b=>b.classList.toggle('active',b.dataset.key===key));
+  document.getElementById('title').textContent=LISTS[key].name;
+  resetGame(LISTS[key].words);
+  loadCurrentMode();
+}
+
+function handleModeChange(m){
+  mode=m;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));
+  resetGame();
+  loadCurrentMode();
+}
+
+function loadCurrentMode(){
+  showScreen('main-ui');
+  if(mode==='flashcard'){showSection('flashcard-section');loadFlashcard();}
+  else if(mode==='quiz'){showSection('quiz-section');loadQuiz();}
+  else{showSection('type-section');loadType();}
+}
+
+function handleDirChange(d){
+  dir=d;
+  document.querySelectorAll('.dir-btn').forEach(b=>b.classList.toggle('active',b.dataset.dir===d));
+  idx=0;isFlipped=false;loadCurrentMode();
+}
+
+// ── Flashcard ────────────────────────────────────────────────
+function loadFlashcard(){
+  const w=deck[idx%deck.length];
+  isFlipped=false;
+  document.getElementById('flashcard').classList.remove('flipped');
+  document.getElementById('fc-lang').textContent=showLang();
+  document.getElementById('fc-word').textContent=getShow(w);
+  document.getElementById('fc-hint').classList.remove('hidden');
+  document.getElementById('fc-counter').textContent=(idx%deck.length+1)+' / '+deck.length;
+  updateStats();
+}
+function flipCard(){
+  const w=deck[idx%deck.length];
+  isFlipped=!isFlipped;
+  document.getElementById('flashcard').classList.toggle('flipped',isFlipped);
+  if(isFlipped){
+    document.getElementById('fc-lang').textContent=ansLang();
+    document.getElementById('fc-word').textContent=getAnswer(w);
+    document.getElementById('fc-hint').classList.add('hidden');
+  } else {
+    document.getElementById('fc-lang').textContent=showLang();
+    document.getElementById('fc-word').textContent=getShow(w);
+    document.getElementById('fc-hint').classList.remove('hidden');
+  }
+}
+function nextCard(){idx=(idx+1)%deck.length;loadFlashcard();}
+function prevCard(){idx=Math.max(0,idx-1);loadFlashcard();}
+
+// ── Quiz ─────────────────────────────────────────────────────
+function loadQuiz(){
+  if(idx>=deck.length){showDone();return;}
+  const cur=deck[idx];quizAnswered=false;
+  document.getElementById('q-lang').textContent=showLang()+' — מה הפירוש?';
+  document.getElementById('q-word').textContent=getShow(cur);
+  document.getElementById('quiz-next').classList.add('hidden');
+  const wrong=shuffle(words.filter(w=>w!==cur)).slice(0,3);
+  quizOptions=shuffle([{text:getAnswer(cur),correct:true},...wrong.map(w=>({text:getAnswer(w),correct:false}))]);
+  const grid=document.getElementById('options-grid');
+  grid.innerHTML='';
+  quizOptions.forEach((opt,i)=>{
+    const b=document.createElement('button');
+    b.className='opt-btn';b.textContent=opt.text;
+    b.onclick=()=>selectOption(i);
+    grid.appendChild(b);
+  });
+  updateStats();
+}
+function selectOption(i){
+  if(quizAnswered)return;
+  quizAnswered=true;total++;
+  const opt=quizOptions[i];
+  if(opt.correct){score++;streak++;}else streak=0;
+  document.querySelectorAll('.opt-btn').forEach((b,j)=>{
+    b.disabled=true;
+    if(quizOptions[j].correct)b.classList.add('correct');
+    else if(j===i&&!opt.correct)b.classList.add('wrong');
+  });
+  document.getElementById('quiz-next').classList.remove('hidden');
+  updateStats();
+}
+function nextQuiz(){idx++;loadQuiz();}
+
+// ── Type ─────────────────────────────────────────────────────
+function loadType(){
+  if(idx>=deck.length){showDone();return;}
+  const w=deck[idx];typeAnswered=false;
+  document.getElementById('type-lang').textContent=showLang()+' — תרגם ל'+ansLang()+':';
+  document.getElementById('type-word').textContent=getShow(w);
+  const inp=document.getElementById('type-input');
+  inp.value='';inp.disabled=false;inp.className='';
+  document.getElementById('type-feedback').textContent='';
+  document.getElementById('hint-btn').classList.remove('hidden');
+  document.getElementById('type-submit').textContent='בדוק ✓';
+  setTimeout(()=>inp.focus(),50);
+  updateStats();
+}
+function checkType(){
+  const inp=document.getElementById('type-input');
+  if(typeAnswered){idx++;loadType();return;}
+  if(!inp.value.trim())return;
+  const ans=getAnswer(deck[idx]);
+  const norm=s=>s.replace(/[ًٌٍَُِّْ]/g,'').trim();
+  const ok=norm(inp.value)===norm(ans)||inp.value.trim()===ans.trim();
+  typeAnswered=true;total++;
+  if(ok){score++;streak++;}else streak=0;
+  inp.disabled=true;inp.className=ok?'correct':'wrong';
+  const fb=document.getElementById('type-feedback');
+  fb.textContent=ok?'✅ מצוין!':'❌ הנכון: '+ans;
+  fb.style.color=ok?'#4ade80':'#f87171';
+  document.getElementById('hint-btn').classList.add('hidden');
+  document.getElementById('type-submit').textContent='הבא →';
+  updateStats();
+}
+function showHint(){
+  const ans=getAnswer(deck[idx]);
+  document.getElementById('type-input').value=ans.slice(0,Math.ceil(ans.length/3))+'...';
+}
+
+// ── Done ─────────────────────────────────────────────────────
+function showDone(){
+  const pct=total>0?Math.round((score/total)*100):0;
+  document.getElementById('score-pct').textContent=pct+'%';
+  document.getElementById('score-detail').textContent=score+' נכון מתוך '+total;
+  document.getElementById('score-streak-txt').textContent='רצף: '+streak+' 🔥';
+  showScreen('score-screen');
+}
+function restart(){resetGame();loadCurrentMode();}
+
+// ── Admin ────────────────────────────────────────────────────
+function handleStreakClick(){
+  if(adminUnlocked){openEditor();return;}
+  streakClicks++;
+  if(streakClicks>=20){adminUnlocked=true;streakClicks=0;openEditor();}
+}
+
+// ── Editor ───────────────────────────────────────────────────
+function openEditor(){
+  editorList=words.map(w=>({...w}));
+  renderEditorList();
+  showScreen('editor-ui');
+}
+function renderEditorList(){
+  const c=document.getElementById('word-list-editor');c.innerHTML='';
+  editorList.forEach((w,i)=>{
+    const row=document.createElement('div');row.className='word-row';
+    row.innerHTML=`<input type="text" value="${esc(w.ar)}" onchange="editorList[${i}].ar=this.value">
+      <span style="color:#8b949e">↔</span>
+      <input type="text" value="${esc(w.he)}" onchange="editorList[${i}].he=this.value">
+      <button class="del-btn" onclick="removeWord(${i})">✕</button>`;
+    c.appendChild(row);
+  });
+  document.getElementById('editor-word-count').textContent=editorList.length+' מילים';
+}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+function removeWord(i){editorList.splice(i,1);renderEditorList();}
+function addWord(){
+  const ar=document.getElementById('new-ar').value.trim();
+  const he=document.getElementById('new-he').value.trim();
+  if(!ar||!he)return;
+  editorList.push({ar,he});
+  document.getElementById('new-ar').value='';
+  document.getElementById('new-he').value='';
+  renderEditorList();
+}
+function saveEditor(){
+  const sorted=sortArabic(editorList);
+  LISTS[listKey].words=[...sorted];
+  resetGame(sorted);
+  loadCurrentMode();
+  const msg=document.getElementById('save-msg');
+  msg.classList.remove('hidden');
+  setTimeout(()=>msg.classList.add('hidden'),2500);
+}
+function closeEditor(){loadCurrentMode();}
+
+// ── Init ─────────────────────────────────────────────────────
+document.getElementById('word-count-header').textContent=words.length;
+loadFlashcard();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js');
+  });
+}
+</script>
+</body>
+</html>
