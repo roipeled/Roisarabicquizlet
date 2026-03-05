@@ -24,7 +24,6 @@ input{font-family:inherit}
 #list-selector{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;justify-content:center}
 .list-btn{background:#ffffff;border:1.5px solid #b0d4ee;color:#5a8fa8;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;transition:all .2s}
 .list-btn.active{background:rgba(0,150,199,0.12);border-color:#0096c7;color:#0096c7}
-#save-msg{background:rgba(18,184,134,0.12);border:1px solid #12b886;color:#12b886;border-radius:10px;padding:8px 20px;margin-bottom:12px;font-size:13px}
 #mode-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;justify-content:center}
 .mode-btn{background:#ffffff;border:1.5px solid #b0d4ee;color:#5a8fa8;padding:8px 16px;border-radius:30px;font-size:13px;font-weight:600;transition:all .2s}
 .mode-btn.active{border-color:#005f87;color:#005f87;background:rgba(0,119,168,0.08)}
@@ -68,18 +67,18 @@ input{font-family:inherit}
 #type-controls{display:flex;gap:10px;justify-content:center}
 #score-screen{text-align:center;padding:32px;background:#ffffff;border-radius:24px;border:1.5px solid rgba(0,119,168,0.3);max-width:300px}
 #score-pct{font-size:44px;font-weight:700;color:#005f87;margin-bottom:4px}
-#editor-wrap{width:100%;max-width:520px}
-#editor-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-#editor-title{font-weight:700;font-size:18px;color:#005f87}
-#add-word-box{background:#ffffff;border-radius:14px;padding:16px;margin-bottom:18px;border:1.5px solid rgba(0,119,168,0.25)}
-#add-word-row{display:flex;gap:8px;flex-wrap:wrap}
-#add-word-row input{flex:1;min-width:120px;background:#e4f1fb;border:1.5px solid #b0d4ee;border-radius:12px;padding:9px 12px;font-size:13px;color:#0d2137;outline:none}
-#word-list-editor{display:flex;flex-direction:column;gap:8px;max-height:400px;overflow-y:auto;padding-left:4px}
-.word-row{display:flex;gap:8px;align-items:center;background:#ffffff;border-radius:10px;padding:8px 12px;border:1px solid #b0d4ee}
-.word-row input{flex:1;background:#e4f1fb;border:1.5px solid #b0d4ee;border-radius:10px;padding:7px 10px;font-size:13px;color:#0d2137;outline:none;min-width:80px}
-.del-btn{background:rgba(248,113,113,0.1);border:1px solid #f87171;color:#f87171;border-radius:8px;padding:4px 10px;font-size:13px}
-#editor-footer{display:flex;gap:10px;justify-content:center;margin-top:18px;align-items:center}
-#editor-word-count{color:#5a8fa8;font-size:13px}
+
+
+
+
+
+
+
+
+
+
+
+
 .btn-primary{background:linear-gradient(135deg,#005f87,#005f87);color:#ffffff;border:none;padding:10px 24px;border-radius:30px;font-size:14px;font-weight:700;transition:all .2s}
 .btn-outline{background:transparent;color:#5a8fa8;border:1.5px solid #b0d4ee;padding:10px 18px;border-radius:30px;font-size:14px;font-weight:600;transition:all .2s}
 .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,119,168,0.25)}
@@ -129,7 +128,6 @@ input{font-family:inherit}
     <button class="list-btn active" data-key="bagrut" onclick="handleListChange('bagrut')">אוצר מילים משרד החינוך + דן שובל (כל מה שצריך לבגרות!)</button>
     <button class="list-btn" data-key="ansin" onclick="handleListChange('ansin')">אוצר מילים שימושי לאנסין</button>
   </div>
-  <div id="save-msg" class="hidden">✅ הרשימה נשמרה בהצלחה!</div>
   <div id="mode-tabs">
     <button class="mode-btn active" data-mode="flashcard" onclick="handleModeChange('flashcard')">🃏 כרטיסיות</button>
     <button class="mode-btn" data-mode="quiz" onclick="handleModeChange('quiz')">❓ חידון</button>
@@ -218,27 +216,6 @@ input{font-family:inherit}
   <button class="btn-primary" onclick="restart()">שחק שוב</button>
 </div>
 
-<div id="editor-ui" class="hidden">
-  <div id="editor-wrap">
-    <div id="editor-header">
-      <div id="editor-title">✏️ עריכת רשימה</div>
-      <button class="btn-outline" onclick="closeEditor()">← חזרה</button>
-    </div>
-    <div id="add-word-box">
-      <div style="font-size:12px;color:#5a8fa8;margin-bottom:10px;letter-spacing:1px">➕ הוסף מילה חדשה</div>
-      <div id="add-word-row">
-        <input type="text" id="new-ar" placeholder="ערבית..." onkeydown="if(event.key==='Enter')addWord()">
-        <input type="text" id="new-he" placeholder="עברית..." onkeydown="if(event.key==='Enter')addWord()">
-        <button class="btn-primary" onclick="addWord()">הוסף</button>
-      </div>
-    </div>
-    <div id="word-list-editor"></div>
-    <div id="editor-footer">
-      <span id="editor-word-count">0 מילים</span>
-      <button class="btn-primary" onclick="saveEditor()">💾 שמור שינויים</button>
-    </div>
-  </div>
-</div>
 
 <script>
 function arabicSortKey(s){return s.replace(/[\u064B-\u065F\u0610-\u061A]/g,'').replace(/^(ال|اِ|اُ|اَ|ا)/u,'').replace(/[أإآؤئ]/g,'ا').trim();}
@@ -1488,8 +1465,7 @@ let deck=shuffle(words),idx=0,isFlipped=false;
 let score=0,total=0,streak=0;
 let quizOptions=[],quizAnswered=false;
 let typeAnswered=false;
-let streakClicks=0,adminUnlocked=false;
-let editorList=[];
+let streakClicks=0;
 let currentGrade='all';
 let mistakesList=[];   // words answered wrong this session
 let isMistakesMode=false;
@@ -1529,7 +1505,7 @@ function showSection(id){
     document.getElementById(s).classList.toggle('hidden',s!==id));
 }
 function showScreen(id){
-  ['main-ui','score-screen','editor-ui'].forEach(s=>
+  ['main-ui','score-screen'].forEach(s=>
     document.getElementById(s).classList.toggle('hidden',s!==id));
 }
 
@@ -1779,53 +1755,9 @@ function restart(){resetGame();loadCurrentMode();}
 
 // ── Admin ────────────────────────────────────────────────────
 function handleStreakClick(){
-  if(adminUnlocked){openEditor();return;}
   streakClicks++;
-  if(streakClicks>=20){adminUnlocked=true;streakClicks=0;openEditor();}
 }
 
-// ── Editor ───────────────────────────────────────────────────
-function openEditor(){
-  editorList=words.map(w=>({...w}));
-  renderEditorList();
-  showScreen('editor-ui');
-}
-function renderEditorList(){
-  const c=document.getElementById('word-list-editor');c.innerHTML='';
-  editorList.forEach((w,i)=>{
-    const row=document.createElement('div');row.className='word-row';
-    row.innerHTML=`<input type="text" value="${esc(w.ar)}" onchange="editorList[${i}].ar=this.value">
-      <span style="color:#5a8fa8">↔</span>
-      <input type="text" value="${esc(w.he)}" onchange="editorList[${i}].he=this.value">
-      <button class="del-btn" onclick="removeWord(${i})">✕</button>`;
-    c.appendChild(row);
-  });
-  document.getElementById('editor-word-count').textContent=editorList.length+' מילים';
-}
-function esc(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
-function removeWord(i){editorList.splice(i,1);renderEditorList();}
-function addWord(){
-  const ar=document.getElementById('new-ar').value.trim();
-  const he=document.getElementById('new-he').value.trim();
-  if(!ar||!he)return;
-  editorList.push({ar,he});
-  document.getElementById('new-ar').value='';
-  document.getElementById('new-he').value='';
-  renderEditorList();
-}
-function saveEditor(){
-  const sorted=sortArabic(editorList);
-  LISTS[listKey].words=[...sorted];
-  saveToStorage();
-  resetGame(sorted);
-  loadCurrentMode();
-  const msg=document.getElementById('save-msg');
-  msg.classList.remove('hidden');
-  setTimeout(()=>msg.classList.add('hidden'),2500);
-}
-function closeEditor(){loadCurrentMode();}
-
-// ── Persistence ──────────────────────────────────────────────
 function saveToStorage() {
   try {
     localStorage.setItem('vocab_bagrut', JSON.stringify(LISTS.bagrut.words));
