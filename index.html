@@ -90,8 +90,7 @@ input{font-family:inherit}
 #wotd-banner .wotd-label{font-size:11px;color:#b8860b;letter-spacing:2px;font-weight:700;margin-bottom:6px}
 #wotd-banner .wotd-ar{font-size:26px;font-weight:700;color:#0d2137;direction:rtl}
 #wotd-banner .wotd-he{font-size:14px;color:#5a8fa8;margin-top:4px}
-#mistakes-bar{background:rgba(248,113,113,0.08);border:1.5px solid rgba(248,113,113,0.3);border-radius:12px;padding:8px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;max-width:380px;width:100%}
-#mistakes-bar span{color:#e55;font-size:13px;font-weight:600}
+
 /* Know/Don't-know buttons */
 #fc-know-row{display:flex;gap:10px;justify-content:center;margin-top:10px}
 .fc-know-btn{padding:10px 28px;border-radius:30px;font-size:15px;font-weight:700;border:2px solid;transition:all .15s;min-width:110px}
@@ -114,6 +113,44 @@ input{font-family:inherit}
 #pile-know{color:#12b886}
 #pile-dontknow{color:#e55}
 .btn-outline:hover{border-color:#0d2137;color:#0d2137}
+/* Search */
+#search-bar{width:100%;max-width:380px;margin-bottom:8px}
+#search-input{width:100%;background:#ffffff;border:1.5px solid #b0d4ee;border-radius:24px;padding:9px 16px;font-size:14px;color:#0d2137;outline:none;transition:border-color .2s}
+#search-input:focus{border-color:#0077a8}
+#search-results{width:100%;max-width:380px;background:#ffffff;border:1.5px solid #b0d4ee;border-radius:16px;max-height:260px;overflow-y:auto;margin-bottom:8px;box-shadow:0 4px 16px rgba(0,119,168,0.1)}
+.search-row{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid #e4f1fb;font-size:14px;gap:12px}
+.search-row:last-child{border-bottom:none}
+.search-ar{font-size:17px;font-weight:700;color:#0d2137;direction:rtl}
+.search-he{color:#5a8fa8;font-size:13px}
+.search-empty{text-align:center;color:#5a8fa8;padding:24px;font-size:13px}
+/* Exam */
+#exam-setup{background:#ffffff;border:1.5px solid #b0d4ee;border-radius:18px;padding:22px 20px;width:100%}
+#exam-setup h3{color:#005f87;font-size:16px;margin-bottom:18px;text-align:center}
+.exam-opt-row{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.exam-opt-row label{font-size:13px;color:#5a8fa8;font-weight:600;margin-bottom:2px}
+.exam-opt-row input[type=range]{width:100%;accent-color:#0077a8}
+.exam-opt-row .range-val{text-align:center;font-size:22px;font-weight:700;color:#005f87}
+.exam-toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.exam-toggle-row label{font-size:14px;color:#0d2137;font-weight:600}
+.toggle-switch{position:relative;width:46px;height:26px}
+.toggle-switch input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:#b0d4ee;border-radius:26px;cursor:pointer;transition:.3s}
+.toggle-slider:before{content:'';position:absolute;height:20px;width:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.3s}
+.toggle-switch input:checked+.toggle-slider{background:#0077a8}
+.toggle-switch input:checked+.toggle-slider:before{transform:translateX(20px)}
+.timer-input-row{display:flex;align-items:center;gap:8px;margin-top:8px}
+.timer-input-row input[type=number]{width:70px;border:1.5px solid #b0d4ee;border-radius:10px;padding:6px 10px;font-size:16px;font-weight:700;color:#005f87;text-align:center;outline:none}
+.timer-input-row span{color:#5a8fa8;font-size:13px}
+#exam-section .card-box{margin-bottom:12px}
+#exam-progress{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#5a8fa8;margin-bottom:8px}
+#exam-q-num{font-weight:700;color:#005f87}
+#exam-timer-live{font-size:18px;font-weight:700;color:#005f87;min-width:40px;text-align:left}
+#exam-timer-live.urgent{color:#e55;animation:pulse .5s infinite alternate}
+#score-stars{font-size:36px;margin:8px 0}
+#exam-summary{margin-top:10px;font-size:13px;color:#5a8fa8;max-height:180px;overflow-y:auto;width:100%}
+.exam-miss-row{display:flex;justify-content:space-between;padding:5px 8px;border-bottom:1px solid #e4f1fb;font-size:13px}
+.exam-miss-ar{color:#0d2137;font-weight:600}
+.exam-miss-he{color:#5a8fa8}
 </style>
 </head>
 <body>
@@ -128,11 +165,15 @@ input{font-family:inherit}
     <button class="list-btn active" data-key="bagrut" onclick="handleListChange('bagrut')">אוצר מילים משרד החינוך + דן שובל (כל מה שצריך לבגרות!)</button>
     <button class="list-btn" data-key="ansin" onclick="handleListChange('ansin')">אוצר מילים שימושי לאנסין</button>
   </div>
+  <div id="search-bar">
+    <input type="text" id="search-input" placeholder="🔍 חפש מילה בערבית או עברית..." oninput="doSearch(this.value)">
+  </div>
+  <div id="search-results" class="hidden"></div>
   <div id="mode-tabs">
     <button class="mode-btn active" data-mode="flashcard" onclick="handleModeChange('flashcard')">🃏 כרטיסיות</button>
     <button class="mode-btn" data-mode="quiz" onclick="handleModeChange('quiz')">❓ חידון</button>
     <button class="mode-btn" data-mode="type" onclick="handleModeChange('type')">⌨️ הקלדה</button>
-    <button class="mode-btn" data-mode="mistakes" onclick="handleModeChange('mistakes')" id="mistakes-mode-btn" style="display:none">🔁 טעויות</button>
+    <button class="mode-btn" data-mode="exam" onclick="handleModeChange('exam')">📝 בחינה</button>
   </div>
   <div id="grade-filter" class="hidden">
     <button class="grade-btn active" data-grade="all" onclick="handleGradeChange('all')">הכל</button>
@@ -140,10 +181,6 @@ input{font-family:inherit}
     <button class="grade-btn" data-grade="10" onclick="handleGradeChange('10')">כיתה י'</button>
     <button class="grade-btn" data-grade="11" onclick="handleGradeChange('11')">כיתה י"א</button>
     <button class="grade-btn" data-grade="12" onclick="handleGradeChange('12')">כיתה י"ב</button>
-  </div>
-  <div id="mistakes-bar" class="hidden">
-    <span>❌ <span id="mistakes-count">0</span> טעויות לחזרה</span>
-    <button class="grade-btn" onclick="startMistakesReview()" style="color:#e55;border-color:#f87171">חזור עליהן</button>
   </div>
   <div id="wotd-banner" class="hidden">
     <div class="wotd-label">🌟 מילת היום</div>
@@ -205,15 +242,49 @@ input{font-family:inherit}
         <button class="btn-primary" id="type-submit" onclick="checkType()">בדוק ✓</button>
       </div>
     </div>
+    <div id="exam-section" class="hidden">
+      <!-- Setup screen -->
+      <div id="exam-setup">
+        <h3>⚙️ הגדרות בחינה</h3>
+        <div class="exam-opt-row">
+          <label>מספר שאלות</label>
+          <div class="range-val" id="exam-q-display">20</div>
+          <input type="range" min="5" max="50" step="5" value="20" id="exam-q-range" oninput="document.getElementById('exam-q-display').textContent=this.value">
+        </div>
+        <div class="exam-toggle-row">
+          <label>⏱ מגבלת זמן</label>
+          <label class="toggle-switch"><input type="checkbox" id="exam-timer-toggle" onchange="toggleExamTimerInput()"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="timer-input-row hidden" id="exam-timer-input-row">
+          <input type="number" id="exam-timer-val" value="60" min="10" max="600">
+          <span>שניות לכל שאלה</span>
+        </div>
+        <button class="btn-primary" style="width:100%;margin-top:8px" onclick="startExam()">התחל בחינה 🚀</button>
+      </div>
+      <!-- Question screen -->
+      <div id="exam-question" class="hidden">
+        <div id="exam-progress">
+          <span><span id="exam-q-num">1</span> / <span id="exam-q-total">20</span></span>
+          <span id="exam-timer-live" class="hidden">—</span>
+        </div>
+        <div class="card-box"><div id="exam-lang">ערבית — מה הפירוש?</div><div id="exam-word" style="font-size:28px;font-weight:700;text-align:center">—</div></div>
+        <div id="exam-grid"></div>
+        <div id="exam-next" class="hidden" style="display:flex;justify-content:center;margin-top:14px"><button class="btn-primary" onclick="nextExam()">הבא →</button></div>
+      </div>
+    </div>
+    </div>
+    </div>
   </div>
 </div>
 
 <div id="score-screen" class="hidden">
-  <div style="font-size:56px;margin-bottom:8px">🏆</div>
+  <div style="font-size:56px;margin-bottom:4px" id="score-trophy">🏆</div>
+  <div id="score-stars"></div>
   <div id="score-pct">—</div>
   <div id="score-detail" style="color:#5a8fa8;margin-bottom:4px"></div>
-  <div id="score-streak-txt" style="color:#5a8fa8;margin-bottom:24px;font-size:13px"></div>
-  <button class="btn-primary" onclick="restart()">שחק שוב</button>
+  <div id="score-streak-txt" style="color:#5a8fa8;margin-bottom:16px;font-size:13px"></div>
+  <div id="exam-summary" class="hidden"></div>
+  <button class="btn-primary" onclick="restart()" style="margin-top:16px">שחק שוב</button>
 </div>
 
 
@@ -949,26 +1020,21 @@ const BAGRUT_WORDS=sortArabic([
   {ar:"الاثْنَيْن",he:"(יום) שני"},
   {ar:"أَجَابَ عَلَى",he:"ענה על"},
   {ar:"أَجَلَّ",he:"דחה (בזמן)"},
-  {ar:"أَجْمَل",he:"ראו יפה"},
   {ar:"أَجْهِزَة",he:"מכשירים"},
   {ar:"أُجُور",he:"שכר"},
   {ar:"أَحَد",he:"אחד; מישהו, איש"},
   {ar:"الأَحَد",he:"(יום) ראשון"},
-  {ar:"أَحْدَث",he:"ראו חדיש"},
   {ar:"أَحْرَق",he:"שרף"},
-  {ar:"أَحْسَن",he:"ראו יפה"},
   {ar:"إِحْرَام",he:"שם (כינוי)"},
   {ar:"أَخ",he:"אח"},
   {ar:"أُخْت",he:"אחות"},
   {ar:"اِخْتَتَمَ",he:"סיים"},
   {ar:"اِخْتَطَفَ",he:"חטף"},
   {ar:"أَخَذَ",he:"לקח"},
-  {ar:"أَخْطَر",he:"ראו חשוב"},
   {ar:"أَخَوَات",he:"אחיות"},
   {ar:"أَخِير",he:"אחרון"},
   {ar:"أَدْخَلَ",he:"הכניס את... ל-"},
   {ar:"الأَرْبِعَاء",he:"(יום) רביעי"},
-  {ar:"أَرْخَص",he:"ראו זול"},
   {ar:"الأُرْدُن",he:"ירדן"},
   {ar:"أَرْض",he:"אדמה"},
   {ar:"اِسْتَقَلَّ",he:"הפטר"},
@@ -979,9 +1045,7 @@ const BAGRUT_WORDS=sortArabic([
   {ar:"اِسْتَيْقَظَ",he:"התעורר"},
   {ar:"إِسْرَائِيل",he:"ישראל"},
   {ar:"أَسْرَعَ",he:"מיהר"},
-  {ar:"أَسْرَع",he:"ראו מהיר"},
   {ar:"أَسْعَار",he:"מחירים"},
-  {ar:"إِسْعَاف",he:"ראו סיירת אמבולנס"},
   {ar:"أُسْلُوب",he:"דרך, שיטה"},
   {ar:"اِسْم",he:"שם"},
   {ar:"إِسْمَاعِيل",he:"ש\"פ זכר"},
@@ -990,7 +1054,6 @@ const BAGRUT_WORDS=sortArabic([
   {ar:"أَشْخَاص",he:"אנשים; בני-אדם"},
   {ar:"أَشْهُر",he:"חודשים"},
   {ar:"أَصْوَات",he:"קולות"},
-  {ar:"أَضْعَف",he:"ראו חלש"},
   {ar:"أَطْعَمَ",he:"האכיל את... (ב-)"},
   {ar:"أَطْفَال",he:"תינוקות; ילדים"},
   {ar:"أَطْلَقَ",he:"שיגר"},
@@ -998,12 +1061,10 @@ const BAGRUT_WORDS=sortArabic([
   {ar:"اِعْتَذَرَ عَن",he:"התנצל על"},
   {ar:"أَعْلَى",he:"גבוה יותר"},
   {ar:"اِغْتَالَ",he:"(מתנקש) רצח את, התנקש ב-"},
-  {ar:"أَغْلَى",he:"ראו יקר"},
   {ar:"أَفْرِيقِيَا",he:"אפריקה"},
   {ar:"أَفْضَل",he:"טוב יותר, עדיף"},
   {ar:"إِقْتِصَاد",he:"כלכלה"},
   {ar:"أَقَلَّ",he:"יותר"},
-  {ar:"أَقْوَى",he:"ראו חזק"},
   {ar:"اِكْتَشَفَ",he:"גילה"},
   {ar:"أَكْثَر",he:"יותר"},
   {ar:"أَكَلَ",he:"אכל"},
@@ -1067,7 +1128,6 @@ const BAGRUT_WORDS=sortArabic([
   {ar:"بَغْدَاد",he:"בגדאד (בירת עיראק)"},
   {ar:"تَعَاوَنَ مَعَ",he:"שיתף פעולה עם"},
   {ar:"تَعَلَّقَ بِـ",he:"היה קשור ל-"},
-  {ar:"تَعْلِيم",he:"ראו וזיר אל-תרביה ואל-תעלים"},
   {ar:"تَغَلَّبَ عَلَى",he:"התגבר על"},
   {ar:"تَفَاوَضَ مَعَ",he:"ניהל משא ומתן עם"},
   {ar:"تَقَدَّمَ",he:"התקדם"},
@@ -1078,7 +1138,6 @@ const BAGRUT_WORDS=sortArabic([
   {ar:"تَنَازَلَ عَن",he:"ויתר על"},
   {ar:"تَوَاصَلَ",he:"נמשך"},
   {ar:"تَوَصَّلَ إِلَى",he:"הגיע ל(הישג)"},
-  {ar:"ثَانَوِيَّة",he:"ראו مدرسة ثانوية"},
   {ar:"ثَلَاث",he:"שלוש"},
   {ar:"الثُّلَاثَاء",he:"(יום) שלישי"},
   {ar:"تَأَخَّرَ",he:"איחר, התעכב"},
@@ -1125,7 +1184,6 @@ const BAGRUT_WORDS=sortArabic([
   {ar:"حَقْل",he:"שדה"},
   {ar:"حُكُومَة",he:"ממשלה"},
   {ar:"حَلَّ",he:"פתר"},
-  {ar:"خَارِجِيَّة",he:"ראו וזיר אל-ח'ארגיה"},
   {ar:"خَارِجِيّ",he:"חיצוני"},
   {ar:"خَافَ",he:"פחד"},
   {ar:"خَال",he:"דוד (מצד האם)"},
@@ -1136,7 +1194,6 @@ const BAGRUT_WORDS=sortArabic([
   {ar:"خَطَفَ",he:"חטף"},
   {ar:"خَفِيف",he:"קל"},
   {ar:"خِلَال",he:"במשך; במהלך"},
-  {ar:"دَاخِلِيَّة",he:"ראו וזיר אל-דאח'ליה"},
   {ar:"دَاخِلِيّ",he:"פנימי"},
   {ar:"دَاعِي",he:"אין צורך ל-"},
   {ar:"لَا دَاعِي لِـ",he:"אין סיבה ל-"},
@@ -1145,7 +1202,6 @@ const BAGRUT_WORDS=sortArabic([
   {ar:"دَرَّبَ",he:"אימן"},
   {ar:"دَرَسَ",he:"לָׁמַׂד"},
   {ar:"دَرَّسَ",he:"לִׁמֵׂד"},
-  {ar:"دِفَاع",he:"ראו وزير الدفاع - הגנה"},
   {ar:"دَفَّعَ",he:"תשלום / לשלם"},
   {ar:"دَقِيق",he:"מדוייק"},
   {ar:"دَوْر",he:"תור, תפקיד"},
@@ -1314,7 +1370,6 @@ const BAGRUT_WORDS=sortArabic([
   {ar:"مَا زَالَ",he:"מים"},
   {ar:"مُؤْتَمَر",he:"כינוס; ועידה"},
   {ar:"الْمَاضِي",he:"(השבוע/ החודש) שעבר"},
-  {ar:"مَالِيَّة",he:"ראו وزير المالية"},
   {ar:"مُبَارَك",he:"מבורך"},
   {ar:"مَبْعُوث",he:"שליח"},
   {ar:"مَتَى",he:"מתי"},
@@ -1467,8 +1522,6 @@ let quizOptions=[],quizAnswered=false;
 let typeAnswered=false;
 let streakClicks=0;
 let currentGrade='all';
-let mistakesList=[];   // words answered wrong this session
-let isMistakesMode=false;
 // Know/Don't know
 let pileKnow=0,pileDontKnow=0;
 // Timer
@@ -1484,9 +1537,6 @@ function updateStats(){
   document.getElementById('stat-total').textContent=total;
   document.getElementById('stat-streak').textContent=streak;
   document.getElementById('progress-fill').style.width=Math.min(100,(idx/Math.max(1,deck.length))*100)+'%';
-  const mb=document.getElementById('mistakes-bar');
-  document.getElementById('mistakes-count').textContent=mistakesList.length;
-  mb.classList.toggle('hidden', mistakesList.length===0||isMistakesMode);
 }
 
 function resetGame(newWords,clearMistakes=false){
@@ -1495,13 +1545,13 @@ function resetGame(newWords,clearMistakes=false){
   score=0;total=0;streak=0;streakClicks=0;
   quizAnswered=false;typeAnswered=false;
   pileKnow=0;pileDontKnow=0;updatePiles();
-  if(clearMistakes){mistakesList=[];isMistakesMode=false;document.getElementById('mistakes-mode-btn').style.display='none';}
+  
   updateStats();
   document.getElementById('word-count-header').textContent=words.length;
 }
 
 function showSection(id){
-  ['flashcard-section','quiz-section','type-section'].forEach(s=>
+  ['flashcard-section','quiz-section','type-section','exam-section'].forEach(s=>
     document.getElementById(s).classList.toggle('hidden',s!==id));
 }
 function showScreen(id){
@@ -1516,19 +1566,15 @@ function handleListChange(key){
   document.getElementById('grade-filter').classList.toggle('hidden',key!=='bagrut');
   currentGrade='all';
   document.querySelectorAll('.grade-btn').forEach(b=>b.classList.toggle('active',b.dataset.grade==='all'));
-  mistakesList=[];isMistakesMode=false;
-  document.getElementById('mistakes-mode-btn').style.display='none';
   resetGame(LISTS[key].words);
   loadCurrentMode();
 }
 
 function handleModeChange(m){
-  if(m==='mistakes'){startMistakesReview();return;}
   mode=m;
   document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));
-  isMistakesMode=false;
   resetTimer();
-  document.getElementById('timer-row').classList.toggle('hidden',m==='flashcard');
+  document.getElementById('timer-row').classList.toggle('hidden',m==='flashcard'||m==='exam');
   resetGame();
   loadCurrentMode();
 }
@@ -1536,8 +1582,6 @@ function handleModeChange(m){
 function handleGradeChange(g){
   currentGrade=g;
   document.querySelectorAll('.grade-btn').forEach(b=>b.classList.toggle('active',b.dataset.grade===g));
-  mistakesList=[];isMistakesMode=false;
-  document.getElementById('mistakes-mode-btn').style.display='none';
   let filtered;
   if(g==='all'){filtered=[...LISTS[listKey].words];}
   else{
@@ -1548,23 +1592,12 @@ function handleGradeChange(g){
   loadCurrentMode();
 }
 
-function startMistakesReview(){
-  if(mistakesList.length===0)return;
-  isMistakesMode=true;
-  mode='quiz';
-  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('mistakes-mode-btn').style.display='';
-  document.getElementById('mistakes-mode-btn').classList.add('active');
-  resetGame(mistakesList);
-  showScreen('main-ui');
-  showSection('quiz-section');
-  loadQuiz();
-}
 
 function loadCurrentMode(){
   showScreen('main-ui');
   if(mode==='flashcard'){showSection('flashcard-section');loadFlashcard();}
   else if(mode==='quiz'){showSection('quiz-section');loadQuiz();}
+  else if(mode==='exam'){showSection('exam-section');loadExam();}
   else{showSection('type-section');loadType();}
 }
 
@@ -1602,7 +1635,7 @@ function nextCard(){idx=(idx+1)%deck.length;loadFlashcard();}
 function prevCard(){idx=Math.max(0,idx-1);loadFlashcard();}
 function markCard(known){
   if(known){pileKnow++;}
-  else{pileDontKnow++;if(!mistakesList.find(m=>m.ar===deck[idx%deck.length].ar))mistakesList.push(deck[idx%deck.length]);}
+  else{pileDontKnow++;}
   updatePiles();
   idx=(idx+1)%deck.length;
   loadFlashcard();
@@ -1636,7 +1669,7 @@ function selectOption(i){
   if(quizAnswered)return;
   quizAnswered=true;total++;
   const opt=quizOptions[i];
-  if(opt.correct){score++;streak++;}else{streak=0;if(!isMistakesMode&&!mistakesList.find(m=>m.ar===deck[idx].ar))mistakesList.push(deck[idx]);}
+  if(opt.correct){score++;streak++;}else{streak=0;}
   document.querySelectorAll('.opt-btn').forEach((b,j)=>{
     b.disabled=true;
     if(quizOptions[j].correct)b.classList.add('correct');
@@ -1669,7 +1702,7 @@ function checkType(){
   const norm=s=>s.replace(/[ًٌٍَُِّْ]/g,'').trim();
   const ok=norm(inp.value)===norm(ans)||inp.value.trim()===ans.trim();
   typeAnswered=true;total++;
-  if(ok){score++;streak++;}else{streak=0;if(!isMistakesMode&&!mistakesList.find(m=>m.ar===deck[idx].ar))mistakesList.push(deck[idx]);}
+  if(ok){score++;streak++;}else{streak=0;}
   inp.disabled=true;inp.className=ok?'correct':'wrong';
   const fb=document.getElementById('type-feedback');
   fb.textContent=ok?'✅ מצוין!':'❌ הנכון: '+ans;
@@ -1681,6 +1714,21 @@ function checkType(){
 function showHint(){
   const ans=getAnswer(deck[idx]);
   document.getElementById('type-input').value=ans.slice(0,Math.ceil(ans.length/3))+'...';
+}
+
+// ── Search ────────────────────────────────────────────────────
+function doSearch(q){
+  const box=document.getElementById('search-results');
+  const term=q.trim().toLowerCase().replace(/[ً-ٟ]/g,'');
+  if(!term){box.innerHTML='<div class="search-empty">התחל להקליד לחיפוש...</div>';return;}
+  const all=LISTS[listKey].words;
+  const results=all.filter(w=>{
+    const ar=w.ar.replace(/[ً-ٟ]/g,'').toLowerCase();
+    const he=w.he.toLowerCase();
+    return ar.includes(term)||he.includes(term);
+  }).slice(0,60);
+  if(!results.length){box.innerHTML='<div class="search-empty">לא נמצאו תוצאות</div>';return;}
+  box.innerHTML=results.map(w=>`<div class="search-row"><span class="search-ar">${w.ar}</span><span class="search-he">${w.he}</span></div>`).join('');
 }
 
 // ── Timer ────────────────────────────────────────────────────
@@ -1711,6 +1759,119 @@ function resetTimer(){
   document.getElementById('timer-display').textContent='30';
   document.getElementById('timer-display').classList.remove('urgent');
   document.querySelector('#timer-row .timer-btn').textContent='⏱ טיימר';
+}
+
+
+// ── Exam ─────────────────────────────────────────────────────
+let examDeck=[],examIdx=0,examScore=0,examAnswered=false,examMissed=[];
+let examTimerInterval=null,examTimerSec=0,examUseTimer=false,examSecPerQ=60;
+
+function loadExam(){
+  // Show setup screen
+  document.getElementById('exam-setup').classList.remove('hidden');
+  document.getElementById('exam-question').classList.add('hidden');
+}
+
+function toggleExamTimerInput(){
+  const on=document.getElementById('exam-timer-toggle').checked;
+  document.getElementById('exam-timer-input-row').classList.toggle('hidden',!on);
+}
+
+function startExam(){
+  const qCount=parseInt(document.getElementById('exam-q-range').value);
+  examUseTimer=document.getElementById('exam-timer-toggle').checked;
+  examSecPerQ=parseInt(document.getElementById('exam-timer-val').value)||60;
+  examDeck=shuffle(words).slice(0,Math.min(qCount,words.length));
+  examIdx=0;examScore=0;examMissed=[];
+  document.getElementById('exam-setup').classList.add('hidden');
+  document.getElementById('exam-question').classList.remove('hidden');
+  document.getElementById('exam-q-total').textContent=examDeck.length;
+  showExamQuestion();
+}
+
+function showExamQuestion(){
+  if(examIdx>=examDeck.length){showExamDone();return;}
+  clearInterval(examTimerInterval);
+  examAnswered=false;
+  const cur=examDeck[examIdx];
+  document.getElementById('exam-q-num').textContent=examIdx+1;
+  document.getElementById('exam-lang').textContent=showLang()+' — מה הפירוש?';
+  document.getElementById('exam-word').textContent=getShow(cur);
+  document.getElementById('exam-next').classList.add('hidden');
+  const wrong=shuffle(words.filter(w=>w!==cur)).slice(0,3);
+  const opts=shuffle([{text:getAnswer(cur),correct:true},...wrong.map(w=>({text:getAnswer(w),correct:false}))]);
+  const grid=document.getElementById('exam-grid');
+  grid.innerHTML='';
+  opts.forEach((opt,i)=>{
+    const b=document.createElement('button');
+    b.className='opt-btn';b.textContent=opt.text;
+    b.onclick=()=>selectExamOpt(i,opts,cur);
+    grid.appendChild(b);
+  });
+  // Timer per question
+  const timerEl=document.getElementById('exam-timer-live');
+  if(examUseTimer){
+    examTimerSec=examSecPerQ;
+    timerEl.classList.remove('hidden','urgent');
+    timerEl.textContent='⏱ '+examTimerSec;
+    examTimerInterval=setInterval(()=>{
+      examTimerSec--;
+      timerEl.textContent='⏱ '+examTimerSec;
+      if(examTimerSec<=5)timerEl.classList.add('urgent');
+      if(examTimerSec<=0){
+        clearInterval(examTimerInterval);
+        if(!examAnswered){
+          examAnswered=true;
+          examMissed.push(cur);
+          document.querySelectorAll('#exam-grid .opt-btn').forEach((b,j)=>{
+            b.disabled=true;
+            if(opts[j].correct)b.classList.add('correct');
+          });
+          document.getElementById('exam-next').classList.remove('hidden');
+        }
+      }
+    },1000);
+  } else {
+    timerEl.classList.add('hidden');
+  }
+}
+
+function selectExamOpt(i,opts,cur){
+  if(examAnswered)return;
+  clearInterval(examTimerInterval);
+  examAnswered=true;
+  const opt=opts[i];
+  if(opt.correct){examScore++;}else{examMissed.push(cur);}
+  document.querySelectorAll('#exam-grid .opt-btn').forEach((b,j)=>{
+    b.disabled=true;
+    if(opts[j].correct)b.classList.add('correct');
+    else if(j===i&&!opt.correct)b.classList.add('wrong');
+  });
+  document.getElementById('exam-next').classList.remove('hidden');
+}
+
+function nextExam(){examIdx++;showExamQuestion();}
+
+function showExamDone(){
+  clearInterval(examTimerInterval);
+  const pct=Math.round((examScore/examDeck.length)*100);
+  const stars=pct>=90?'⭐⭐⭐':pct>=70?'⭐⭐':pct>=50?'⭐':'';
+  document.getElementById('score-pct').textContent=pct+'%';
+  document.getElementById('score-stars').textContent=stars;
+  document.getElementById('score-detail').textContent=examScore+' נכון מתוך '+examDeck.length;
+  document.getElementById('score-streak-txt').textContent='';
+  const sumEl=document.getElementById('exam-summary');
+  if(examMissed.length){
+    sumEl.classList.remove('hidden');
+    sumEl.innerHTML='<div style="font-weight:700;color:#e55;margin-bottom:6px">❌ מילים שטעית:</div>'+
+      examMissed.map(w=>`<div class="exam-miss-row"><span class="exam-miss-ar">${w.ar}</span><span class="exam-miss-he">${w.he}</span></div>`).join('');
+
+  } else {
+    sumEl.classList.add('hidden');
+    sumEl.innerHTML='';
+  }
+  showScreen('score-screen');
+  if(pct>=80)launchConfetti();
 }
 
 // ── Confetti ──────────────────────────────────────────────────
@@ -1745,9 +1906,12 @@ function launchConfetti(){
 // ── Done ─────────────────────────────────────────────────────
 function showDone(){
   const pct=total>0?Math.round((score/total)*100):0;
+  const stars=pct>=90?'⭐⭐⭐':pct>=70?'⭐⭐':pct>=50?'⭐':'';
   document.getElementById('score-pct').textContent=pct+'%';
+  document.getElementById('score-stars').textContent=stars;
   document.getElementById('score-detail').textContent=score+' נכון מתוך '+total;
   document.getElementById('score-streak-txt').textContent='רצף: '+streak+' 🔥';
+  document.getElementById('exam-summary').classList.add('hidden');
   showScreen('score-screen');
   if(pct>=80)launchConfetti();
 }
