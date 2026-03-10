@@ -55,7 +55,9 @@ input{font-family:inherit}
 #q-lang,#type-lang{font-size:11px;letter-spacing:2px;color:#005f87;text-transform:uppercase;margin-bottom:8px}
 #q-word,#type-word{font-size:28px;font-weight:700;text-align:center}
 #options-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.opt-btn{background:#ffffff;border:1.5px solid #b0d4ee;color:#0d2137;border-radius:12px;padding:12px 10px;font-size:13px;font-weight:500;transition:all .15s;text-align:center;line-height:1.3}
+.opt-btn{background:#ffffff;border:1.5px solid #b0d4ee;color:#0d2137;border-radius:12px;padding:12px 10px 12px 10px;font-size:13px;font-weight:500;transition:all .15s;text-align:center;line-height:1.3;position:relative;padding-right:28px}
+.opt-num{position:absolute;top:6px;right:8px;font-size:11px;font-weight:700;color:#b0d4ee;background:none;line-height:1}
+.opt-btn.correct .opt-num,.opt-btn.wrong .opt-num{opacity:0.5}
 .opt-btn:disabled{cursor:default}
 .opt-btn.correct{background:rgba(18,184,134,0.12)!important;border-color:#12b886!important;color:#12b886!important}
 .opt-btn.wrong{background:rgba(248,113,113,0.1)!important;border-color:#f87171!important;color:#f87171!important}
@@ -86,10 +88,6 @@ input{font-family:inherit}
 #grade-filter{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;justify-content:center}
 .grade-btn{background:#ffffff;border:1.5px solid #b0d4ee;color:#5a8fa8;padding:5px 12px;border-radius:16px;font-size:12px;font-weight:600;transition:all .2s}
 .grade-btn.active{background:rgba(0,96,199,0.12);border-color:#0077a8;color:#0077a8}
-#wotd-banner{background:linear-gradient(135deg,#fff9e6,#fff3c4);border:1.5px solid #f0c040;border-radius:16px;padding:14px 18px;margin-bottom:14px;text-align:center;max-width:380px;width:100%}
-#wotd-banner .wotd-label{font-size:11px;color:#b8860b;letter-spacing:2px;font-weight:700;margin-bottom:6px}
-#wotd-banner .wotd-ar{font-size:26px;font-weight:700;color:#0d2137;direction:rtl}
-#wotd-banner .wotd-he{font-size:14px;color:#5a8fa8;margin-top:4px}
 
 /* Know/Don't-know buttons */
 #fc-know-row{display:flex;gap:10px;justify-content:center;margin-top:10px}
@@ -182,10 +180,6 @@ input{font-family:inherit}
     <button class="grade-btn" data-grade="11" onclick="handleGradeChange('11')">כיתה י"א</button>
     <button class="grade-btn" data-grade="12" onclick="handleGradeChange('12')">כיתה י"ב</button>
   </div>
-  <div id="wotd-banner" class="hidden">
-    <div class="wotd-label">🌟 מילת היום</div>
-    <div class="wotd-ar" id="wotd-ar">—</div>
-    <div class="wotd-he" id="wotd-he">—</div>
   </div>
   <div id="dir-row">
     <button class="dir-btn active" data-dir="ar" onclick="handleDirChange('ar')">ערבית ← עברית</button>
@@ -240,6 +234,7 @@ input{font-family:inherit}
       <div id="type-controls">
         <button class="btn-outline" id="hint-btn" onclick="showHint()">💡 רמז</button>
         <button class="btn-primary" id="type-submit" onclick="checkType()">בדוק ✓</button>
+        <button class="btn-outline hidden" id="count-correct-btn" onclick="countAsCorrect()" style="color:#12b886;border-color:#12b886">תחשיב כנכון ✓</button>
       </div>
     </div>
     <div id="exam-section" class="hidden">
@@ -1297,7 +1292,7 @@ const BAGRUT_WORDS=sortArabic([
   {ar:"عُنْوَان",he:"כתובת; כותרת"},
   {ar:"عِيد",he:"חג"},
   {ar:"عَيْن",he:"מינה; עין"},
-  {ar:"غَالٍ",he:"יקר"},
+
   {ar:"غَدًا",he:"מחר"},
   {ar:"غَرَامَة",he:"קנס"},
   {ar:"غُرْفَة",he:"חדר"},
@@ -1659,7 +1654,8 @@ function loadQuiz(){
   grid.innerHTML='';
   quizOptions.forEach((opt,i)=>{
     const b=document.createElement('button');
-    b.className='opt-btn';b.textContent=opt.text;
+    b.className='opt-btn';
+    b.innerHTML=`<span class="opt-num">${i+1}</span>${opt.text}`;
     b.onclick=()=>selectOption(i);
     grid.appendChild(b);
   });
@@ -1691,6 +1687,7 @@ function loadType(){
   document.getElementById('type-feedback').textContent='';
   document.getElementById('hint-btn').classList.remove('hidden');
   document.getElementById('type-submit').textContent='בדוק ✓';
+  document.getElementById('count-correct-btn').classList.add('hidden');
   setTimeout(()=>inp.focus(),50);
   updateStats();
 }
@@ -1709,6 +1706,15 @@ function checkType(){
   fb.style.color=ok?'#12b886':'#f87171';
   document.getElementById('hint-btn').classList.add('hidden');
   document.getElementById('type-submit').textContent='הבא →';
+  document.getElementById('count-correct-btn').classList.toggle('hidden', ok);
+  updateStats();
+}
+function countAsCorrect(){
+  score++;streak++;
+  document.getElementById('type-input').className='correct';
+  document.getElementById('type-feedback').textContent='✅ מצוין!';
+  document.getElementById('type-feedback').style.color='#12b886';
+  document.getElementById('count-correct-btn').classList.add('hidden');
   updateStats();
 }
 function showHint(){
@@ -1804,7 +1810,8 @@ function showExamQuestion(){
   grid.innerHTML='';
   opts.forEach((opt,i)=>{
     const b=document.createElement('button');
-    b.className='opt-btn';b.textContent=opt.text;
+    b.className='opt-btn';
+    b.innerHTML=`<span class="opt-num">${i+1}</span>${opt.text}`;
     b.onclick=()=>selectExamOpt(i,opts,cur);
     grid.appendChild(b);
   });
@@ -1938,32 +1945,59 @@ function loadFromStorage() {
   } catch(e) {}
 }
 
-// ── Word of the Day ──────────────────────────────────────────
-function showWordOfTheDay(){
-  const today=new Date().toDateString();
-  const saved=localStorage.getItem('wotd_date');
-  let wotd;
-  if(saved===today){
-    const w=JSON.parse(localStorage.getItem('wotd_word'));
-    wotd=w;
-  } else {
-    const all=BAGRUT_WORDS;
-    wotd=all[Math.floor(Math.random()*all.length)];
-    localStorage.setItem('wotd_date',today);
-    localStorage.setItem('wotd_word',JSON.stringify(wotd));
-  }
-  document.getElementById('wotd-ar').textContent=wotd.ar;
-  document.getElementById('wotd-he').textContent=wotd.he;
-  document.getElementById('wotd-banner').classList.remove('hidden');
-}
-
 // ── Init ─────────────────────────────────────────────────────
 loadFromStorage();
 words = [...LISTS[listKey].words];
 document.getElementById('word-count-header').textContent=words.length;
 document.getElementById('grade-filter').classList.remove('hidden');
-showWordOfTheDay();
 loadFlashcard();
+// ── Keyboard shortcuts ────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  // Ignore if typing in an input
+  if (e.target.tagName === 'INPUT') return;
+
+  const key = e.key;
+
+  // Quiz mode: 1-4 to select answer, Enter for next
+  if (mode === 'quiz' || mode === 'mistakes') {
+    if (['1','2','3','4'].includes(key)) {
+      const i = parseInt(key) - 1;
+      const btns = document.querySelectorAll('#options-grid .opt-btn');
+      if (btns[i] && !btns[i].disabled) btns[i].click();
+      return;
+    }
+    if (key === 'Enter' || key === ' ') {
+      e.preventDefault();
+      const nextBtn = document.querySelector('#quiz-next button');
+      if (nextBtn && !document.getElementById('quiz-next').classList.contains('hidden')) nextBtn.click();
+      return;
+    }
+  }
+
+  // Exam mode: 1-4 to select answer, Enter/Space for next
+  if (mode === 'exam') {
+    if (['1','2','3','4'].includes(key)) {
+      const i = parseInt(key) - 1;
+      const btns = document.querySelectorAll('#exam-grid .opt-btn');
+      if (btns[i] && !btns[i].disabled) btns[i].click();
+      return;
+    }
+    if (key === 'Enter' || key === ' ') {
+      e.preventDefault();
+      const nextBtn = document.querySelector('#exam-next button');
+      if (nextBtn && !document.getElementById('exam-next').classList.contains('hidden')) nextBtn.click();
+      return;
+    }
+  }
+
+  // Flashcard: Space/Enter to flip, ArrowRight for next, ArrowLeft for prev
+  if (mode === 'flashcard') {
+    if (key === ' ' || key === 'Enter') { e.preventDefault(); flipCard(); return; }
+    if (key === 'ArrowRight') { nextCard(); return; }
+    if (key === 'ArrowLeft') { prevCard(); return; }
+  }
+});
+
 </script>
 
 <script>
