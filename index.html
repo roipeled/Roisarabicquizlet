@@ -1880,7 +1880,7 @@ function updateStats(){
 
 function resetGame(newWords,clearMistakes=false){
   if(newWords)words=newWords;
-  deck=(LISTS[listKey]?.category==='adab'||LISTS[listKey]?.category==='restaurant')?shuffle(words):shuffle(words);idx=0;isFlipped=false;
+  deck=(LISTS[listKey]?.category==='adab')?[...words]:shuffle(words);idx=0;isFlipped=false;
   score=0;total=0;streak=0;streakClicks=0;
   quizAnswered=false;typeAnswered=false;
   pileKnow=0;pileDontKnow=0;updatePiles();
