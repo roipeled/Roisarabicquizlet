@@ -21,7 +21,13 @@ input{font-family:inherit}
 #header{text-align:center;margin-bottom:12px;width:100%;max-width:420px}
 #title{font-size:20px;font-weight:700;color:#005f87;letter-spacing:1px}
 #subtitle{color:#5a8fa8;font-size:12px;margin-top:2px}
-#list-selector{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;justify-content:center}
+#list-selector{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;justify-content:center;align-items:center}
+.list-category-label{width:100%;text-align:center;font-size:11px;font-weight:700;color:#5a8fa8;letter-spacing:1px;text-transform:uppercase;margin-top:4px;margin-bottom:2px}
+.list-subcategory{width:100%;background:#f5fbff;border:1.5px solid #d0e8f5;border-radius:12px;padding:8px 10px;margin-top:4px}
+.list-subcategory-label{font-size:11px;font-weight:700;color:#0077a8;margin-bottom:6px;display:flex;align-items:center;gap:4px;cursor:pointer;user-select:none}
+.list-subcategory-label:hover{color:#005f87}
+.list-subcategory-btns{display:flex;flex-wrap:wrap;gap:6px}
+.list-empty-msg{font-size:12px;color:#b0d4ee;font-style:italic}
 .list-btn{background:#ffffff;border:1.5px solid #b0d4ee;color:#5a8fa8;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;transition:all .2s}
 .list-btn.active{background:rgba(0,150,199,0.12);border-color:#0096c7;color:#0096c7}
 #mode-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;justify-content:center}
@@ -49,7 +55,7 @@ input{font-family:inherit}
 #fc-word{font-size:30px;font-weight:700;color:#0d2137;text-align:center;line-height:1.3}
 #fc-word-back{font-size:22px;font-weight:700;color:#0a7a50;text-align:center;line-height:1.3}
 #fc-hint{color:#5a8fa8;font-size:12px;margin-top:10px}
-#fc-controls{display:flex;gap:10px;justify-content:center;margin-top:14px}
+#fc-controls{display:flex;gap:10px;justify-content:center;margin-top:118px}
 #fc-counter{text-align:center;color:#5a8fa8;font-size:12px;margin-top:10px}
 .card-box{border:1.5px solid rgba(0,119,168,0.3);border-radius:18px;padding:22px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:130px;margin-bottom:14px}
 #q-lang,#type-lang{font-size:11px;letter-spacing:2px;color:#005f87;text-transform:uppercase;margin-bottom:8px}
@@ -90,7 +96,7 @@ input{font-family:inherit}
 .grade-btn.active{background:rgba(0,96,199,0.12);border-color:#0077a8;color:#0077a8}
 
 /* Know/Don't-know buttons */
-#fc-know-row{display:flex;gap:10px;justify-content:center;margin-top:10px}
+#fc-know-row{display:flex;gap:10px;justify-content:center;margin-top:114px}
 .fc-know-btn{padding:10px 28px;border-radius:30px;font-size:15px;font-weight:700;border:2px solid;transition:all .15s;min-width:110px}
 .fc-know-btn:active{transform:scale(.95)}
 #btn-know{background:rgba(18,184,134,0.12);border-color:#12b886;color:#0a7a50}
@@ -112,8 +118,7 @@ input{font-family:inherit}
 #pile-dontknow{color:#e55}
 .btn-outline:hover{border-color:#0d2137;color:#0d2137}
 /* Search */
-#search-bar{width:100%;max-width:380px;margin-bottom:8px}
-#search-input{width:100%;background:#ffffff;border:1.5px solid #b0d4ee;border-radius:24px;padding:9px 16px;font-size:14px;color:#0d2137;outline:none;transition:border-color .2s}
+#search-input{flex:1;background:#ffffff;border:1.5px solid #b0d4ee;border-radius:24px;padding:8px 14px;font-size:13px;color:#0d2137;outline:none;transition:border-color .2s}
 #search-input:focus{border-color:#0077a8}
 #search-results{width:100%;max-width:380px;background:#ffffff;border:1.5px solid #b0d4ee;border-radius:16px;max-height:260px;overflow-y:auto;margin-bottom:8px;box-shadow:0 4px 16px rgba(0,119,168,0.1)}
 .search-row{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid #e4f1fb;font-size:14px;gap:12px}
@@ -145,6 +150,27 @@ input{font-family:inherit}
 #exam-timer-live{font-size:18px;font-weight:700;color:#005f87;min-width:40px;text-align:left}
 #exam-timer-live.urgent{color:#e55;animation:pulse .5s infinite alternate}
 #score-stars{font-size:36px;margin:8px 0}
+/* List view */
+#list-toggle-row{display:flex;align-items:center;gap:8px;width:100%;margin-bottom:8px}
+#list-toggle-btn{background:#ffffff;border:1.5px solid #b0d4ee;color:#5a8fa8;padding:5px 14px;border-radius:16px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s}
+#list-toggle-btn.active{background:rgba(0,119,168,0.1);border-color:#0077a8;color:#0077a8}
+#list-view-section{width:100%;max-width:480px}
+#list-view-table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;border:1.5px solid #b0d4ee}
+#list-view-table th{background:#e4f1fb;color:#005f87;font-size:12px;font-weight:700;padding:10px 14px;text-align:center}
+#list-view-table td{padding:10px 14px;border-bottom:1px solid #e4f1fb;font-size:14px;text-align:center;vertical-align:middle}
+#list-view-table tr:last-child td{border-bottom:none}
+#list-view-table tr:hover td{background:#f5fbff}
+.lv-ar{font-size:16px;font-weight:700;color:#0d2137;direction:rtl}
+.lv-he{color:#5a8fa8;font-size:13px}
+.lv-num{color:#b0d4ee;font-size:11px;font-weight:700;width:28px}
+#list-view-search{width:100%;background:#ffffff;border:1.5px solid #b0d4ee;border-radius:24px;padding:9px 16px;font-size:14px;color:#0d2137;outline:none;margin-bottom:10px}
+#list-view-search:focus{border-color:#0077a8}
+#list-view-count{text-align:center;font-size:12px;color:#5a8fa8;margin-bottom:8px}
+#list-view-pagination{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.lv-page-btn{background:#fff;border:1.5px solid #b0d4ee;color:#5a8fa8;width:32px;height:32px;border-radius:50%;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s}
+.lv-page-btn:hover{border-color:#0077a8;color:#0077a8}
+.lv-page-btn.active{background:#0077a8;border-color:#0077a8;color:#fff}
+.lv-page-info{font-size:12px;color:#5a8fa8}
 #exam-summary{margin-top:10px;font-size:13px;color:#5a8fa8;max-height:180px;overflow-y:auto;width:100%}
 .exam-miss-row{display:flex;justify-content:space-between;padding:5px 8px;border-bottom:1px solid #e4f1fb;font-size:13px}
 .exam-miss-ar{color:#0d2137;font-weight:600}
@@ -153,6 +179,14 @@ input{font-family:inherit}
 </head>
 <body>
 <canvas id="confetti-canvas"></canvas>
+<script>
+function toggleSubcat(id){
+  const btns=document.getElementById(id+'-btns');
+  const arrow=document.getElementById(id+'-arrow');
+  const open=btns.classList.toggle('hidden');
+  arrow.textContent=open?'▶':'▼';
+}
+</script>
 
 <div id="main-ui">
   <div id="header">
@@ -160,11 +194,32 @@ input{font-family:inherit}
     <div id="subtitle">ערבית–עברית · <span id="word-count-header">0</span> מילים</div>
   </div>
   <div id="list-selector">
-    <button class="list-btn active" data-key="bagrut" onclick="handleListChange('bagrut')">אוצר מילים משרד החינוך + דן שובל (כל מה שצריך לבגרות!)</button>
-    <button class="list-btn" data-key="ansin" onclick="handleListChange('ansin')">אוצר מילים שימושי לאנסין</button>
-  </div>
-  <div id="search-bar">
-    <input type="text" id="search-input" placeholder="🔍 חפש מילה בערבית או עברית..." oninput="doSearch(this.value)">
+    <div class="list-category-label">📚 לבגרות</div>
+    <button class="list-btn active" data-key="bagrut" onclick="handleListChange('bagrut')">אוצר מילים משרד החינוך + דן שובל</button>
+    <div class="list-category-label">🗣️ מדוברת</div>
+    <div class="list-subcategory">
+      <div class="list-subcategory-label" onclick="toggleSubcat('adab')">
+        <span id="adab-arrow">▶</span> 📖 ספרות أدب
+      </div>
+      <div class="list-subcategory-btns hidden" id="adab-btns">
+        <button class="list-btn" data-key="q1" onclick="handleListChange('q1')">שאלה 1 — תמצות הסיפור</button>
+        <button class="list-btn" data-key="q2" onclick="handleListChange('q2')">שאלה 2 — הביקורת בסיפור</button>
+        <button class="list-btn" data-key="q3" onclick="handleListChange('q3')">שאלה 3 — ההבדל בין הדמויות</button>
+      </div>
+    </div>
+    <div class="list-subcategory">
+      <div class="list-subcategory-label" onclick="toggleSubcat('restaurant')">
+        <span id="restaurant-arrow">▶</span> 🍽️ במסעדה — في المطعم
+      </div>
+      <div class="list-subcategory-btns hidden" id="restaurant-btns">
+        <button class="list-btn" data-key="rest_meala" onclick="handleListChange('rest_meala')">הארוחות</button>
+        <button class="list-btn" data-key="rest_food" onclick="handleListChange('rest_food')">מאכלים</button>
+        <button class="list-btn" data-key="rest_veg" onclick="handleListChange('rest_veg')">ירקות</button>
+        <button class="list-btn" data-key="rest_fruit" onclick="handleListChange('rest_fruit')">פירות ותבלינים</button>
+        <button class="list-btn" data-key="rest_taste" onclick="handleListChange('rest_taste')">טעמים</button>
+        <button class="list-btn" data-key="rest_recipe" onclick="handleListChange('rest_recipe')">מתכון</button>
+      </div>
+    </div>
   </div>
   <div id="search-results" class="hidden"></div>
   <div id="mode-tabs">
@@ -198,6 +253,19 @@ input{font-family:inherit}
   </div>
   <div id="game-area">
     <div id="flashcard-section">
+      <div id="list-toggle-row">
+        <input type="text" id="search-input" placeholder="🔍 חפש..." oninput="doSearch(this.value)">
+        <button id="list-toggle-btn" onclick="toggleListView()">📋 רשימה</button>
+      </div>
+      <div id="list-view-section" class="hidden">
+        <input type="text" id="list-view-search" placeholder="🔍 סנן מילים..." oninput="filterListView(this.value)">
+        <div id="list-view-count"></div>
+        <table id="list-view-table">
+          <thead><tr><th class="lv-num">#</th><th>ערבית</th><th>עברית</th></tr></thead>
+          <tbody id="list-view-body"></tbody>
+        </table>
+        <div id="list-view-pagination" class="hidden"></div>
+      </div>
       <div id="fc-scene" onclick="flipCard()">
         <div id="flashcard">
           <div class="fc-face fc-front">
@@ -268,6 +336,14 @@ input{font-family:inherit}
       </div>
     </div>
     </div>
+    </div>
+    <div id="list-view-section" class="hidden">
+      <input type="text" id="list-view-search" placeholder="🔍 סנן מילים..." oninput="filterListView(this.value)">
+      <div id="list-view-count"></div>
+      <table id="list-view-table">
+        <thead><tr><th class="lv-num">#</th><th>ערבית</th><th>עברית</th></tr></thead>
+        <tbody id="list-view-body"></tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -1466,35 +1542,303 @@ const BAGRUT_WORDS=sortArabic([
   {ar:"يُونَان",he:"יוון"}
 ]);
 
-const ANSIN_WORDS=sortArabic([
-  {ar:"قِيمَة / قِيَم",he:"ערך"},
-  {ar:"نَصّ",he:"טקסט"},
-  {ar:"حَسَب النَّصّ",he:"לפי הטקסט"},
-  {ar:"جَوَاب / أجْوِبَة",he:"תשובה"},
-  {ar:"كُلَّ الأجْوِبَة صَحِيحَة",he:"כל התשובות נכונות"},
-  {ar:"ضَمِير",he:"כינוי גוף"},
-  {ar:"عَادَ إلَى",he:"חזר ל..."},
-  {ar:"عَوْدَة",he:"שיבה, חזרה"},
-  {ar:"إحْتِجَاج",he:"מחאה"},
-  {ar:"تَضَامُن",he:"סולידריות, ערבות הדדית"},
-  {ar:"دَوْلِيّ",he:"בינלאומי"},
-  {ar:"وَعَدَ",he:"הבטיח"},
-  {ar:"بَلَغَ من العُمْر",he:"הגיע לגיל..."},
-  {ar:"أقَامَ",he:"שהה, גר ב... / הקים / ערך"},
-  {ar:"عَلَى بُعْد",he:"במרחק"},
-  {ar:"مَكَان عَام / أماكِن عَامَّة",he:"מקום ציבורי"},
-  {ar:"عَام / أَعْوَام",he:"שנה"},
-  {ar:"يَجِبُ عَلَى",he:"חובה על"},
-  {ar:"إمْرَأة / نِساء",he:"אישה"},
-  {ar:"لَيْسَ",he:"אינו"},
-  {ar:"هذه لَيْسَتِ المَرَّة الأولَى",he:"זאת לא הפעם הראשונה"},
-  {ar:"خَارِج البِلَاد",he:'חו"ל'},
-  {ar:"أيّ قيمة تَنْعَكِسُ؟",he:"איזה ערך משתקף?"},
-]);
+
+const Q1_WORDS=[
+  {ar:"في هذِهِ القِصّة نَرَى مَسِيرَة اسْتِعْبَاد النَّمِر القَوِيّ",he:"בסיפור הזה אנו רואים את תהליך שיעבוד הנמר החזק והטורף"},
+  {ar:"لِلمُرَوّض – وهُوَ الزّعِيم الدِكتَاتوريّ من خِلال عَشَرَة أيَّام.",he:"של המאלף, והוא המנהיג הדיקטטורי במהלך עשרה ימים"},
+  {ar:"في البِداية كانتْ أوَامِر المُرَوِّض سَهْلَة وبَسِيطَة.",he:"בהתחלה היו פקודות המאלף קלות ופשוטות"},
+  {ar:"مَثَلًا في اليَوْم الثانِي هو أمَرَهُ أنْ يَعْتَرِفَ بِأنَّهُ جائِع",he:"לדוגמה ביום השני הוא ציווה עליו להכיר בזה שהוא רעב"},
+  {ar:"أو في اليوم الثالِث هُو أمَرَهُ أنْ يَقِفَ في القَفَص والنَّمِر وَافَق على ذلك",he:"או ביום השלישי הוא ציווה עליו לעמוד בכלוב והנמר הסכים לזה"},
+  {ar:"ولكن رُوَيْدًا رُوَيْدًا تَتَغَيَّرُ الأَوَامِر وتُصْبِحُ مُهِينَةً ومُسْتَخِفّة",he:"אבל לאט לאט השתנו הפקודות והפכו למשפילות ומזלזלות"},
+  {ar:"مَثَلًا في اليَوْم الرّابِع يَأْمُرُهُ المُرَوّض أنْ يُقَلّدَ مَوَاء القِطط, وبَعْدَ ذلك هو يَأمُرُهُ أنْ يُقَلّدَ نَهيق الحمار",he:"לדוגמה ביום הרביעי ציווה המאלף לחקות את יללת החתולים, ואחרי זה ציווה לחקות את נעירת החמור"},
+  {ar:"في اليَوم التاسِع أصْبَحَ النمِر حَيَوَانًا نباتيًّا, يَعْنِي مَحَا طبِيعَتَهُ كَحَيَوَان مُفْترس",he:"ביום התשיעי הפך הנמר לחיה צמחונית, כלומר מחק את הטבע שלו כחיה טורפת"},
+  {ar:"وفي اليوم الأخير هو أصْبَحَ مُوَاطِنًا والقَفَص مَدِينة.",he:"וביום האחרון הוא הפך אזרח ואת הכלוב עיר"}
+];
+const Q2_WORDS=[
+  {ar:"يَنْتَقِدُ زَكريا تامر في هذه القِصّة السلطات الدِيكتاتوريّة في العالَم ولكنْ خاصَّةً في العَالَم العربيّ.",he:"מבקר זכריא תאמר בסיפור הזה את השלטונות הדיקטטורים בעולם אבל במיוחד בעולם הערבי"},
+  {ar:"تَسْلُبُ السُلطَات الدِكْتَاتوريّة الحُقُوق الأسَاسِيّة مِن الناس, مَثَلًا حَقّ التَعبير وَحَقّ التَنَقُّل وَحَقّ الإبْدَاع والتَفكير وإلى آخِرِهِ",he:"השלטונות הדיקטטורים גוזלים את הזכויות היסוד מהאנשים, לדוגמה הזכות לביטוי, תנועה, יצירה, חשיבה וכו'"},
+  {ar:"هذه السلطة تَنجحُ في اسْتِعباد المُوَاطِنِينَ بِوَاسطة عِدّة طُرُق",he:"השלטון הזה מצליח בשיעבוד האזרחים באמצעות מספר דרכים"},
+  {ar:"العُنْف - أجْهِزَة الأمْن في هذه الدولة تُمَارِسُ العُنف على كلّ الّذين يُحاوِلونَ مُعَارَضَة الزّعِيم.",he:"האלימות – מנגנוני הביטחון במדינה הזאת מפעילים אלימות על כל אלו שמנסים להתנגד למנהיג"},
+  {ar:"جِهاز التربية أو كَمَا يُسَمّيهِ تامر جِهاز التَرويض يَتَعَلّم تلاميذ المدرسة أنْ يُقَدِّروا ويُجِلّوا الزعيم",he:"מנגנון החינוך, או כמו שמכנה אותו זכריא תאמר מנגנון האילוף, מלמד את תלמידי בית הספר להעריך ולהעריץ את המנהיג"},
+  {ar:"الرِقابة - في كلّ الدُول الدِكْتاتُوريّة هُناكَ جِهاز رِقابة يَفْحَصُ كلّ ما يُنشَرُ, ويَغْسِل دِماغ المُوَاطِنِينَ.",he:"הצנזורה – בכל המדינות הדיקטטוריות יש מנגנון צנזורה שבודק כל מה שמפורסם ושוטף את מוח האזרחים"}
+];
+
+const Q3_WORDS=[
+  {ar:"تَعلّمنَا قِصّة 'النمور في اليوم العاشر' لِلكاتب السوريّ زكريا تامر",he:"למדנו את הסיפור 'הנמרים ביום העשירי' מאת הסופר הסורי זכריא תאמר"},
+  {ar:"في القِصّة شَخْصِيّتانِ مَركَزيَّانِ النّمر والمُروّض",he:"בסיפור יש שתי דמויות מרכזיות: הנמר והמאלף"},
+  {ar:"يُمَثّلُ النَّمر المُوَاطِنين المَقمُوعِين في الدَولة الدِّيكتاتوريّة والمُرَوِّض يُمَثِّلُ الزّعيم الدِيكتاتوريّ",he:"הנמר מייצג את האזרחים המדוכאים במדינה הדיקטטורית והמאלף מייצג את המנהיג הדיקטטורי"},
+  {ar:"المُروّض هُوَ إنسان عَاطِل, هَدَفُهُ الوَحِيد استعباد النّمر",he:"המאלף הוא אדם רע לב, שמטרתו היחידה היא שיעבוד הנמר"},
+  {ar:"هُوَ يَعْمَل كلّ ما في وُسعهِ لِكَيْ يَجْعَلَ النّمِر ضَعيفًا ومُتَعلّقًا به",he:"הוא עושה כל מה שביכולתו כדי להפוך את הנמר לחלש ותלוי בו"},
+  {ar:"هُوَ يُرِيد أنْ يُصْبِحَ النّمر عَبْدًا يُطِيعُ أوامِرَه",he:"הוא רוצה שהנמר יהפוך לעבד שמציית לפקודותיו"},
+  {ar:"تَغَيَّرَ النّمر كثيرًا من بِداية القِصّة. في البِداية هو كان مَخلوقًا قَوِيًّا وَفَخُورًا وَمُستَقِلّا",he:"הנמר השתנה מאוד מתחילת הסיפור. בהתחלה הוא היה יצור חזק וגאה ועצמאי"},
+  {ar:"ولكن رُوَيْدًا رُويدًا مَعَ مُرور الأيّام, ومع اشتداد جوعِه, تَتَغَيّرُ شَخْصيّتُهُ وهُوَ يَفْقِدُ ثِقتَهُ بِنَفسه, وَيَنْسَى قُوّته",he:"אבל לאט לאט עם חלוף הימים ועם התחזקות הרעב שלו משתנה אופיו והוא מאבד את בטחונו העצמי ושוכח את כוחו"}
+];
+
+
+const REST_ARUCHOS=[
+  {ar:"فْطُور",he:"ארוחת בוקר"},
+  {ar:"غَدَاء",he:"ארוחת צהרים"},
+  {ar:"عَشَاء",he:"ארוחת ערב"},
+  {ar:"فِطر",he:"אכל ארוחת בוקר"},
+  {ar:"تْغَدَّى",he:"אכל ארוחת צהרים"},
+  {ar:"تْعَشَّى",he:"אכל ארוחת ערב"},
+  {ar:"طَلَب",he:"הזמין (במסעדה)"},
+  {ar:"سُفْرَجيّ",he:"מלצר"},
+  {ar:"جَرْسون",he:"מלצר (צרפתית)"},
+  {ar:"مُقَبِّلات",he:"מנות ראשונות"},
+  {ar:"تِحْلاية",he:"קינוח"},
+  {ar:"قُلْ للطَّبَّاخ إنّو الأكْل كَان زَاكِي",he:"תגיד לטבח שהאוכל היה טעים"},
+  {ar:"القَعْدة كَانت حِلْوة",he:"הישיבה הייתה נעימה"}
+];
+const REST_MAACHALIM=[
+  {ar:"لَحْمة",he:"בשר"},
+  {ar:"لَحْم مَفْرُوم",he:"בשר טחון"},
+  {ar:"جَاجة",he:"עוף"},
+  {ar:"صُدُور الجَاج",he:"חזות עוף"},
+  {ar:"جاج مْسَحّب",he:"פרגיות"},
+  {ar:"كَبَاب",he:"כבאב"},
+  {ar:"شُقَف",he:"שישליק"},
+  {ar:"كَفْتَة",he:"קציצות"},
+  {ar:"خَرُوف",he:"כבש"},
+  {ar:"سَمَكَة",he:"דג"},
+  {ar:"أجْنِحَة",he:"כנפיים"},
+  {ar:"مَقْلِيّ",he:"מטוגן"},
+  {ar:"مَشْوِيّ",he:"על האש"},
+  {ar:"طَازَة",he:"טרי"},
+  {ar:"مَحَاشِي",he:"ממולאים"},
+  {ar:"دَوَالِي",he:"עלי גפן"},
+  {ar:"شورَبَة",he:"מרק"},
+  {ar:"شورَبَة عَدَس",he:"מרק עדשים"},
+  {ar:"بازيلّا",he:"אפונה"},
+  {ar:"فاصُوليَا",he:"שעועית"},
+  {ar:"قَرْنَبيط",he:"כרובית"},
+  {ar:"جَزَر",he:"גזר"},
+  {ar:"سَلَطَة",he:"סלט"},
+  {ar:"سَلَطَة مَلْفُوف وجَزَر",he:"סלט כרוב וגזר"},
+  {ar:"بَابَا غَنوج",he:"סלט חצילים"},
+  {ar:"بيضَة",he:"ביצה"},
+  {ar:"عِجّة",he:"חביתה"},
+  {ar:"بيضَة عين",he:"ביצת עין"},
+  {ar:"بيضَة لَخ",he:"ביצה מקושקשת"},
+  {ar:"بيضَة مَسْلُوقَة",he:"ביצה קשה"},
+  {ar:"جِبْنة",he:"גבינה"},
+  {ar:"خُبْز",he:"לחם"},
+  {ar:"كْماجة",he:"פיתה"},
+  {ar:"رُزّ",he:"אורז"},
+  {ar:"بَطَاطَا",he:"תפוחי אדמה"},
+  {ar:"بَطاطا حِلْوة",he:"בטטה"},
+  {ar:"حُمُّص",he:"חומוס"},
+  {ar:"مَعْكَرونة",he:"פסטה"},
+  {ar:"شوكو سُخن",he:"שוקו חם"},
+  {ar:"زِبْدة",he:"חמאה"},
+  {ar:"بَسْكوت بِقِطَع الشوكولاتة",he:"עוגיות שוקולד ציפס"}
+];
+const REST_YERAKOT=[
+  {ar:"بَنْدورَة",he:"עגבניה"},
+  {ar:"خْيَار",he:"מלפפון"},
+  {ar:"خَسّ",he:"חסה"},
+  {ar:"بَقْدونس",he:"פטרוזיליה"},
+  {ar:"كُزْبَرا",he:"כוסברה"},
+  {ar:"فْليفْلة خَضْرَاء",he:"פלפל ירוק"},
+  {ar:"فْليفْلة حَمْراء",he:"פלפל אדום"},
+  {ar:"بَصَل",he:"בצל"},
+  {ar:"كُوسَا",he:"קישוא"},
+  {ar:"بِتِنْجَان",he:"חציל"},
+  {ar:"مَلْفُوف",he:"כרוב"},
+  {ar:"فِجل",he:"צנון"},
+  {ar:"دُرَا",he:"תירס"}
+];
+const REST_PEROT=[
+  {ar:"تُفَّاح",he:"תפוחים"},
+  {ar:"حَمْضِيَّات",he:"פירות הדר"},
+  {ar:"موز",he:"בננות"},
+  {ar:"عِنَب",he:"ענבים"},
+  {ar:"يُوسف أفَنْدِي",he:"קלמנטינה"},
+  {ar:"جريبفْروت",he:"אשכולית"},
+  {ar:"كَرَز",he:"דובדבנים"},
+  {ar:"لوز",he:"שקדים"},
+  {ar:"جوز",he:"אגוזים"},
+  {ar:"بْهَارَات",he:"תבלינים"},
+  {ar:"فِلْفِل أحْمَر",he:"פפריקה"},
+  {ar:"كُرْكُم",he:"כורכום"},
+  {ar:"قِرْفة",he:"קינמון"},
+  {ar:"حَبّة البَرَكة",he:"קצח"}
+];
+const REST_TEAMIM=[
+  {ar:"مَالح",he:"מלוח"},
+  {ar:"حِلُو",he:"מתוק"},
+  {ar:"حَرّ",he:"חריף"},
+  {ar:"حَامض",he:"חמוץ"}
+];
+const REST_MITKON=[
+  {ar:"المُكَوِّنَات",he:"החומרים, המרכיבים"},
+  {ar:"قَلَاية",he:"מחבת"},
+  {ar:"طَنْجَرَة",he:"סיר"},
+  {ar:"خَلَّاط",he:"מיקסר"},
+  {ar:"جاط",he:"קערה"},
+  {ar:"مفرمة",he:"קרש חיתוך"},
+  {ar:"فُرْن",he:"תנור"},
+  {ar:"شَوَّاية",he:"גריל"},
+  {ar:"مَعْجُون البَندورَة",he:"רסק עגבניות"},
+  {ar:"عَجِينة",he:"בצק"},
+  {ar:"فَرَد",he:"שיטח, רידד"},
+  {ar:"دَخَّل",he:"הכניס"},
+  {ar:"طَلَّع",he:"הוציא"},
+  {ar:"شَغَّل",he:"הפעיל"},
+  {ar:"طفَّى",he:"כיבה"},
+  {ar:"نار واطِئ",he:"אש נמוכה"},
+  {ar:"طَبَق",he:"מאכל, מנה"},
+  {ar:"صَحْن",he:"צלחת"},
+  {ar:"كَاس",he:"כוס"},
+  {ar:"مِعْلَقَة صْغِيرة",he:"כפית"},
+  {ar:"مِعْلَقة كْبِيرة",he:"כף"},
+  {ar:"طْحِين",he:"קמח"},
+  {ar:"زَاكِي",he:"טעים"},
+  {ar:"خَلَط",he:"ערבב"},
+  {ar:"فَرَم",he:"חתך לחתיכות קטנות"},
+  {ar:"قَطَّع",he:"חתך לחתיכות גדולות"}
+];
+
+const REST_MEALA=[
+  {ar:"فْطُور",he:"ארוחת בוקר"},
+  {ar:"غَدَاء",he:"ארוחת צהרים"},
+  {ar:"عَشَاء",he:"ארוחת ערב"},
+  {ar:"فِطر",he:"אכל ארוחת בוקר"},
+  {ar:"تْغَدَّى",he:"אכל ארוחת צהרים"},
+  {ar:"تْعَشَّى",he:"אכל ארוחת ערב"},
+  {ar:"طَلَب",he:"הזמין (במסעדה)"},
+  {ar:"سُفْرَجيّ / سُفْرَجِيّة",he:"מלצר"},
+  {ar:"جَرْسون",he:"מלצר"},
+  {ar:"مُقَبِّلات",he:"מנות ראשונות"},
+  {ar:"تِحْلاية",he:"קינוח"},
+  {ar:"قُلْ للطَّبَّاخ إنّو الأكْل كَان زَاكِي",he:"תגיד לטבח שהאוכל היה טעים"},
+  {ar:"القَعْدة كَانت حِلْوة",he:"הישיבה הייתה נעימה"}
+];
+const REST_FOOD=[
+  {ar:"لَحْمة",he:"בשר"},
+  {ar:"لَحْم مَفْرُوم",he:"בשר טחון"},
+  {ar:"جَاجة / جَاج",he:"עוף"},
+  {ar:"صُدُور الجَاج",he:"חזות עוף"},
+  {ar:"جاج مْسَحّب",he:"פרגיות"},
+  {ar:"كَبَاب",he:"כבאב"},
+  {ar:"شُقَف",he:"שישליק"},
+  {ar:"كَفْتَة",he:"קציצות"},
+  {ar:"خَرُوف",he:"כבש"},
+  {ar:"سَمَكَة / سَمَك",he:"דג"},
+  {ar:"أجْنِحَة",he:"כנפיים"},
+  {ar:"مَقْلِيّ",he:"מטוגן"},
+  {ar:"مَشْوِيّ",he:"על האש"},
+  {ar:"طَازَة",he:"טרי"},
+  {ar:"مَحَاشِي",he:"ממולאים"},
+  {ar:"دَوَالِي",he:"עלי גפן"},
+  {ar:"شورَبَة",he:"מרק"},
+  {ar:"شورَبَة عَدَس",he:"מרק עדשים"},
+  {ar:"بازيلّا",he:"אפונה"},
+  {ar:"فاصُوليَا",he:"שעועית"},
+  {ar:"قَرْنَبيط / زَهْرَة",he:"כרובית"},
+  {ar:"جَزَر",he:"גזר"},
+  {ar:"سَلَطَة / سَلَطَات",he:"סלט"},
+  {ar:"سَلَطَة مَلْفُوف وجَزَر",he:"סלט כרוב וגזר"},
+  {ar:"بَابَا غَنوج",he:"סלט חצילים"},
+  {ar:"بيضَة / بيض",he:"ביצה"},
+  {ar:"عِجّة",he:"חביתה"},
+  {ar:"بيضَة عين",he:"ביצת עין"},
+  {ar:"بيضَة لَخ",he:"ביצה מקושקשת"},
+  {ar:"بيضَة مَسْلُوقَة",he:"ביצה קשה"},
+  {ar:"جِبْنة",he:"גבינה"},
+  {ar:"خُبْز",he:"לחם"},
+  {ar:"كْماجة / كْمَاج",he:"פיתה / פיתות"},
+  {ar:"رُزّ",he:"אורז"},
+  {ar:"بَطَاطَا",he:"תפוחי אדמה"},
+  {ar:"بَطاطا حِلْوة",he:"בטטה"},
+  {ar:"حُمُّص",he:"חומוס"},
+  {ar:"مَعْكَرونة",he:"פסטה"},
+  {ar:"شوكو سُخن",he:"שוקו חם"},
+  {ar:"زِبْدة",he:"חמאה"},
+  {ar:"بَسْكوت بِقِطَع الشوكولاتة",he:"עוגיות שוקולד ציפס"}
+];
+const REST_VEG=[
+  {ar:"بَنْدورَة",he:"עגבניה"},
+  {ar:"خْيَار",he:"מלפפון"},
+  {ar:"خَسّ",he:"חסה"},
+  {ar:"بَقْدونس",he:"פטרוזיליה"},
+  {ar:"كُزْبَرا",he:"כוסברה"},
+  {ar:"فْليفْلة خَضْرَاء / حَمْراء",he:"פלפל ירוק / אדום"},
+  {ar:"بَصَل",he:"בצל"},
+  {ar:"كُوسَا",he:"קישוא"},
+  {ar:"بِتِنْجَان",he:"חציל"},
+  {ar:"مَلْفُوف",he:"כרוב"},
+  {ar:"فِجل",he:"צנון"},
+  {ar:"دُرَا",he:"תירס"}
+];
+const REST_FRUIT=[
+  {ar:"تُفَّاح",he:"תפוחים"},
+  {ar:"حَمْضِيَّات",he:"פירות הדר"},
+  {ar:"موز",he:"בננות"},
+  {ar:"عِنَب",he:"ענבים"},
+  {ar:"يُوسف أفَنْدِي / كَرمنتينَة",he:"קלמנטינה"},
+  {ar:"جريبفْروت",he:"אשכולית"},
+  {ar:"كَرَز",he:"דובדבנים"},
+  {ar:"لوز",he:"שקדים"},
+  {ar:"جوز",he:"אגוזים"},
+  {ar:"بْهَارَات / تَوَابِل",he:"תבלינים"},
+  {ar:"فِلْفِل أحْمَر",he:"פפריקה"},
+  {ar:"كُرْكُم",he:"כורכום"},
+  {ar:"قِرْفة",he:"קינמון"},
+  {ar:"حَبّة البَرَكة",he:"קצח"}
+];
+const REST_TASTE=[
+  {ar:"مَالح",he:"מלוח"},
+  {ar:"حِلُو",he:"מתוק"},
+  {ar:"حَرّ",he:"חריף"},
+  {ar:"حَامض",he:"חמוץ"}
+];
+const REST_RECIPE=[
+  {ar:"المُكَوِّنَات",he:"החומרים, המרכיבים"},
+  {ar:"قَلَاية",he:"מחבת"},
+  {ar:"طَنْجَرَة / طَنَاجِر",he:"סיר"},
+  {ar:"خَلَّاط",he:"מיקסר"},
+  {ar:"جاط",he:"קערה"},
+  {ar:"مفرمة",he:"קרש חיתוך"},
+  {ar:"فُرْن",he:"תנור"},
+  {ar:"شَوَّاية",he:"גריל"},
+  {ar:"مَعْجُون البَندورَة / الطَّماطِم",he:"רסק עגבניות"},
+  {ar:"عَجِينة",he:"בצק"},
+  {ar:"فَرَد",he:"שיטח, רידד (בצק)"},
+  {ar:"دَخَّل",he:"הכניס"},
+  {ar:"طَلَّع",he:"הוציא"},
+  {ar:"شَغَّل",he:"הפעיל"},
+  {ar:"طفَّى",he:"כיבה"},
+  {ar:"نار واطِئ",he:"אש נמוכה"},
+  {ar:"طَبَق / أطبَاق",he:"מאכל, מנה"},
+  {ar:"صَحْن / صْحُون",he:"צלחת"},
+  {ar:"كَاس / كَاسات",he:"כוס"},
+  {ar:"مِعْلَقَة صْغِيرة",he:"כפית"},
+  {ar:"مِعْلَقة كْبِيرة",he:"כף"},
+  {ar:"طْحِين",he:"קמח"},
+  {ar:"زَاكِي",he:"טעים"},
+  {ar:"خَلَط",he:"ערבב"},
+  {ar:"فَرَم",he:"חתך לחתיכות קטנות"},
+  {ar:"قَطَّع",he:"חתך לחתיכות גדולות"}
+];
 
 const LISTS={
-  bagrut:{name:"אוצר מילים משרד החינוך + דן שובל (כל מה שצריך לבגרות!)",words:BAGRUT_WORDS},
-  ansin:{name:"אוצר מילים שימושי לאנסין",words:ANSIN_WORDS},
+  bagrut:{name:"אוצר מילים משרד החינוך + דן שובל (כל מה שצריך לבגרות!)",words:BAGRUT_WORDS,category:"bagrut"},
+  q1:{name:"שאלה 1 — תמצות הסיפור",words:Q1_WORDS,category:"adab"},
+  q2:{name:"שאלה 2 — הביקורת בסיפור",words:Q2_WORDS,category:"adab"},
+  q3:{name:"שאלה 3 — ההבדל בין הדמויות",words:Q3_WORDS,category:"adab"},
+  rest_aruchos:{name:"הארוחות",words:REST_ARUCHOS,category:"restaurant"},
+  rest_maachalim:{name:"מאכלים",words:REST_MAACHALIM,category:"restaurant"},
+  rest_yerakot:{name:"ירקות",words:REST_YERAKOT,category:"restaurant"},
+  rest_perot:{name:"פירות ותבלינים",words:REST_PEROT,category:"restaurant"},
+  rest_teamim:{name:"טעמים",words:REST_TEAMIM,category:"restaurant"},
+  rest_mitkon:{name:"מתכון — כלים ופעלים",words:REST_MITKON,category:"restaurant"},
+  rest_meala:{name:"הארוחות",words:REST_MEALA,category:"restaurant"},
+  rest_food:{name:"מאכלים",words:REST_FOOD,category:"restaurant"},
+  rest_veg:{name:"ירקות خُضْرَة",words:REST_VEG,category:"restaurant"},
+  rest_fruit:{name:"פירות فَوَاكِه",words:REST_FRUIT,category:"restaurant"},
+  rest_taste:{name:"טעמים",words:REST_TASTE,category:"restaurant"},
+  rest_recipe:{name:"מתכון وَصْفة",words:REST_RECIPE,category:"restaurant"},
 };
 
 // ── Grade ranges (indices into sorted BAGRUT_WORDS) ─────────────────────────
@@ -1536,7 +1880,7 @@ function updateStats(){
 
 function resetGame(newWords,clearMistakes=false){
   if(newWords)words=newWords;
-  deck=shuffle(words);idx=0;isFlipped=false;
+  deck=(LISTS[listKey]?.category==='adab'||LISTS[listKey]?.category==='restaurant')?shuffle(words):shuffle(words);idx=0;isFlipped=false;
   score=0;total=0;streak=0;streakClicks=0;
   quizAnswered=false;typeAnswered=false;
   pileKnow=0;pileDontKnow=0;updatePiles();
@@ -1546,7 +1890,7 @@ function resetGame(newWords,clearMistakes=false){
 }
 
 function showSection(id){
-  ['flashcard-section','quiz-section','type-section','exam-section'].forEach(s=>
+  ['flashcard-section','quiz-section','type-section','exam-section','list-view-section'].forEach(s=>
     document.getElementById(s).classList.toggle('hidden',s!==id));
 }
 function showScreen(id){
@@ -1591,6 +1935,7 @@ function handleGradeChange(g){
 function loadCurrentMode(){
   showScreen('main-ui');
   if(mode==='flashcard'){showSection('flashcard-section');loadFlashcard();}
+
   else if(mode==='quiz'){showSection('quiz-section');loadQuiz();}
   else if(mode==='exam'){showSection('exam-section');loadExam();}
   else{showSection('type-section');loadType();}
@@ -1720,6 +2065,69 @@ function countAsCorrect(){
 function showHint(){
   const ans=getAnswer(deck[idx]);
   document.getElementById('type-input').value=ans.slice(0,Math.ceil(ans.length/3))+'...';
+}
+
+// ── List View ─────────────────────────────────────────────────
+let listViewOpen=false;
+function toggleListView(){
+  listViewOpen=!listViewOpen;
+  const btn=document.getElementById('list-toggle-btn');
+  const sec=document.getElementById('list-view-section');
+  btn.textContent=listViewOpen?'✕ סגור רשימה':'📋 הצג כרשימה';
+  btn.classList.toggle('active',listViewOpen);
+  sec.classList.toggle('hidden',!listViewOpen);
+  if(listViewOpen)loadListView();
+}
+let listViewData=[];
+const LV_PAGE_SIZE=50;
+let listViewPage=0,listViewFiltered=[];
+function loadListView(){
+  listViewData=words;
+  listViewFiltered=listViewData;
+  listViewPage=0;
+  document.getElementById('list-view-search').value='';
+  renderListView();
+}
+function renderListView(){
+  const data=listViewFiltered;
+  const total=data.length;
+  const pages=Math.ceil(total/LV_PAGE_SIZE);
+  const start=listViewPage*LV_PAGE_SIZE;
+  const slice=data.slice(start,start+LV_PAGE_SIZE);
+  const body=document.getElementById('list-view-body');
+  document.getElementById('list-view-count').textContent=
+    total+' מילים'+(pages>1?' · עמוד '+(listViewPage+1)+' מתוך '+pages:'');
+  body.innerHTML=slice.map((w,i)=>`
+    <tr>
+      <td class="lv-num">${start+i+1}</td>
+      <td class="lv-ar">${w.ar}</td>
+      <td class="lv-he">${w.he}</td>
+    </tr>`).join('');
+  // Pagination
+  const pg=document.getElementById('list-view-pagination');
+  if(pages<=1){pg.classList.add('hidden');return;}
+  pg.classList.remove('hidden');
+  let html='';
+  if(listViewPage>0) html+=`<button class="lv-page-btn" onclick="goLvPage(${listViewPage-1})">‹</button>`;
+  const from=Math.max(0,listViewPage-2), to=Math.min(pages-1,listViewPage+2);
+  for(let i=from;i<=to;i++)
+    html+=`<button class="lv-page-btn${i===listViewPage?' active':''}" onclick="goLvPage(${i})">${i+1}</button>`;
+  if(listViewPage<pages-1) html+=`<button class="lv-page-btn" onclick="goLvPage(${listViewPage+1})">›</button>`;
+  pg.innerHTML=html;
+}
+function goLvPage(p){
+  listViewPage=p;
+  renderListView();
+  document.getElementById('list-view-section').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function filterListView(q){
+  const term=q.trim().toLowerCase().replace(/[ً-ٟ]/g,'');
+  listViewFiltered=!term?listViewData:listViewData.filter(w=>{
+    const ar=w.ar.replace(/[ً-ٟ]/g,'').toLowerCase();
+    return ar.includes(term)||w.he.toLowerCase().includes(term);
+  });
+  listViewPage=0;
+  renderListView();
 }
 
 // ── Search ────────────────────────────────────────────────────
@@ -1932,16 +2340,13 @@ function handleStreakClick(){
 function saveToStorage() {
   try {
     localStorage.setItem('vocab_bagrut', JSON.stringify(LISTS.bagrut.words));
-    localStorage.setItem('vocab_ansin', JSON.stringify(LISTS.ansin.words));
   } catch(e) {}
 }
 
 function loadFromStorage() {
   try {
     const b = localStorage.getItem('vocab_bagrut');
-    const a = localStorage.getItem('vocab_ansin');
     if (b) LISTS.bagrut.words = JSON.parse(b);
-    if (a) LISTS.ansin.words = JSON.parse(a);
   } catch(e) {}
 }
 
