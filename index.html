@@ -166,6 +166,9 @@ input{font-family:inherit}
 #list-view-search{width:100%;background:#ffffff;border:1.5px solid #b0d4ee;border-radius:24px;padding:9px 16px;font-size:14px;color:#0d2137;outline:none;margin-bottom:10px}
 #list-view-search:focus{border-color:#0077a8}
 #list-view-count{text-align:center;font-size:12px;color:#5a8fa8;margin-bottom:8px}
+#list-export-row{display:flex;justify-content:flex-end;margin-bottom:8px}
+#list-export-btn{background:#fff;border:1.5px solid #b0d4ee;color:#5a8fa8;padding:5px 14px;border-radius:16px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px}
+#list-export-btn:hover{border-color:#0077a8;color:#0077a8}
 #list-view-pagination{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap}
 .lv-page-btn{background:#fff;border:1.5px solid #b0d4ee;color:#5a8fa8;width:32px;height:32px;border-radius:50%;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s}
 .lv-page-btn:hover{border-color:#0077a8;color:#0077a8}
@@ -218,6 +221,8 @@ function toggleSubcat(id){
         <button class="list-btn" data-key="rest_fruit" onclick="handleListChange('rest_fruit')">פירות ותבלינים</button>
         <button class="list-btn" data-key="rest_taste" onclick="handleListChange('rest_taste')">טעמים</button>
         <button class="list-btn" data-key="rest_recipe" onclick="handleListChange('rest_recipe')">מתכון</button>
+        <button class="list-btn" data-key="cheesecake_ing" onclick="handleListChange('cheesecake_ing')">🧀 עוגת גבינה — מצרכים</button>
+        <button class="list-btn" data-key="cheesecake_steps" onclick="handleListChange('cheesecake_steps')">🧀 עוגת גבינה — שלבי עבודה</button>
       </div>
     </div>
   </div>
@@ -258,6 +263,7 @@ function toggleSubcat(id){
         <button id="list-toggle-btn" onclick="toggleListView()">📋 רשימה</button>
       </div>
       <div id="list-view-section" class="hidden">
+        <div id="list-export-row"><button id="list-export-btn" onclick="exportToWord()">📄 ייצוא ל-Word</button></div>
         <input type="text" id="list-view-search" placeholder="🔍 סנן מילים..." oninput="filterListView(this.value)">
         <div id="list-view-count"></div>
         <table id="list-view-table">
@@ -284,8 +290,8 @@ function toggleSubcat(id){
         <button class="fc-know-btn" id="btn-know" onclick="markCard(true)">✓ יודע</button>
       </div>
       <div id="fc-controls">
-        <button class="btn-outline" onclick="prevCard()">← הקודם</button>
-        <button class="btn-primary" onclick="nextCard()">הבא →</button>
+        <button class="btn-outline" onclick="nextCard()">← הקודם</button>
+        <button class="btn-primary" onclick="prevCard()">הבא →</button>
       </div>
       <div id="fc-piles"><span id="pile-know">✓ 0</span> · <span id="pile-dontknow">✗ 0</span></div>
       <div id="fc-counter">1 / 1</div>
@@ -1544,7 +1550,7 @@ const BAGRUT_WORDS=sortArabic([
 
 
 const Q1_WORDS=[
-  {ar:"في هذِهِ القِصّة نَرَى مَسِيرَة اسْتِعْبَاد النَّمِر القَوِيّ والمُفْتَرِس",he:"בסיפור הזה אנו רואים את תהליך שיעבוד הנמר החזק והטורף"},
+  {ar:"في هذِهِ القِصّة نَرَى مَسِيرَة اسْتِعْبَاد النَّمِر القَوِيّ",he:"בסיפור הזה אנו רואים את תהליך שיעבוד הנמר החזק והטורף"},
   {ar:"لِلمُرَوّض – وهُوَ الزّعِيم الدِكتَاتوريّ من خِلال عَشَرَة أيَّام.",he:"של המאלף, והוא המנהיג הדיקטטורי במהלך עשרה ימים"},
   {ar:"في البِداية كانتْ أوَامِر المُرَوِّض سَهْلَة وبَسِيطَة.",he:"בהתחלה היו פקודות המאלף קלות ופשוטות"},
   {ar:"مَثَلًا في اليَوْم الثانِي هو أمَرَهُ أنْ يَعْتَرِفَ بِأنَّهُ جائِع",he:"לדוגמה ביום השני הוא ציווה עליו להכיר בזה שהוא רעב"},
@@ -1822,11 +1828,33 @@ const REST_RECIPE=[
   {ar:"قَطَّع",he:"חתך לחתיכות גדולות"}
 ];
 
+const CHEESECAKE_ING=[
+  {ar:"750 غْرَام جِبْنة (9% بالمِئة)",he:"750 גרם גבינה 9 אחוז"},
+  {ar:"عُلْبة كْريمة حامضَة",he:"קופסת שמנת חמוצה"},
+  {ar:"عُلْبة كْريمة حِلُوة",he:"קופסת שמנת מתוקה"},
+  {ar:"6 بيض",he:"6 ביצים"},
+  {ar:"نُص كَاس طْحِين",he:"חצי כוס קמח"},
+  {ar:"كاس سُكر",he:"כוס סוכר"},
+  {ar:"بودينغ فانيلا",he:"פודינג וניל"},
+  {ar:"مَرجَرين",he:"מרגרינה"},
+  {ar:"نص كاس نَشا الدرة",he:"חצי כוס קורנפלור"}
+];
+const CHEESECAKE_STEPS=[
+  {ar:"بِنحطّ في جَاط الجِبنة مع الكْريمة الحِلْوة والكْريمَة الحَامِضَة ونُص كاس سُكَّر وبْنُخلُطْهم مَعَ بَعْض",he:"נשים בקערה את הגבינה עם השמנת החמוצה והשמנת המתוקה וחצי כוס סוכר ונערבב ביחד"},
+  {ar:"بَعْدين نِفْصِل بَياض البيض عَنِ الصفَار",he:"אחכ נפריד את החלבון של הביצים מהחלמון"},
+  {ar:"بِنْضِيف الصَّفَار عَلَى خَليط الجِبْنة وُبِنْضِيف كَمَان البودينغ والنَشَا ونُخْلطْهم مَعَ بَعْض",he:"נוסיף את הצהוב לתערובת הגבינה ונוסיף גם את הפודינג והקורנפלור ונערבב ביחד"},
+  {ar:"بنُخْلط بِالخَلّاط بَيَاض البيض وبنْضِيف نُص كَاس سُكَّر بِالتَّدْريج",he:"נערבב במיקסר את החלבון ונוסיף חצי כוס סוכר בהדרגה"},
+  {ar:"بَعْدين بِنْضيف مَخْلوط بَياض البيض لجَاط الجِبْنة وُبْنخْلطْهم مَع بَعْض",he:"אחר כך נוסיף את תערובת החלמון לקערת הגבינה ונערבב ביחד"},
+  {ar:"بِنْصُبّ الخَليط للقَالِب وبِندَخِّل عَلَى الفُرن لَمُدّة نص ساعَة – وهذا هُو الكَعْكة جَاهْزة",he:"ניצוק את התערובת לתבנית ונכניס לתנור למשך חצי שעה — וזהו העוגה מוכנה"}
+];
+
 const LISTS={
   bagrut:{name:"אוצר מילים משרד החינוך + דן שובל (כל מה שצריך לבגרות!)",words:BAGRUT_WORDS,category:"bagrut"},
   q1:{name:"שאלה 1 — תמצות הסיפור",words:Q1_WORDS,category:"adab"},
   q2:{name:"שאלה 2 — הביקורת בסיפור",words:Q2_WORDS,category:"adab"},
   q3:{name:"שאלה 3 — ההבדל בין הדמויות",words:Q3_WORDS,category:"adab"},
+  cheesecake_ing:{name:"מתכון עוגת גבינה — מצרכים",words:CHEESECAKE_ING,category:"restaurant"},
+  cheesecake_steps:{name:"מתכון עוגת גבינה — שלבי עבודה",words:CHEESECAKE_STEPS,category:"restaurant"},
   rest_aruchos:{name:"הארוחות",words:REST_ARUCHOS,category:"restaurant"},
   rest_maachalim:{name:"מאכלים",words:REST_MAACHALIM,category:"restaurant"},
   rest_yerakot:{name:"ירקות",words:REST_YERAKOT,category:"restaurant"},
@@ -1880,7 +1908,8 @@ function updateStats(){
 
 function resetGame(newWords,clearMistakes=false){
   if(newWords)words=newWords;
-  deck=(LISTS[listKey]?.category==='adab')?[...words]:shuffle(words);idx=0;isFlipped=false;
+  const noShuffle=LISTS[listKey]?.category==='adab'||listKey==='cheesecake_ing'||listKey==='cheesecake_steps';
+  deck=noShuffle?[...words]:shuffle(words);idx=0;isFlipped=false;
   score=0;total=0;streak=0;streakClicks=0;
   quizAnswered=false;typeAnswered=false;
   pileKnow=0;pileDontKnow=0;updatePiles();
@@ -2128,6 +2157,40 @@ function filterListView(q){
   });
   listViewPage=0;
   renderListView();
+}
+
+// ── Export to Word ────────────────────────────────────────────
+function exportToWord(){
+  const name=LISTS[listKey]?.name||'רשימת מילים';
+  const data=listViewFiltered||listViewData;
+  const rows=data.map((w,i)=>`
+    <tr>
+      <td style="width:30px;color:#999;font-size:11px;text-align:center">${i+1}</td>
+      <td style="font-size:15px;font-weight:bold;direction:rtl;padding:6px 10px">${w.ar}</td>
+      <td style="font-size:14px;direction:rtl;padding:6px 10px;color:#333">${w.he}</td>
+    </tr>`).join('');
+  const html=`
+    <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+    <head><meta charset="UTF-8"><title>${name}</title>
+    <style>
+      body{font-family:Arial,sans-serif;direction:rtl}
+      h2{color:#005f87;border-bottom:2px solid #b0d4ee;padding-bottom:6px}
+      table{border-collapse:collapse;width:100%}
+      td,th{border:1px solid #d0e8f5;padding:6px 10px}
+      th{background:#e4f1fb;color:#005f87;font-size:12px}
+    </style></head>
+    <body>
+      <h2>${name}</h2>
+      <table>
+        <thead><tr><th>#</th><th>ערבית</th><th>עברית</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </body></html>`;
+  const blob=new Blob(['﻿'+html],{type:'application/msword'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=(name+'.doc').replace(/[\/:*?"<>|]/g,'_');
+  a.click();
 }
 
 // ── Search ────────────────────────────────────────────────────
@@ -2398,8 +2461,8 @@ document.addEventListener('keydown', e => {
   // Flashcard: Space/Enter to flip, ArrowRight for next, ArrowLeft for prev
   if (mode === 'flashcard') {
     if (key === ' ' || key === 'Enter') { e.preventDefault(); flipCard(); return; }
-    if (key === 'ArrowRight') { nextCard(); return; }
-    if (key === 'ArrowLeft') { prevCard(); return; }
+    if (key === 'ArrowRight') { prevCard(); return; }
+    if (key === 'ArrowLeft') { nextCard(); return; }
   }
 });
 
