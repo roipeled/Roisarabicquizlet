@@ -1,2479 +1,2452 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>אוצר מילים משרד החינוך + דן שובל (כל מה שצריך לבגרות!)</title>
-<link rel="manifest" href="manifest.json">
-<link rel="icon" href="favicon.ico">
-<meta name="theme-color" content="#005f87">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="מילון ערבית">
-<link rel="apple-touch-icon" href="icon-192.png">
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#0f172a" />
+<title>קוויזלטים לבגרות – עברית ⇄ ערבית</title>
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="icon-192.png" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#f0f7ff;color:#0d2137;font-family:'Segoe UI',Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px 16px;direction:rtl;background-image:radial-gradient(ellipse at 20% 20%,rgba(0,180,216,0.06) 0%,transparent 60%)}
-button{font-family:inherit;cursor:pointer}
-input{font-family:inherit}
-.hidden{display:none!important}
-#header{text-align:center;margin-bottom:12px;width:100%;max-width:420px}
-#title{font-size:20px;font-weight:700;color:#005f87;letter-spacing:1px}
-#subtitle{color:#5a8fa8;font-size:12px;margin-top:2px}
-#list-selector{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;justify-content:center;align-items:center}
-.list-category-label{width:100%;text-align:center;font-size:11px;font-weight:700;color:#5a8fa8;letter-spacing:1px;text-transform:uppercase;margin-top:4px;margin-bottom:2px}
-.list-subcategory{width:100%;background:#f5fbff;border:1.5px solid #d0e8f5;border-radius:12px;padding:8px 10px;margin-top:4px}
-.list-subcategory-label{font-size:11px;font-weight:700;color:#0077a8;margin-bottom:6px;display:flex;align-items:center;gap:4px;cursor:pointer;user-select:none}
-.list-subcategory-label:hover{color:#005f87}
-.list-subcategory-btns{display:flex;flex-wrap:wrap;gap:6px}
-.list-empty-msg{font-size:12px;color:#b0d4ee;font-style:italic}
-.list-btn{background:#ffffff;border:1.5px solid #b0d4ee;color:#5a8fa8;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;transition:all .2s}
-.list-btn.active{background:rgba(0,150,199,0.12);border-color:#0096c7;color:#0096c7}
-#mode-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;justify-content:center}
-.mode-btn{background:#ffffff;border:1.5px solid #b0d4ee;color:#5a8fa8;padding:8px 16px;border-radius:30px;font-size:13px;font-weight:600;transition:all .2s}
-.mode-btn.active{border-color:#005f87;color:#005f87;background:rgba(0,119,168,0.08)}
-#dir-row{display:flex;background:#ffffff;border-radius:20px;padding:3px;gap:2px;margin-bottom:14px}
-.dir-btn{padding:6px 14px;border-radius:17px;border:none;background:transparent;color:#5a8fa8;font-size:12px}
-.dir-btn.active{background:#005f87;color:#0d1117;font-weight:700}
-#stats-row{display:flex;gap:12px;margin-bottom:12px}
-.stat{background:#ffffff;border:1px solid #b0d4ee;border-radius:10px;padding:7px 14px;text-align:center;min-width:60px}
-.stat-val{font-size:20px;font-weight:700}
-.stat-label{font-size:11px;color:#5a8fa8}
-#streak-stat{cursor:pointer;user-select:none}
-#progress-bar{width:100%;max-width:380px;height:4px;background:#e4f1fb;border-radius:2px;margin-bottom:16px;overflow:hidden}
-#progress-fill{height:100%;background:linear-gradient(90deg,#005f87,#0096c7);border-radius:2px;transition:width .4s;width:0%}
-#game-area{width:100%;max-width:380px}
-#fc-scene{width:100%;min-height:160px;perspective:900px;cursor:pointer;margin-bottom:2px}
-#flashcard{width:100%;min-height:160px;position:relative;transform-style:preserve-3d;transition:transform .28s cubic-bezier(.4,0,.2,1);border-radius:18px}
-#flashcard.flipped{transform:rotateY(180deg)}
-.fc-face{position:absolute;width:100%;min-height:160px;border-radius:18px;padding:22px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1.5px solid rgba(0,119,168,0.3)}
-.fc-front{background:linear-gradient(135deg,#ffffff,#e8f4fc)}
-.fc-back{background:linear-gradient(135deg,#e0f5ef,#c8f0e4);border-color:rgba(18,184,134,0.35);transform:rotateY(180deg)}
-#fc-lang{font-size:11px;letter-spacing:2px;color:#5a8fa8;text-transform:uppercase;margin-bottom:10px}
-#fc-lang-back{font-size:11px;letter-spacing:2px;color:#12b886;text-transform:uppercase;margin-bottom:10px}
-#fc-word{font-size:30px;font-weight:700;color:#0d2137;text-align:center;line-height:1.3}
-#fc-word-back{font-size:22px;font-weight:700;color:#0a7a50;text-align:center;line-height:1.3}
-#fc-hint{color:#5a8fa8;font-size:12px;margin-top:10px}
-#fc-controls{display:flex;gap:10px;justify-content:center;margin-top:118px}
-#fc-counter{text-align:center;color:#5a8fa8;font-size:12px;margin-top:10px}
-.card-box{border:1.5px solid rgba(0,119,168,0.3);border-radius:18px;padding:22px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:130px;margin-bottom:14px}
-#q-lang,#type-lang{font-size:11px;letter-spacing:2px;color:#005f87;text-transform:uppercase;margin-bottom:8px}
-#q-word,#type-word{font-size:28px;font-weight:700;text-align:center}
-#options-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.opt-btn{background:#ffffff;border:1.5px solid #b0d4ee;color:#0d2137;border-radius:12px;padding:12px 10px 12px 10px;font-size:13px;font-weight:500;transition:all .15s;text-align:center;line-height:1.3;position:relative;padding-right:28px}
-.opt-num{position:absolute;top:6px;right:8px;font-size:11px;font-weight:700;color:#b0d4ee;background:none;line-height:1}
-.opt-btn.correct .opt-num,.opt-btn.wrong .opt-num{opacity:0.5}
-.opt-btn:disabled{cursor:default}
-.opt-btn.correct{background:rgba(18,184,134,0.12)!important;border-color:#12b886!important;color:#12b886!important}
-.opt-btn.wrong{background:rgba(248,113,113,0.1)!important;border-color:#f87171!important;color:#f87171!important}
-#quiz-next{display:flex;justify-content:center;margin-top:14px}
-#type-input{width:100%;border:1.5px solid #b0d4ee;border-radius:12px;padding:11px 14px;font-size:14px;text-align:center;margin-bottom:10px;outline:none;color:#0d2137;transition:border-color .2s;background:#e4f1fb}
-#type-input.correct{border-color:#12b886;background:rgba(18,184,134,0.07)}
-#type-input.wrong{border-color:#f87171;background:rgba(248,113,113,0.07)}
-#type-feedback{text-align:center;margin-bottom:10px;font-weight:600;font-size:14px;min-height:22px}
-#type-controls{display:flex;gap:10px;justify-content:center}
-#score-screen{text-align:center;padding:32px;background:#ffffff;border-radius:24px;border:1.5px solid rgba(0,119,168,0.3);max-width:300px}
-#score-pct{font-size:44px;font-weight:700;color:#005f87;margin-bottom:4px}
+  :root {
+    --bg: #0f172a;
+    --bg2: #1e293b;
+    --card: #ffffff;
+    --card-bg-dark: #334155;
+    --text: #f1f5f9;
+    --text-dark: #0f172a;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent2: #a78bfa;
+    --good: #22c55e;
+    --bad: #ef4444;
+    --warning: #f59e0b;
+    --border: #334155;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans Hebrew", "Noto Sans Arabic", "Arial", sans-serif;
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    color: var(--text);
+    overflow-x: hidden;
+    overscroll-behavior: none;
+    touch-action: manipulation;
+  }
+  button { font-family: inherit; cursor: pointer; border: none; }
+  input, select, textarea { font-family: inherit; }
 
+  #app {
+    max-width: 600px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+  }
 
+  /* Top bar */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 4px 16px;
+    gap: 8px;
+  }
+  .topbar h1 {
+    margin: 0;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .icon-btn {
+    background: rgba(255,255,255,0.06);
+    color: var(--text);
+    border-radius: 10px;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    transition: background .15s;
+  }
+  .icon-btn:hover, .icon-btn:active { background: rgba(255,255,255,0.14); }
 
+  /* Direction toggle */
+  .dir-toggle {
+    display: flex;
+    background: rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 12px;
+  }
+  .dir-toggle button {
+    flex: 1;
+    padding: 10px 8px;
+    background: transparent;
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 8px;
+    transition: all .15s;
+  }
+  .dir-toggle button.active {
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    color: #fff;
+  }
 
+  /* Deck selector */
+  .deck-row {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.04);
+    padding: 10px 12px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+  .deck-row select {
+    flex: 1;
+    background: transparent;
+    color: var(--text);
+    border: none;
+    font-size: 15px;
+    outline: none;
+    padding: 4px;
+  }
+  .deck-row select option { background: var(--bg2); color: var(--text); }
+  .deck-count { color: var(--muted); font-size: 13px; white-space: nowrap; }
 
+  /* Mode tabs */
+  .modes {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+  .mode-btn {
+    padding: 8px 2px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 600;
+    transition: all .15s;
+    border: 2px solid transparent;
+  }
+  .mode-btn.active {
+    background: rgba(56,189,248,0.12);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .mode-btn .emoji { display: block; font-size: 18px; margin-bottom: 3px; }
 
+  /* Filter row */
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .filter-btn {
+    flex: 1;
+    padding: 10px 8px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    border: 2px solid transparent;
+    transition: all .15s;
+  }
+  .filter-btn.active {
+    background: rgba(251,146,60,0.14);
+    border-color: #fb923c;
+    color: #fdba74;
+  }
+  .filter-btn.all.active {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.25);
+    color: var(--text);
+  }
+  .filter-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .filter-btn .count {
+    display: inline-block;
+    background: rgba(0,0,0,0.25);
+    padding: 1px 8px;
+    border-radius: 10px;
+    margin-inline-start: 6px;
+    font-size: 12px;
+  }
+  .filter-row .reset-hard {
+    background: transparent;
+    color: var(--muted);
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 18px;
+    align-self: center;
+  }
+  .filter-row .reset-hard:hover { color: var(--bad); }
 
+  /* Screen container */
+  .screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn .2s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
+  /* ---------- FLASHCARD ---------- */
+  .card-wrap {
+    perspective: 1200px;
+    flex: 1;
+    min-height: 260px;
+    display: flex;
+    align-items: stretch;
+    margin-bottom: 12px;
+  }
+  .card {
+    width: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform .55s cubic-bezier(.2,.8,.2,1);
+  }
+  .card.flipped { transform: rotateY(180deg); }
+  .card .face {
+    position: absolute; inset: 0;
+    background: var(--card);
+    color: var(--text-dark);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    overflow: auto;
+  }
+  .card .back { transform: rotateY(180deg); background: #fef3c7; }
+  .card .word {
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.3;
+    word-break: break-word;
+  }
+  .card .word.ar { font-family: "Noto Sans Arabic", "Cairo", "Tajawal", sans-serif; font-size: 40px; font-weight: 600; }
+  .card .hint { color: #64748b; font-size: 12px; margin-top: 12px; }
+  .card .lang-label {
+    position: absolute; top: 12px; inset-inline-start: 16px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: 1px;
+  }
 
+  .flash-progress {
+    color: var(--muted); text-align: center; font-size: 14px; margin-bottom: 8px;
+  }
+  .flash-progress .bar {
+    height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; margin-top: 6px; overflow: hidden;
+  }
+  .flash-progress .bar .fill {
+    height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width .25s;
+  }
 
+  .flash-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .btn-know, .btn-dunno {
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    transition: transform .1s, filter .15s;
+  }
+  .btn-know { background: var(--good); }
+  .btn-dunno { background: var(--bad); }
+  .btn-know:active, .btn-dunno:active { transform: scale(0.97); }
+  .flash-nav {
+    display: flex; justify-content: space-between; gap: 8px; margin-top: 8px;
+  }
+  .flash-nav button {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.08);
+    color: var(--text);
+    font-size: 14px;
+  }
 
+  /* ---------- MATCH ---------- */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    flex: 1;
+  }
+  .match-item {
+    min-height: 60px;
+    padding: 10px 8px;
+    border-radius: 12px;
+    background: var(--card);
+    color: var(--text-dark);
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.3;
+    cursor: pointer;
+    transition: all .15s;
+    border: 2px solid transparent;
+    word-break: break-word;
+  }
+  .match-item.ar { font-family: "Noto Sans Arabic", "Cairo", sans-serif; font-size: 18px; font-weight: 600; }
+  .match-item.selected { border-color: var(--accent); background: #e0f2fe; }
+  .match-item.matched { opacity: 0; pointer-events: none; transform: scale(0.85); }
+  .match-item.wrong { border-color: var(--bad); background: #fee2e2; animation: shake .3s; }
+  @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
 
-.btn-primary{background:linear-gradient(135deg,#005f87,#005f87);color:#ffffff;border:none;padding:10px 24px;border-radius:30px;font-size:14px;font-weight:700;transition:all .2s}
-.btn-outline{background:transparent;color:#5a8fa8;border:1.5px solid #b0d4ee;padding:10px 18px;border-radius:30px;font-size:14px;font-weight:600;transition:all .2s}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,119,168,0.25)}
-.btn-danger{background:rgba(248,113,113,0.12);color:#e55;border:1.5px solid #f87171;padding:10px 18px;border-radius:30px;font-size:14px;font-weight:600}
-#grade-filter{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;justify-content:center}
-.grade-btn{background:#ffffff;border:1.5px solid #b0d4ee;color:#5a8fa8;padding:5px 12px;border-radius:16px;font-size:12px;font-weight:600;transition:all .2s}
-.grade-btn.active{background:rgba(0,96,199,0.12);border-color:#0077a8;color:#0077a8}
+  .match-status {
+    text-align: center; margin-bottom: 12px; color: var(--muted); font-size: 14px;
+  }
+  .match-status .time { color: var(--accent); font-weight: 700; }
+  .match-done {
+    background: rgba(34,197,94,0.15);
+    border: 1px solid var(--good);
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+  }
+  .match-done h3 { margin: 0 0 8px; color: var(--good); }
 
-/* Know/Don't-know buttons */
-#fc-know-row{display:flex;gap:10px;justify-content:center;margin-top:114px}
-.fc-know-btn{padding:10px 28px;border-radius:30px;font-size:15px;font-weight:700;border:2px solid;transition:all .15s;min-width:110px}
-.fc-know-btn:active{transform:scale(.95)}
-#btn-know{background:rgba(18,184,134,0.12);border-color:#12b886;color:#0a7a50}
-#btn-know:hover{background:rgba(18,184,134,0.25)}
-#btn-dontknow{background:rgba(248,113,113,0.1);border-color:#f87171;color:#c0392b}
-#btn-dontknow:hover{background:rgba(248,113,113,0.22)}
-/* Timer */
-#timer-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;justify-content:center}
-#timer-display{font-size:22px;font-weight:700;color:#005f87;min-width:48px;text-align:center}
-#timer-display.urgent{color:#e55;animation:pulse .5s infinite alternate}
-@keyframes pulse{from{opacity:1}to{opacity:.4}}
-.timer-btn{background:#e4f1fb;border:1.5px solid #b0d4ee;color:#005f87;padding:5px 14px;border-radius:16px;font-size:12px;font-weight:700}
-/* Confetti canvas */
-#confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999}
-/* Flashcard "known" pile indicator */
-#fc-piles{display:flex;gap:16px;justify-content:center;margin-top:6px;font-size:12px;color:#5a8fa8}
-#fc-piles span{font-weight:700}
-#pile-know{color:#12b886}
-#pile-dontknow{color:#e55}
-.btn-outline:hover{border-color:#0d2137;color:#0d2137}
-/* Search */
-#search-input{flex:1;background:#ffffff;border:1.5px solid #b0d4ee;border-radius:24px;padding:8px 14px;font-size:13px;color:#0d2137;outline:none;transition:border-color .2s}
-#search-input:focus{border-color:#0077a8}
-#search-results{width:100%;max-width:380px;background:#ffffff;border:1.5px solid #b0d4ee;border-radius:16px;max-height:260px;overflow-y:auto;margin-bottom:8px;box-shadow:0 4px 16px rgba(0,119,168,0.1)}
-.search-row{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid #e4f1fb;font-size:14px;gap:12px}
-.search-row:last-child{border-bottom:none}
-.search-ar{font-size:17px;font-weight:700;color:#0d2137;direction:rtl}
-.search-he{color:#5a8fa8;font-size:13px}
-.search-empty{text-align:center;color:#5a8fa8;padding:24px;font-size:13px}
-/* Exam */
-#exam-setup{background:#ffffff;border:1.5px solid #b0d4ee;border-radius:18px;padding:22px 20px;width:100%}
-#exam-setup h3{color:#005f87;font-size:16px;margin-bottom:18px;text-align:center}
-.exam-opt-row{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
-.exam-opt-row label{font-size:13px;color:#5a8fa8;font-weight:600;margin-bottom:2px}
-.exam-opt-row input[type=range]{width:100%;accent-color:#0077a8}
-.exam-opt-row .range-val{text-align:center;font-size:22px;font-weight:700;color:#005f87}
-.exam-toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.exam-toggle-row label{font-size:14px;color:#0d2137;font-weight:600}
-.toggle-switch{position:relative;width:46px;height:26px}
-.toggle-switch input{opacity:0;width:0;height:0}
-.toggle-slider{position:absolute;inset:0;background:#b0d4ee;border-radius:26px;cursor:pointer;transition:.3s}
-.toggle-slider:before{content:'';position:absolute;height:20px;width:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.3s}
-.toggle-switch input:checked+.toggle-slider{background:#0077a8}
-.toggle-switch input:checked+.toggle-slider:before{transform:translateX(20px)}
-.timer-input-row{display:flex;align-items:center;gap:8px;margin-top:8px}
-.timer-input-row input[type=number]{width:70px;border:1.5px solid #b0d4ee;border-radius:10px;padding:6px 10px;font-size:16px;font-weight:700;color:#005f87;text-align:center;outline:none}
-.timer-input-row span{color:#5a8fa8;font-size:13px}
-#exam-section .card-box{margin-bottom:12px}
-#exam-progress{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#5a8fa8;margin-bottom:8px}
-#exam-q-num{font-weight:700;color:#005f87}
-#exam-timer-live{font-size:18px;font-weight:700;color:#005f87;min-width:40px;text-align:left}
-#exam-timer-live.urgent{color:#e55;animation:pulse .5s infinite alternate}
-#score-stars{font-size:36px;margin:8px 0}
-/* List view */
-#list-toggle-row{display:flex;align-items:center;gap:8px;width:100%;margin-bottom:8px}
-#list-toggle-btn{background:#ffffff;border:1.5px solid #b0d4ee;color:#5a8fa8;padding:5px 14px;border-radius:16px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s}
-#list-toggle-btn.active{background:rgba(0,119,168,0.1);border-color:#0077a8;color:#0077a8}
-#list-view-section{width:100%;max-width:480px}
-#list-view-table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;border:1.5px solid #b0d4ee}
-#list-view-table th{background:#e4f1fb;color:#005f87;font-size:12px;font-weight:700;padding:10px 14px;text-align:center}
-#list-view-table td{padding:10px 14px;border-bottom:1px solid #e4f1fb;font-size:14px;text-align:center;vertical-align:middle}
-#list-view-table tr:last-child td{border-bottom:none}
-#list-view-table tr:hover td{background:#f5fbff}
-.lv-ar{font-size:16px;font-weight:700;color:#0d2137;direction:rtl}
-.lv-he{color:#5a8fa8;font-size:13px}
-.lv-num{color:#b0d4ee;font-size:11px;font-weight:700;width:28px}
-#list-view-search{width:100%;background:#ffffff;border:1.5px solid #b0d4ee;border-radius:24px;padding:9px 16px;font-size:14px;color:#0d2137;outline:none;margin-bottom:10px}
-#list-view-search:focus{border-color:#0077a8}
-#list-view-count{text-align:center;font-size:12px;color:#5a8fa8;margin-bottom:8px}
-#list-export-row{display:flex;justify-content:flex-end;margin-bottom:8px}
-#list-export-btn{background:#fff;border:1.5px solid #b0d4ee;color:#5a8fa8;padding:5px 14px;border-radius:16px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px}
-#list-export-btn:hover{border-color:#0077a8;color:#0077a8}
-#list-view-pagination{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap}
-.lv-page-btn{background:#fff;border:1.5px solid #b0d4ee;color:#5a8fa8;width:32px;height:32px;border-radius:50%;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s}
-.lv-page-btn:hover{border-color:#0077a8;color:#0077a8}
-.lv-page-btn.active{background:#0077a8;border-color:#0077a8;color:#fff}
-.lv-page-info{font-size:12px;color:#5a8fa8}
-#exam-summary{margin-top:10px;font-size:13px;color:#5a8fa8;max-height:180px;overflow-y:auto;width:100%}
-.exam-miss-row{display:flex;justify-content:space-between;padding:5px 8px;border-bottom:1px solid #e4f1fb;font-size:13px}
-.exam-miss-ar{color:#0d2137;font-weight:600}
-.exam-miss-he{color:#5a8fa8}
+  /* ---------- MULTIPLE CHOICE ---------- */
+  .mc-question {
+    background: var(--card);
+    color: var(--text-dark);
+    padding: 24px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 16px;
+    min-height: 120px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mc-question .word { font-size: 32px; font-weight: 700; line-height: 1.3; word-break: break-word; }
+  .mc-question .word.ar { font-family: "Noto Sans Arabic", "Cairo", sans-serif; font-size: 38px; font-weight: 600; }
+  .mc-options {
+    display: grid; gap: 10px;
+    grid-template-columns: 1fr;
+  }
+  .mc-option {
+    background: rgba(255,255,255,0.06);
+    color: var(--text);
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    border: 2px solid transparent;
+    transition: all .15s;
+    word-break: break-word;
+  }
+  .mc-option.ar { font-family: "Noto Sans Arabic", "Cairo", sans-serif; font-size: 18px; font-weight: 600; }
+  .mc-option:hover { background: rgba(255,255,255,0.12); }
+  .mc-option.correct { background: rgba(34,197,94,0.25); border-color: var(--good); color: #bbf7d0; }
+  .mc-option.wrong { background: rgba(239,68,68,0.22); border-color: var(--bad); color: #fecaca; }
+  .mc-next-btn {
+    margin-top: 14px;
+    padding: 14px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    color: #fff;
+    font-size: 16px; font-weight: 700;
+    width: 100%;
+    display: none;
+  }
+  .mc-next-btn.show { display: block; }
+
+  .mc-score {
+    display: flex; justify-content: space-between; color: var(--muted); font-size: 14px; margin-bottom: 10px;
+  }
+  .mc-score span b { color: var(--text); }
+
+  /* ---------- LIST MODE ---------- */
+  .list-controls {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .list-controls button {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.06);
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+    transition: all .15s;
+    border: 2px solid transparent;
+    white-space: nowrap;
+  }
+  .list-controls button.active {
+    background: rgba(56,189,248,0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .list-controls .btn-export {
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    color: #fff;
+    border: none;
+    flex: 0 0 auto;
+  }
+  .list-table {
+    background: var(--card);
+    color: var(--text-dark);
+    border-radius: 14px;
+    overflow: hidden;
+    flex: 1;
+    overflow-y: auto;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  }
+  .list-row, .list-header {
+    display: grid;
+    grid-template-columns: 40px 1fr 1fr;
+    align-items: center;
+    padding: 10px 8px;
+    border-bottom: 1px solid #e5e7eb;
+    gap: 8px;
+  }
+  .list-row:last-child { border-bottom: none; }
+  .list-row:nth-child(even) { background: #f8fafc; }
+  .list-header {
+    background: #1e293b;
+    color: var(--text);
+    font-weight: 700;
+    font-size: 13px;
+    position: sticky; top: 0;
+    z-index: 2;
+  }
+  .list-num {
+    color: #64748b;
+    font-size: 13px;
+    text-align: center;
+    font-weight: 600;
+  }
+  .list-ar {
+    font-family: "Noto Sans Arabic", "Cairo", sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.5;
+    word-break: break-word;
+    direction: rtl;
+    text-align: right;
+  }
+  .list-he {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.4;
+    word-break: break-word;
+    direction: rtl;
+    text-align: right;
+    color: #334155;
+  }
+  .list-hidden {
+    color: #cbd5e1;
+    letter-spacing: 4px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .list-hidden:hover { color: #64748b; }
+  .list-hidden.revealed {
+    color: #0f172a;
+    letter-spacing: normal;
+  }
+
+  /* ---------- FILL-IN-THE-BLANK MODE ---------- */
+  .fill-prompt {
+    background: var(--card);
+    color: var(--text-dark);
+    padding: 20px;
+    border-radius: 16px;
+    margin-bottom: 14px;
+  }
+  .fill-prompt .label {
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #64748b;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .fill-prompt .hint-text {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 14px;
+    word-break: break-word;
+  }
+  .fill-prompt .hint-text.ar {
+    font-family: "Noto Sans Arabic", "Cairo", sans-serif;
+    font-size: 22px;
+  }
+  .fill-prompt .sentence {
+    font-size: 20px;
+    line-height: 1.7;
+    word-break: break-word;
+    padding: 14px;
+    background: #f1f5f9;
+    border-radius: 10px;
+  }
+  .fill-prompt .sentence.ar {
+    font-family: "Noto Sans Arabic", "Cairo", sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    direction: rtl;
+  }
+  .fill-prompt .blank {
+    display: inline-block;
+    min-width: 80px;
+    border-bottom: 3px solid #3b82f6;
+    padding: 0 10px;
+    margin: 0 4px;
+    color: #3b82f6;
+    font-weight: 700;
+  }
+  .fill-prompt .blank.revealed-correct { color: var(--good); border-color: var(--good); background: rgba(34,197,94,0.1); }
+  .fill-prompt .blank.revealed-wrong { color: var(--bad); border-color: var(--bad); background: rgba(239,68,68,0.08); }
+  .fill-input-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .fill-input-row input {
+    flex: 1;
+    background: rgba(255,255,255,0.08);
+    color: var(--text);
+    border: 2px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 20px;
+    outline: none;
+    text-align: center;
+    font-family: inherit;
+    direction: rtl;
+  }
+  .fill-input-row input.ar { font-family: "Noto Sans Arabic","Cairo",sans-serif; font-weight:600; }
+  .fill-input-row input:focus { border-color: var(--accent); }
+  .fill-input-row input.correct { border-color: var(--good); background: rgba(34,197,94,0.15); }
+  .fill-input-row input.wrong { border-color: var(--bad); background: rgba(239,68,68,0.12); }
+  .fill-input-row button {
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    color: #fff;
+    padding: 0 22px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .fill-feedback {
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .fill-feedback.correct { background: rgba(34,197,94,0.15); color: var(--good); }
+  .fill-feedback.wrong { background: rgba(239,68,68,0.15); color: var(--bad); }
+  .fill-feedback .correct-answer {
+    display: block;
+    font-size: 20px;
+    font-family: "Noto Sans Arabic","Cairo",sans-serif;
+    margin-top: 4px;
+    color: var(--text);
+    direction: rtl;
+  }
+  .fill-actions {
+    display: flex; gap: 8px;
+  }
+  .fill-actions button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.08);
+    color: var(--text);
+    font-size: 14px; font-weight: 600;
+  }
+  .fill-actions .primary {
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+  /* Settings row for fill-mode options */
+  .fill-mode-toggles {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .fill-mode-toggles .toggle-group {
+    display: inline-flex;
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 3px;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+  }
+  .fill-mode-toggles .toggle-group button {
+    flex: 1;
+    padding: 6px 8px;
+    font-size: 12px;
+    border-radius: 7px;
+    color: var(--muted);
+    background: transparent;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .fill-mode-toggles .toggle-group button.active {
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    color: #fff;
+  }
+  .fill-mode-toggles .toggle-label {
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 3px;
+    text-align: center;
+    font-weight: 600;
+    letter-spacing: .5px;
+  }
+  .fill-mode-toggles .toggle-wrap {
+    display: flex; flex-direction: column; flex: 1; min-width: 120px;
+  }
+  /* Multi-blank input/MC containers */
+  .fill-blanks {
+    display: flex; flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .fill-blank-group {
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px;
+    padding: 10px;
+  }
+  .fill-blank-group .blank-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: .5px;
+  }
+  .fill-blank-group input {
+    width: 100%;
+    background: rgba(255,255,255,0.08);
+    color: var(--text);
+    border: 2px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 18px;
+    outline: none;
+    text-align: center;
+    font-family: inherit;
+    direction: rtl;
+  }
+  .fill-blank-group input.ar { font-family: "Noto Sans Arabic","Cairo",sans-serif; font-weight:600; }
+  .fill-blank-group input:focus { border-color: var(--accent); }
+  .fill-blank-group input.correct { border-color: var(--good); background: rgba(34,197,94,0.15); }
+  .fill-blank-group input.wrong { border-color: var(--bad); background: rgba(239,68,68,0.12); }
+  .fill-options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+  .fill-option-btn {
+    padding: 10px 8px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.08);
+    color: var(--text);
+    font-size: 15px;
+    direction: rtl;
+    text-align: center;
+    font-weight: 600;
+    min-height: 42px;
+  }
+  .fill-option-btn.ar { font-family: "Noto Sans Arabic", "Cairo", sans-serif; font-size: 17px; }
+  .fill-option-btn.selected { border: 2px solid var(--accent); background: rgba(59,130,246,0.25); }
+  .fill-option-btn.correct { background: rgba(34,197,94,0.25); border: 2px solid var(--good); }
+  .fill-option-btn.wrong { background: rgba(239,68,68,0.25); border: 2px solid var(--bad); }
+  .fill-option-btn.disabled { opacity: 0.5; cursor: default; }
+  /* Submit bar */
+  .fill-submit-bar {
+    margin-bottom: 10px;
+  }
+  .fill-submit-bar button {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+  }
+  .fill-submit-bar button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* ---------- SEARCH ---------- */
+  .search-row {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    gap: 6px;
+  }
+  .search-row input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-size: 14px;
+    outline: none;
+    padding: 4px;
+    direction: rtl;
+  }
+  .search-row button {
+    background: transparent;
+    color: var(--muted);
+    font-size: 16px;
+    padding: 2px 6px;
+  }
+
+  /* ---------- TOUCH GESTURE FEEDBACK ---------- */
+  .card.dragging { transition: none !important; }
+  .swipe-hint {
+    position: absolute;
+    top: 50%;
+    font-size: 48px;
+    opacity: 0;
+    transform: translateY(-50%);
+    pointer-events: none;
+    transition: opacity .1s;
+    font-weight: 900;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+  .swipe-hint.good { inset-inline-start: 24px; color: #22c55e; }
+  .swipe-hint.bad { inset-inline-end: 24px; color: #ef4444; }
+
+  /* ---------- EMPTY STATE ---------- */
+  .empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+  }
+  .empty .emoji { font-size: 44px; display: block; margin-bottom: 10px; }
+
+  /* ---------- MODAL ---------- */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex; align-items: flex-end; justify-content: center;
+    z-index: 100;
+    animation: fadeIn .2s;
+  }
+  .modal {
+    background: var(--bg2);
+    color: var(--text);
+    width: 100%; max-width: 600px;
+    max-height: 90vh;
+    border-radius: 20px 20px 0 0;
+    padding: 20px;
+    overflow-y: auto;
+    animation: slideUp .25s;
+  }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: none; } }
+  .modal h2 { margin: 0 0 12px; font-size: 20px; }
+  .modal .close-x {
+    position: absolute; top: 14px; inset-inline-end: 14px;
+    background: none; color: var(--muted); font-size: 24px;
+  }
+  .modal label {
+    display: block; font-size: 13px; color: var(--muted); margin: 12px 0 6px;
+  }
+  .modal input, .modal textarea, .modal select {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 15px;
+    outline: none;
+  }
+  .modal textarea { min-height: 140px; font-family: inherit; direction: rtl; }
+  .modal .btn-primary {
+    width: 100%;
+    padding: 14px;
+    margin-top: 16px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    color: #fff; font-weight: 700; font-size: 16px;
+  }
+  .modal .btn-secondary {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.08);
+    color: var(--text); font-weight: 600;
+  }
+  .modal .btn-danger {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border-radius: 12px;
+    background: rgba(239,68,68,0.18);
+    color: #fca5a5; font-weight: 600;
+  }
+
+  .deck-list-item {
+    padding: 12px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 8px;
+  }
+  .deck-list-item .info { flex: 1; min-width: 0; }
+  .deck-list-item .info .name { font-weight: 600; }
+  .deck-list-item .info .meta { font-size: 12px; color: var(--muted); }
+  .deck-list-item .actions { display: flex; gap: 6px; }
+  .deck-list-item button {
+    background: rgba(255,255,255,0.08); color: var(--text);
+    padding: 6px 10px; border-radius: 8px; font-size: 13px;
+  }
+
+  .card-list-item {
+    display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; align-items: center;
+    padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 6px;
+  }
+  .card-list-item .ar { font-family: "Noto Sans Arabic", "Cairo", sans-serif; font-weight: 600; direction: rtl; }
+  .card-list-item .he { direction: rtl; }
+  .card-list-item button { background: transparent; color: var(--bad); font-size: 16px; padding: 4px 8px; }
+
+  .tip {
+    font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.4;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 24px; inset-inline: 0;
+    margin: 0 auto;
+    max-width: 300px;
+    background: rgba(15,23,42,0.95);
+    color: var(--text);
+    padding: 10px 16px;
+    border-radius: 24px;
+    text-align: center;
+    font-size: 14px;
+    animation: fadeIn .2s;
+    z-index: 200;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
 </style>
 </head>
 <body>
-<canvas id="confetti-canvas"></canvas>
-<script>
-function toggleSubcat(id){
-  const btns=document.getElementById(id+'-btns');
-  const arrow=document.getElementById(id+'-arrow');
-  const open=btns.classList.toggle('hidden');
-  arrow.textContent=open?'▶':'▼';
-}
-</script>
+<div id="app">
+  <div class="topbar">
+    <button class="icon-btn" id="btn-decks" title="ניהול חפיסות">📚</button>
+    <h1>קוויזלטים לבגרות</h1>
+    <button class="icon-btn" id="btn-settings" title="הגדרות">⚙️</button>
+  </div>
 
-<div id="main-ui">
-  <div id="header">
-    <div id="title">אוצר מילים משרד החינוך + דן שובל (כל מה שצריך לבגרות!)</div>
-    <div id="subtitle">ערבית–עברית · <span id="word-count-header">0</span> מילים</div>
+  <div class="dir-toggle" id="dir-toggle">
+    <button data-dir="he2ar">עברית → ערבית</button>
+    <button data-dir="ar2he" class="active">ערבית → עברית</button>
   </div>
-  <div id="list-selector">
-    <div class="list-category-label">📚 לבגרות</div>
-    <button class="list-btn active" data-key="bagrut" onclick="handleListChange('bagrut')">אוצר מילים משרד החינוך + דן שובל</button>
-    <div class="list-category-label">🗣️ מדוברת</div>
-    <div class="list-subcategory">
-      <div class="list-subcategory-label" onclick="toggleSubcat('adab')">
-        <span id="adab-arrow">▶</span> 📖 ספרות أدب
-      </div>
-      <div class="list-subcategory-btns hidden" id="adab-btns">
-        <button class="list-btn" data-key="q1" onclick="handleListChange('q1')">שאלה 1 — תמצות הסיפור</button>
-        <button class="list-btn" data-key="q2" onclick="handleListChange('q2')">שאלה 2 — הביקורת בסיפור</button>
-        <button class="list-btn" data-key="q3" onclick="handleListChange('q3')">שאלה 3 — ההבדל בין הדמויות</button>
-      </div>
-    </div>
-    <div class="list-subcategory">
-      <div class="list-subcategory-label" onclick="toggleSubcat('restaurant')">
-        <span id="restaurant-arrow">▶</span> 🍽️ במסעדה — في المطعم
-      </div>
-      <div class="list-subcategory-btns hidden" id="restaurant-btns">
-        <button class="list-btn" data-key="rest_meala" onclick="handleListChange('rest_meala')">הארוחות</button>
-        <button class="list-btn" data-key="rest_food" onclick="handleListChange('rest_food')">מאכלים</button>
-        <button class="list-btn" data-key="rest_veg" onclick="handleListChange('rest_veg')">ירקות</button>
-        <button class="list-btn" data-key="rest_fruit" onclick="handleListChange('rest_fruit')">פירות ותבלינים</button>
-        <button class="list-btn" data-key="rest_taste" onclick="handleListChange('rest_taste')">טעמים</button>
-        <button class="list-btn" data-key="rest_recipe" onclick="handleListChange('rest_recipe')">מתכון</button>
-        <button class="list-btn" data-key="cheesecake_ing" onclick="handleListChange('cheesecake_ing')">🧀 עוגת גבינה — מצרכים</button>
-        <button class="list-btn" data-key="cheesecake_steps" onclick="handleListChange('cheesecake_steps')">🧀 עוגת גבינה — שלבי עבודה</button>
-      </div>
-    </div>
+
+  <div class="deck-row">
+    <span>📖</span>
+    <select id="deck-select"></select>
+    <span class="deck-count" id="deck-count"></span>
   </div>
-  <div id="search-results" class="hidden"></div>
-  <div id="mode-tabs">
-    <button class="mode-btn active" data-mode="flashcard" onclick="handleModeChange('flashcard')">🃏 כרטיסיות</button>
-    <button class="mode-btn" data-mode="quiz" onclick="handleModeChange('quiz')">❓ חידון</button>
-    <button class="mode-btn" data-mode="type" onclick="handleModeChange('type')">⌨️ הקלדה</button>
-    <button class="mode-btn" data-mode="exam" onclick="handleModeChange('exam')">📝 בחינה</button>
+
+  <div class="modes">
+    <button class="mode-btn active" data-mode="flash"><span class="emoji">🃏</span>כרטיסיות</button>
+    <button class="mode-btn" data-mode="list"><span class="emoji">📋</span>רשימה</button>
+    <button class="mode-btn" data-mode="fill"><span class="emoji">🔤</span>השלמה</button>
+    <button class="mode-btn" data-mode="match"><span class="emoji">🧩</span>התאמה</button>
+    <button class="mode-btn" data-mode="mc"><span class="emoji">❓</span>אמריקאי</button>
   </div>
-  <div id="grade-filter" class="hidden">
-    <button class="grade-btn active" data-grade="all" onclick="handleGradeChange('all')">הכל</button>
-    <button class="grade-btn" data-grade="9" onclick="handleGradeChange('9')">כיתה ט'</button>
-    <button class="grade-btn" data-grade="10" onclick="handleGradeChange('10')">כיתה י'</button>
-    <button class="grade-btn" data-grade="11" onclick="handleGradeChange('11')">כיתה י"א</button>
-    <button class="grade-btn" data-grade="12" onclick="handleGradeChange('12')">כיתה י"ב</button>
-  </div>
-  </div>
-  <div id="dir-row">
-    <button class="dir-btn active" data-dir="ar" onclick="handleDirChange('ar')">ערבית ← עברית</button>
-    <button class="dir-btn" data-dir="he" onclick="handleDirChange('he')">עברית ← ערבית</button>
-  </div>
-  <div id="stats-row">
-    <div class="stat"><div class="stat-val" id="stat-score" style="color:#005f87">0</div><div class="stat-label">ניקוד</div></div>
-    <div class="stat"><div class="stat-val" id="stat-total" style="color:#0d2137">0</div><div class="stat-label">סה"כ</div></div>
-    <div class="stat" id="streak-stat" onclick="handleStreakClick()"><div class="stat-val" id="stat-streak" style="color:#0077a8">0</div><div class="stat-label">רצף 🔥</div></div>
-  </div>
-  <div id="progress-bar"><div id="progress-fill"></div></div>
-  <div id="timer-row" class="hidden">
-    <button class="timer-btn" onclick="toggleTimer()">⏱ טיימר</button>
-    <div id="timer-display">30</div>
-    <button class="timer-btn" onclick="resetTimer()">↺</button>
-  </div>
-  <div id="game-area">
-    <div id="flashcard-section">
-      <div id="list-toggle-row">
-        <input type="text" id="search-input" placeholder="🔍 חפש..." oninput="doSearch(this.value)">
-        <button id="list-toggle-btn" onclick="toggleListView()">📋 רשימה</button>
-      </div>
-      <div id="list-view-section" class="hidden">
-        <div id="list-export-row"><button id="list-export-btn" onclick="exportToWord()">📄 ייצוא ל-Word</button></div>
-        <input type="text" id="list-view-search" placeholder="🔍 סנן מילים..." oninput="filterListView(this.value)">
-        <div id="list-view-count"></div>
-        <table id="list-view-table">
-          <thead><tr><th class="lv-num">#</th><th>ערבית</th><th>עברית</th></tr></thead>
-          <tbody id="list-view-body"></tbody>
-        </table>
-        <div id="list-view-pagination" class="hidden"></div>
-      </div>
-      <div id="fc-scene" onclick="flipCard()">
-        <div id="flashcard">
-          <div class="fc-face fc-front">
-            <div id="fc-lang">ערבית</div>
-            <div id="fc-word">—</div>
-            <div id="fc-hint">לחץ להפוך 👆</div>
-          </div>
-          <div class="fc-face fc-back">
-            <div id="fc-lang-back">עברית</div>
-            <div id="fc-word-back">—</div>
-          </div>
-        </div>
-      </div>
-      <div id="fc-know-row" class="hidden">
-        <button class="fc-know-btn" id="btn-dontknow" onclick="markCard(false)">✗ לא יודע</button>
-        <button class="fc-know-btn" id="btn-know" onclick="markCard(true)">✓ יודע</button>
-      </div>
-      <div id="fc-controls">
-        <button class="btn-outline" onclick="nextCard()">← הקודם</button>
-        <button class="btn-primary" onclick="prevCard()">הבא →</button>
-      </div>
-      <div id="fc-piles"><span id="pile-know">✓ 0</span> · <span id="pile-dontknow">✗ 0</span></div>
-      <div id="fc-counter">1 / 1</div>
-    </div>
-    <div id="quiz-section" class="hidden">
-      <div class="card-box"><div id="q-lang">ערבית — מה הפירוש?</div><div id="q-word">—</div></div>
-      <div id="options-grid"></div>
-      <div id="quiz-next" class="hidden"><button class="btn-primary" onclick="nextQuiz()">הבא →</button></div>
-    </div>
-    <div id="type-section" class="hidden">
-      <div class="card-box"><div id="type-lang">ערבית — תרגם לעברית:</div><div id="type-word">—</div></div>
-      <input type="text" id="type-input" placeholder="תרגם..." onkeydown="if(event.key==='Enter')checkType()">
-      <div id="type-feedback"></div>
-      <div id="type-controls">
-        <button class="btn-outline" id="hint-btn" onclick="showHint()">💡 רמז</button>
-        <button class="btn-primary" id="type-submit" onclick="checkType()">בדוק ✓</button>
-        <button class="btn-outline hidden" id="count-correct-btn" onclick="countAsCorrect()" style="color:#12b886;border-color:#12b886">תחשיב כנכון ✓</button>
-      </div>
-    </div>
-    <div id="exam-section" class="hidden">
-      <!-- Setup screen -->
-      <div id="exam-setup">
-        <h3>⚙️ הגדרות בחינה</h3>
-        <div class="exam-opt-row">
-          <label>מספר שאלות</label>
-          <div class="range-val" id="exam-q-display">20</div>
-          <input type="range" min="5" max="50" step="5" value="20" id="exam-q-range" oninput="document.getElementById('exam-q-display').textContent=this.value">
-        </div>
-        <div class="exam-toggle-row">
-          <label>⏱ מגבלת זמן</label>
-          <label class="toggle-switch"><input type="checkbox" id="exam-timer-toggle" onchange="toggleExamTimerInput()"><span class="toggle-slider"></span></label>
-        </div>
-        <div class="timer-input-row hidden" id="exam-timer-input-row">
-          <input type="number" id="exam-timer-val" value="60" min="10" max="600">
-          <span>שניות לכל שאלה</span>
-        </div>
-        <button class="btn-primary" style="width:100%;margin-top:8px" onclick="startExam()">התחל בחינה 🚀</button>
-      </div>
-      <!-- Question screen -->
-      <div id="exam-question" class="hidden">
-        <div id="exam-progress">
-          <span><span id="exam-q-num">1</span> / <span id="exam-q-total">20</span></span>
-          <span id="exam-timer-live" class="hidden">—</span>
-        </div>
-        <div class="card-box"><div id="exam-lang">ערבית — מה הפירוש?</div><div id="exam-word" style="font-size:28px;font-weight:700;text-align:center">—</div></div>
-        <div id="exam-grid"></div>
-        <div id="exam-next" class="hidden" style="display:flex;justify-content:center;margin-top:14px"><button class="btn-primary" onclick="nextExam()">הבא →</button></div>
-      </div>
-    </div>
-    </div>
-    </div>
-    <div id="list-view-section" class="hidden">
-      <input type="text" id="list-view-search" placeholder="🔍 סנן מילים..." oninput="filterListView(this.value)">
-      <div id="list-view-count"></div>
-      <table id="list-view-table">
-        <thead><tr><th class="lv-num">#</th><th>ערבית</th><th>עברית</th></tr></thead>
-        <tbody id="list-view-body"></tbody>
-      </table>
-    </div>
-  </div>
+
+  <div class="filter-row" id="filter-row"></div>
+
+  <div id="screen" class="screen"></div>
 </div>
 
-<div id="score-screen" class="hidden">
-  <div style="font-size:56px;margin-bottom:4px" id="score-trophy">🏆</div>
-  <div id="score-stars"></div>
-  <div id="score-pct">—</div>
-  <div id="score-detail" style="color:#5a8fa8;margin-bottom:4px"></div>
-  <div id="score-streak-txt" style="color:#5a8fa8;margin-bottom:16px;font-size:13px"></div>
-  <div id="exam-summary" class="hidden"></div>
-  <button class="btn-primary" onclick="restart()" style="margin-top:16px">שחק שוב</button>
-</div>
+<div id="modal-host"></div>
+<div id="toast-host"></div>
 
-
+<script src="decks.js"></script>
 <script>
-function arabicSortKey(s){return s.replace(/[\u064B-\u065F\u0610-\u061A]/g,'').replace(/^(ال|اِ|اُ|اَ|ا)/u,'').replace(/[أإآؤئ]/g,'ا').trim();}
-function sortArabic(arr){return[...arr].sort((a,b)=>arabicSortKey(a.ar).localeCompare(arabicSortKey(b.ar),'ar'));}
-function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+(function(){
+  'use strict';
 
-const BAGRUT_WORDS=sortArabic([
-  {ar:"اِتِّفَاق",he:"הסכם"},
-  {ar:"اِجْتِمَاع",he:"פגישה, כינוס"},
-  {ar:"اِجْتَمَعَ مَعَ",he:"נפגש עם"},
-  {ar:"أَحَبَّ",he:"אהב, רצה"},
-  {ar:"أَحْمَر",he:"אדום"},
-  {ar:"أَخْضَر",he:"ירוק"},
-  {ar:"أَرْبَعَة",he:"ארבע/ה"},
-  {ar:"أَزْرَق",he:"כחול"},
-  {ar:"اِسْتَغْرَقَ",he:"נמשך, ארך"},
-  {ar:"اِسْتِرَاحَة",he:"הפסקה"},
-  {ar:"اِسْتَقْبَلَ",he:"קיבל את פני"},
-  {ar:"اِسْتَمَعَ إِلَى",he:"הקשיב ל-"},
-  {ar:"أَسْوَد",he:"שחור"},
-  {ar:"اِشْتَرَكَ",he:"השתתף"},
-  {ar:"أَصْغَر",he:"יותר קטן"},
-  {ar:"أَصْفَر",he:"צהוב"},
-  {ar:"إِفْرِيقِيَا",he:"אפריקה"},
-  {ar:"أَكْبَر",he:"יותר גדול"},
-  {ar:"الأُمَم الْمُتَّحِدَة",he:"האו\"ם"},
-  {ar:"الخَلِيل",he:"חברון"},
-  {ar:"الشَّرْق الأَوْسَط",he:"המזרח התיכון"},
-  {ar:"الضِّفَّة الغَرْبِيَّة",he:"הגדה המערבית"},
-  {ar:"أَلْمَانِيَا",he:"גרמניה"},
-  {ar:"النَّاصِرَة",he:"נצרת"},
-  {ar:"الوِلَايَات الْمُتَّحِدَة",he:"ארה\"ב"},
-  {ar:"اِمْتِحَان",he:"מבחן"},
-  {ar:"اِمْرَأَة",he:"אישה"},
-  {ar:"اِنْتَخَبَ",he:"בחר"},
-  {ar:"اِنْتَظَرَ",he:"חיכה ל-"},
-  {ar:"بِالْقُرْبِ مِن",he:"בקרבת-"},
-  {ar:"بِدَايَة",he:"התחלה"},
-  {ar:"بَرْنَامَج",he:"תכנית"},
-  {ar:"بَقِيَ",he:"נשאר"},
-  {ar:"بَكَى",he:"בכה"},
-  {ar:"تَاجِر",he:"סוחר"},
-  {ar:"تَارِيخ",he:"היסטוריה, תאריך"},
-  {ar:"تِجَارَة",he:"מסחר"},
-  {ar:"تِسْعَة",he:"תשע/ה"},
-  {ar:"تَفَضَّلْ / تَفَضَّلِي",he:"בבקשה! התכבד/י!"},
-  {ar:"ثَلَاثَة",he:"שלוש/ה"},
-  {ar:"ثَمَانِيَة",he:"שמונה"},
-  {ar:"جَاءَ",he:"בא"},
-  {ar:"جَامِعَة",he:"אוניברסיטה"},
-  {ar:"جَرِيدَة",he:"עיתון"},
-  {ar:"جَلْسَة",he:"ישיבה"},
-  {ar:"حَرْب",he:"מלחמה"},
-  {ar:"حِزْب",he:"מפלגה"},
-  {ar:"حَضَّرَ",he:"הכין"},
-  {ar:"حَمَّام",he:"אמבטיה, מקלחת"},
-  {ar:"خَرِيطَة",he:"מפה"},
-  {ar:"خُبْز",he:"לחם"},
-  {ar:"خَلِيج",he:"מפרץ"},
-  {ar:"خَمْسَة",he:"חמש/ה"},
-  {ar:"ذَكَرَ",he:"זָׁכַׂר, ציין"},
-  {ar:"رَاكِب",he:"נוסע"},
-  {ar:"رَئِيس البَلَدِيَّة",he:"ראש העיר"},
-  {ar:"رَئِيسِيّ",he:"ראשי, עיקרי"},
-  {ar:"رِحْلَة",he:"טיול"},
-  {ar:"رَسْمِيّ",he:"רשמי"},
-  {ar:"زَوْج / زَوْجَة",he:"בעל / אשת, בן/בת-זוג"},
-  {ar:"سَاحَة",he:"חצר"},
-  {ar:"سَاحِل",he:"חוף"},
-  {ar:"سَاكِن",he:"תושב"},
-  {ar:"سَبْعَة",he:"שבע/ה"},
-  {ar:"سِتَّة",he:"שש/ה"},
-  {ar:"سَفِير",he:"שגריר"},
-  {ar:"سَيَّارَة",he:"מכונית"},
-  {ar:"سَيِّد",he:"אדון, מר"},
-  {ar:"سَيِّدَة",he:"גברת"},
-  {ar:"شَاهَدَ",he:"צפה ב-, ראה"},
-  {ar:"شَكَرَ",he:"הודה ל-"},
-  {ar:"صَاحِب",he:"חבר, בעל"},
-  {ar:"صَحِيح",he:"נכון"},
-  {ar:"صَحِيفَة",he:"עיתון"},
-  {ar:"صَدِيق",he:"חבר, ידיד"},
-  {ar:"صَفْحَة",he:"עמוד בספר"},
-  {ar:"صُورَة",he:"תמונה, צורה"},
-  {ar:"طَائِرَة",he:"מטוס"},
-  {ar:"طَالِب",he:"סטודנט"},
-  {ar:"طَبَرِيَّة",he:"טבריה"},
-  {ar:"طَعَام",he:"אוכל, מזון"},
-  {ar:"عَادَ",he:"חזר"},
-  {ar:"عَالَم",he:"עולם"},
-  {ar:"عَام",he:"שנה"},
-  {ar:"عَامِل",he:"פועל, עובד"},
-  {ar:"عَزِيز",he:"יקר, אהוב"},
-  {ar:"عَشَرَة",he:"עשר/ה"},
-  {ar:"عَظِيم",he:"גדול, עצום"},
-  {ar:"عَلَّمَ",he:"לימד"},
-  {ar:"غَادَرَ",he:"עזב"},
-  {ar:"غَرْب",he:"מערב"},
-  {ar:"غَزَّة",he:"עזה"},
-  {ar:"فَجْأَةً",he:"פתאום"},
-  {ar:"فَرِيق",he:"קבוצה"},
-  {ar:"فَصْل",he:"עונה, פרק"},
-  {ar:"فُصُول السَّنَة",he:"עונות השנה"},
-  {ar:"فَقِير",he:"עני"},
-  {ar:"فَكَّرَ فِي",he:"חשב על, הרהר ב-"},
-  {ar:"قِرَاءَة",he:"קריאה"},
-  {ar:"قِطَار",he:"רכבת"},
-  {ar:"قَعَدَ",he:"ישב"},
-  {ar:"كَلِمَة",he:"מילה"},
-  {ar:"لَاعِب",he:"שחקן"},
-  {ar:"لَعِبَ",he:"שיחק"},
-  {ar:"لِقَاء",he:"פגישה"},
-  {ar:"لَوْن",he:"צבע"},
-  {ar:"مَاء",he:"מים"},
-  {ar:"مَأْكُولَات",he:"מאכלים"},
-  {ar:"مُبَارَاة",he:"תחרות"},
-  {ar:"مُحَادَثَة",he:"שיחות"},
-  {ar:"مَحَطَّة",he:"תחנה"},
-  {ar:"مَرَّة",he:"פעם"},
-  {ar:"مَشْغُول",he:"עסוק, תפוס"},
-  {ar:"مُشْكِلَة",he:"בעיה"},
-  {ar:"مَشْهُور",he:"מפורסם"},
-  {ar:"مَطَار",he:"שדה תעופה"},
-  {ar:"مَطْعَم",he:"מסעדה"},
-  {ar:"مَطْلُوب",he:"מבוקש, דרוש"},
-  {ar:"مَعًا",he:"יחד"},
-  {ar:"مَفْهُوم",he:"מובן"},
-  {ar:"مُقَدَّس",he:"קדוש"},
-  {ar:"مُمَثِّل",he:"נציג, שחקן"},
-  {ar:"مَمْنُوع",he:"אסור"},
-  {ar:"مِنْطَقَة",he:"אזור"},
-  {ar:"مُنَظَّمَة",he:"ארגון"},
-  {ar:"مُهَنْدِس",he:"מהנדס"},
-  {ar:"مَوْضُوع",he:"נושא"},
-  {ar:"نَابُلُس",he:"שכם"},
-  {ar:"نَشَرَ",he:"פרסם"},
-  {ar:"نِصْف",he:"חצי"},
-  {ar:"نَظَرَ إِلَى",he:"הביט ב-"},
-  {ar:"نَظِيف",he:"נקי"},
-  {ar:"نِهَايَة",he:"סוף"},
-  {ar:"هَاتِف",he:"טלפון"},
-  {ar:"هَامّ",he:"חשוב"},
-  {ar:"هَدِيَّة",he:"מתנה"},
-  {ar:"هَرَم",he:"פירמידה"},
-  {ar:"وَاحِد",he:"אחד"},
-  {ar:"وَاسِع",he:"רחב, מרווח"},
-  {ar:"وَاشِنْطَن",he:"וושינגטון"},
-  {ar:"وَجَدَ",he:"מצא"},
-  {ar:"وَزِير التَّرْبِيَة",he:"שר החינוך"},
-  {ar:"وَزِير الثَّقَافَة",he:"שר התרבות"},
-  {ar:"وَزِير الخَارِجِيَّة",he:"שר החוץ"},
-  {ar:"وَزِير الدَّاخِلِيَّة",he:"שר הפנים"},
-  {ar:"وَزِير الدِّفَاع",he:"שר הביטחון"},
-  {ar:"وَزِير الْمَالِيَّة",he:"שר האוצר"},
-  {ar:"وَضَعَ",he:"שם, הניח"},
-  {ar:"وَفْد",he:"משלחת"},
-  {ar:"وَقَعَ",he:"נפל, שָׁכַׂן, התרחש"},
-  {ar:"وَقَّعَ عَلَى",he:"חתם על"},
-  {ar:"يَنَايِر",he:"ינואר"},
-  {ar:"فَبْرَايِر",he:"פברואר"},
-  {ar:"مَارِس",he:"מרץ"},
-  {ar:"أَبْرِيل",he:"אפריל"},
-  {ar:"مَايُو",he:"מאי"},
-  {ar:"يُونْيُو",he:"יוני"},
-  {ar:"يُولْيُو",he:"יולי"},
-  {ar:"أَغُسْطُس",he:"אוגוסט"},
-  {ar:"سِبْتَمْبَر",he:"ספטמבר"},
-  {ar:"أُكْتُوبَر",he:"אוקטובר"},
-  {ar:"نُوفَمْبَر",he:"נובמבר"},
-  {ar:"دِيسَمْبَر",he:"דצמבר"},
-  {ar:"أَجَابَ",he:"ענה"},
-  {ar:"أَجْرَى",he:"ניהל, ערך"},
-  {ar:"أَدِيب",he:"סופר, אדיב"},
-  {ar:"أَرَادَ",he:"רצה"},
-  {ar:"أَرْسَلَ",he:"שלח"},
-  {ar:"اِسْتَعْمَلَ",he:"השתמש ב-"},
-  {ar:"اِسْتِقْلَال",he:"עצמאות"},
-  {ar:"اِشْتَرَى",he:"קנה"},
-  {ar:"إِصْبَع",he:"אצבע"},
-  {ar:"أَعْطَى",he:"נתן"},
-  {ar:"أَعْلَنَ",he:"הודיע"},
-  {ar:"اِفْتَتَحَ",he:"פתח"},
-  {ar:"اِقْتَرَبَ مِن",he:"התקרב אל"},
-  {ar:"أَكْثَر مِن",he:"יותר מ-"},
-  {ar:"الْآن",he:"עכשיו"},
-  {ar:"التَّوْرَاة",he:"התורה"},
-  {ar:"الصِّيَام",he:"הצום"},
-  {ar:"الْمَسِيحِيَّة",he:"הנצרות"},
-  {ar:"الْيَهُودِيَّة",he:"היהדות"},
-  {ar:"اِمْتَحَنَ",he:"בחן"},
-  {ar:"أَمْر",he:"עניין / צו, פקודה"},
-  {ar:"اِنْتِخَابَات",he:"בחירות"},
-  {ar:"اِنْعَقَدَ",he:"נערך"},
-  {ar:"اِنْقَطَعَ",he:"ניתק, נפסק"},
-  {ar:"أَهْل",he:"בני משפחה, הורים"},
-  {ar:"بَرْلَمَان",he:"פרלמנט"},
-  {ar:"بَعْد غَد",he:"מחרתיים"},
-  {ar:"بَنَى",he:"בנה"},
-  {ar:"تَجَوَّلَ",he:"טייל, סייר"},
-  {ar:"تَحَدَّثَ",he:"שוחח"},
-  {ar:"تَطَوَّرَ",he:"התפתח"},
-  {ar:"تَعَاوَنَ",he:"שיתף פעולה"},
-  {ar:"تَعَايَشَ",he:"דו-קיום"},
-  {ar:"تَعَلَّمَ",he:"לָׁמַׂד"},
-  {ar:"تَكَلَّمَ",he:"דיבר, שוחח"},
-  {ar:"تَنَاوَلَ",he:"טיפל ב-, עסק ב-"},
-  {ar:"تَنْظِيم",he:"ארגון"},
-  {ar:"تَوَجَّهَ",he:"פנה"},
-  {ar:"تِين",he:"תאנים"},
-  {ar:"تَثْقِيف",he:"תרבות"},
-  {ar:"جَائِزَة",he:"פרס"},
-  {ar:"جَانِب",he:"צד"},
-  {ar:"جِسْم",he:"גוף"},
-  {ar:"جَوْلَة",he:"סיור"},
-  {ar:"جَيِّد",he:"טוב"},
-  {ar:"حَاجّ",he:"עולה לרגל"},
-  {ar:"حَالَة",he:"מצב"},
-  {ar:"حَدِيث",he:"חדיש, מודרני"},
-  {ar:"حِذَاء",he:"נעל"},
-  {ar:"حَرْف",he:"אות"},
-  {ar:"حَضَرَ",he:"נכח ב-"},
-  {ar:"حَلِيب",he:"חלב"},
-  {ar:"حَوْل",he:"מסביב ל-"},
-  {ar:"خَاصّ",he:"מיוחד, פרטי"},
-  {ar:"خَبَر",he:"ידיעה, חדשה"},
-  {ar:"خَيْر",he:"טוב"},
-  {ar:"دَخَّنَ",he:"עישן"},
-  {ar:"دَوْلِيّ",he:"בינלאומי"},
-  {ar:"دِين",he:"דת"},
-  {ar:"رَأَى",he:"ראה"},
-  {ar:"رَئِيس",he:"נשיא, ראש"},
-  {ar:"رَئِيس الوُزَرَاء",he:"ראש הממשלה"},
-  {ar:"رِيَاضَة",he:"ספורט"},
-  {ar:"رِيَاضِيّ",he:"ספורטאי"},
-  {ar:"زَارَ",he:"ביקר ב-"},
-  {ar:"زَعِيم",he:"מנהיג"},
-  {ar:"زِيَارَة",he:"ביקור"},
-  {ar:"سَاعَدَ",he:"עזר ל-"},
-  {ar:"سَاعَة",he:"שעה"},
-  {ar:"سَأَلَ",he:"שאל"},
-  {ar:"سَكَنَ",he:"גר"},
-  {ar:"سَلَام",he:"שלום"},
-  {ar:"سَمَحَ لِـ",he:"הרשה ל-"},
-  {ar:"سَنَة",he:"שנה"},
-  {ar:"سَهْل",he:"קל"},
-  {ar:"سِيَاسَة",he:"מדיניות, פוליטיקה"},
-  {ar:"سِيَاسِيّ",he:"מדיני, פוליטי"},
-  {ar:"شَبَاب",he:"בחור, צעיר"},
-  {ar:"شَارَكَ",he:"השתתף"},
-  {ar:"شُؤُون",he:"עניינים"},
-  {ar:"شَخْص",he:"איש"},
-  {ar:"شَخْصِيّ",he:"אישי"},
-  {ar:"شُرْطَة",he:"משטרה"},
-  {ar:"شَرَكَة",he:"חברה"},
-  {ar:"شَعْب",he:"עם"},
-  {ar:"شَمْس",he:"שמש"},
-  {ar:"شَهْر",he:"חודש"},
-  {ar:"صُحُفِيّ",he:"עיתונאי"},
-  {ar:"صَرَّحَ أَنَّ",he:"הצהיר ש-"},
-  {ar:"صَعْب",he:"קשה"},
-  {ar:"طِفْل",he:"ילד, תינוק"},
-  {ar:"عَاقَبَ",he:"העניש"},
-  {ar:"عَالَجَ",he:"טיפל ב-"},
-  {ar:"عَامّ",he:"כללי"},
-  {ar:"عِدَّة",he:"כמה, מספר"},
-  {ar:"عَرَبِيّ",he:"ערבי"},
-  {ar:"عُضْو",he:"חבר ב-"},
-  {ar:"عَقَدَ",he:"ערך, כינס"},
-  {ar:"عَلَاقَات",he:"קשרים, יחסים"},
-  {ar:"عَلَمَ",he:"לימד"},
-  {ar:"عَلَم",he:"דֶּגֶּל"},
-  {ar:"عَمَلِيَّة",he:"פעולה, תהליך, פיגוע"},
-  {ar:"عِنْدَ",he:"אצל"},
-  {ar:"فَازَ",he:"זכה"},
-  {ar:"فَتَّشَ عَن",he:"חיפש את"},
-  {ar:"فِرْقَة",he:"להקה"},
-  {ar:"فَرِيضَة",he:"מצווה, חובה דתית"},
-  {ar:"فَنّ",he:"אומנות"},
-  {ar:"فَنَّان",he:"אומן"},
-  {ar:"قَالَ",he:"אמר"},
-  {ar:"قَامَ",he:"קם"},
-  {ar:"قَامَ بِـ",he:"ערך, ביצע"},
-  {ar:"قَرَار",he:"החלטה"},
-  {ar:"قَرَّرَ",he:"החליט"},
-  {ar:"قَمِيص",he:"חולצה"},
-  {ar:"كَانَ",he:"היה"},
-  {ar:"كَرِيم",he:"נכבד, נדיב"},
-  {ar:"كَمْ",he:"כמה"},
-  {ar:"كَنِيس",he:"בית כנסת"},
-  {ar:"كَنِيسَة",he:"כנסיה"},
-  {ar:"لِأَنَّ",he:"מפני ש-"},
-  {ar:"لَحْم",he:"בשר"},
-  {ar:"مَال",he:"כסף, רכוש"},
-  {ar:"مَبْسُوط",he:"מרוצה, שבע רצון"},
-  {ar:"مُتْحَف",he:"מוזיאון"},
-  {ar:"مُخْتَلِف",he:"שונה"},
-  {ar:"مُدِير",he:"מנהל"},
-  {ar:"مَسْؤُول",he:"אחראי, פקיד בכיר"},
-  {ar:"مُسَابَقَة",he:"תחרות"},
-  {ar:"مُسْتَشْفَى",he:"בית חולים"},
-  {ar:"مُسْلِم",he:"מוסלמי"},
-  {ar:"مَسِيحِيّ",he:"נוצרי"},
-  {ar:"مَشْرُوبَات",he:"משקאות"},
-  {ar:"مَطْبَخ",he:"מטבח"},
-  {ar:"مَطَر",he:"גשם"},
-  {ar:"مُعَلِّم",he:"מורה"},
-  {ar:"مَكَان",he:"מקום"},
-  {ar:"مَكَّة",he:"מֶּּכָׁה"},
-  {ar:"مَلَابِس",he:"בגדים"},
-  {ar:"مَلْعَب",he:"מגרש משחקים"},
-  {ar:"مُمْتَاز",he:"מצוין"},
-  {ar:"مِن قِبَل",he:"מטעם"},
-  {ar:"مَنَافِع",he:"שירותים"},
-  {ar:"مَنَعَ مِن",he:"מנע מ-, אסר על"},
-  {ar:"مُوَاطِن",he:"אזרח"},
-  {ar:"مَوْجُود",he:"נמצא, ישנו"},
-  {ar:"مُوَظَّف",he:"פקיד"},
-  {ar:"نَبَأ",he:"ידיעה"},
-  {ar:"نَتِيجَة",he:"תוצאה"},
-  {ar:"نَجَحَ",he:"הצליח"},
-  {ar:"نَهْر",he:"נהר"},
-  {ar:"هَاتِف نَقَّال",he:"טלפון נייד, סלולרי"},
-  {ar:"هَدَف",he:"מטרה"},
-  {ar:"وَافَقَ عَلَى",he:"הסכים על"},
-  {ar:"وِزَارَة",he:"משרד"},
-  {ar:"وَقْت",he:"זמן"},
-  {ar:"وَقَفَ",he:"עמד"},
-  {ar:"يَوْم الأَحَد",he:"יום ראשון"},
-  {ar:"يَوْم الاثْنَيْن",he:"יום שני"},
-  {ar:"يَوْم الثُّلَاثَاء",he:"יום שלישי"},
-  {ar:"يَوْم الأَرْبِعَاء",he:"יום רביעי"},
-  {ar:"يَوْم الخَمِيس",he:"יום חמישי"},
-  {ar:"يَوْم الجُمْعَة",he:"יום שישי"},
-  {ar:"يَوْم السَّبْت",he:"יום שבת"},
-  {ar:"أَجْنَبِيّ",he:"זר"},
-  {ar:"اِتَّجَهَ",he:"פנה, שם פניו אל"},
-  {ar:"اِتِّجَاه",he:"כיוון"},
-  {ar:"اِتِّحَاد",he:"התאחדות, פדרציה"},
-  {ar:"اِتَّخَذَ",he:"נקט, קיבל החלטה"},
-  {ar:"اِتِّصَال",he:"קשר, מגע"},
-  {ar:"اِتَّفَقَ عَلَى",he:"הסכים על"},
-  {ar:"اِجْتِمَاعِيّ",he:"חברתי, סוציאלי"},
-  {ar:"إِجْرَاء",he:"אמצעי, צעד, הליך"},
-  {ar:"اِحْتَفَلَ بِـ",he:"חגג את"},
-  {ar:"اِحْتَلَّ",he:"כבש"},
-  {ar:"اِخْتَارَ",he:"בחר"},
-  {ar:"إِدَارَة",he:"הנהלה"},
-  {ar:"إِذَاعَة",he:"שידור, תחנת שידור"},
-  {ar:"إِرْهَاب",he:"טרור"},
-  {ar:"إِرْهَابِيّ",he:"טרוריסט"},
-  {ar:"أَزْمَة",he:"משבר"},
-  {ar:"اِسْتَأْنَفَ",he:"חידש"},
-  {ar:"اِسْتَمَرَّ فِي",he:"נמשך, המשיך ב-"},
-  {ar:"اِسْتَنْكَرَ",he:"גינה"},
-  {ar:"أُسْرَة",he:"משפחה"},
-  {ar:"أَشَارَ إِلَى",he:"הצביע על, רמז על"},
-  {ar:"اِصْطَدَمَ",he:"התנגש"},
-  {ar:"أَضَافَ",he:"הוסיף"},
-  {ar:"أَضْرَبَ عَن",he:"שבת מ-"},
-  {ar:"اِعْتَرَفَ بِـ",he:"הכיר ב-, הודה ב-"},
-  {ar:"اِعْتَقَدَ",he:"חשב"},
-  {ar:"اِعْتُقِلَ",he:"עצר"},
-  {ar:"أَعْرَبَ عَن",he:"הביע את-"},
-  {ar:"أَغْلَبِيَّة",he:"רוב"},
-  {ar:"أَغْلَقَ",he:"סגר, נעל"},
-  {ar:"اِقْتَرَحَ",he:"הציע"},
-  {ar:"اِقْتِصَاد",he:"כלכלה"},
-  {ar:"اِقْتِصَادِيّ",he:"כלכלי"},
-  {ar:"أَقَلّ مِن",he:"פחות מ-"},
-  {ar:"أَقَلِّيَّة",he:"מיעוט"},
-  {ar:"أَكَّدَ",he:"הדגיש, אישר"},
-  {ar:"الْمُقْبِل",he:"הבא"},
-  {ar:"أَمْن",he:"ביטחון"},
-  {ar:"اِنْتَشَرَ",he:"התפשט, נפוץ"},
-  {ar:"اِنْفَجَرَ",he:"התפוצץ"},
-  {ar:"اِنْسَحَبَ",he:"נסוג"},
-  {ar:"اِنْتَقَلَ",he:"עבר"},
-  {ar:"أَهَمّ",he:"חשוב יותר"},
-  {ar:"أَهَمِّيَّة",he:"חשיבות"},
-  {ar:"بَاعَ",he:"מכר"},
-  {ar:"بَذَلَ جُهُودًا",he:"השקיע מאמצים"},
-  {ar:"بِمُنَاسَبَة",he:"לרגל"},
-  {ar:"تَبَادُل",he:"חילוף, התחלפות"},
-  {ar:"تِجَارِيّ",he:"מסחרי"},
-  {ar:"تَجْرِبَة",he:"ניסיון"},
-  {ar:"تَرَأَّسَ",he:"עמד בראש"},
-  {ar:"تَزَوَّجَ",he:"התחתן"},
-  {ar:"تَسَلَّمَ",he:"קיבל לידו"},
-  {ar:"تَطَوُّر",he:"התפתחות"},
-  {ar:"تَظَاهَرَ",he:"הפגין"},
-  {ar:"تَعْزِيز",he:"חיזוק"},
-  {ar:"تَعْلِيق",he:"פרשנות, תגובה"},
-  {ar:"تَغَيَّرَ",he:"השתנה"},
-  {ar:"تَفَاصِيل",he:"פרטים"},
-  {ar:"تَقْرِير",he:"דו\"ח"},
-  {ar:"تَوَقَّعَ",he:"ציפה ל-"},
-  {ar:"تَوَجَّهَ إِلَى",he:"פנה אל"},
-  {ar:"ثَوْرَة",he:"מהפכה"},
-  {ar:"جَدِير بِالذِّكْر",he:"ראוי לציון ש-"},
-  {ar:"جُنْدِيّ",he:"חייל"},
-  {ar:"جَوّ",he:"אוויר"},
-  {ar:"جَوِّيّ",he:"אווירי"},
-  {ar:"جَيْش",he:"צבא"},
-  {ar:"حَاجِز",he:"מחסום"},
-  {ar:"حَادِث",he:"אירוע, מקרה, תאונה"},
-  {ar:"حَارِس",he:"שומר, מאבטח"},
-  {ar:"حِرَاسَة",he:"שמירה"},
-  {ar:"حَاوَلَ",he:"ניסה"},
-  {ar:"حَتَّى",he:"עד, כדי ש-"},
-  {ar:"حُدُود",he:"גבול, גבולות"},
-  {ar:"حَدَثَ",he:"קרה, ארעה"},
-  {ar:"حَقّ",he:"זכות"},
-  {ar:"حَلّ",he:"פתרון"},
-  {ar:"حِمَايَة",he:"שמירה, הגנה"},
-  {ar:"حَوَالَيْ",he:"בערך, בקירוב"},
-  {ar:"حَيْثُ",he:"במקום שם"},
-  {ar:"خَارِج",he:"חו\"ל"},
-  {ar:"خَبِير",he:"מומחה, בעל ניסיון"},
-  {ar:"خُطْوَة",he:"צעד"},
-  {ar:"دَاخِل",he:"בתוך"},
-  {ar:"دَائِمًا",he:"תמיד"},
-  {ar:"دَافَعَ عَن",he:"הגן על"},
-  {ar:"دَمَّرَ",he:"הרס, החריב"},
-  {ar:"وَلِذَلِك",he:"לכן"},
-  {ar:"بَعْد ذَلِك",he:"אחר כך"},
-  {ar:"كَذَلِك",he:"כמו כן"},
-  {ar:"رَئِيس الأَرْكَان",he:"הרמטכ\"ל"},
-  {ar:"رَحَّبَ بِـ",he:"קיבל בסבר פנים יפות"},
-  {ar:"رَغْم",he:"למרות"},
-  {ar:"رَفَضَ",he:"דחה, סירב"},
-  {ar:"رَفَعَ",he:"הרים"},
-  {ar:"سَائِح",he:"תייר"},
-  {ar:"سِيَاحَة",he:"תיירות"},
-  {ar:"سَابِق",he:"קודם"},
-  {ar:"سَبَب",he:"סיבה"},
-  {ar:"بِسَبَب",he:"בגלל, בשל"},
-  {ar:"سَرِيع",he:"מהיר"},
-  {ar:"سَفَارَة",he:"שגרירות"},
-  {ar:"سِلَاح",he:"נשק"},
-  {ar:"سُلْطَة",he:"שלטון, שליטה, רשות"},
-  {ar:"شَأْن",he:"עניין"},
-  {ar:"شَغَلَ مَنْصِبًا",he:"עבד במשרה"},
-  {ar:"شَقِيق",he:"אח ביולוגי"},
-  {ar:"شَكَّلَ",he:"הרכיב, היווה"},
-  {ar:"شَكْل",he:"צורה, אופן"},
-  {ar:"صَارُوخ",he:"טיל"},
-  {ar:"ضِدّ",he:"נגד"},
-  {ar:"طَوَّرَ",he:"פיתח"},
-  {ar:"طَيَّار",he:"טייס"},
-  {ar:"طَيَرَان",he:"תעופה"},
-  {ar:"عَوْدَة",he:"שיבה, חזרה"},
-  {ar:"عَاشَ",he:"חי"},
-  {ar:"عَبَّرَ عَن",he:"הביע, ביטא"},
-  {ar:"عَدَد",he:"מספר, גיליון"},
-  {ar:"عَدُوّ",he:"אויב"},
-  {ar:"عَرَضَ",he:"הציג, הציע"},
-  {ar:"عَسْكَرِيّ",he:"צבאי"},
-  {ar:"عَيَّنَ",he:"מינה"},
-  {ar:"فَتْرَة",he:"תקופה"},
-  {ar:"فَقَط",he:"רק, בלבד"},
-  {ar:"فِكْرَة",he:"רעיון"},
-  {ar:"فِي أَعْقَاب",he:"בעקבות"},
-  {ar:"فِي نِطَاق",he:"במסגרת"},
-  {ar:"قَائِد",he:"מפקד, מנהיג"},
-  {ar:"قَابَلَ",he:"פגש, ראיין"},
-  {ar:"مُقَابَلَة",he:"פגישה, ראיון"},
-  {ar:"قَامَ بِجَوْلَة",he:"ערך סיור"},
-  {ar:"قَضِيَّة",he:"בעיה, תביעה משפטית"},
-  {ar:"قُطَاع غَزَّة",he:"רצועת עזה"},
-  {ar:"قُوَّة",he:"כוח"},
-  {ar:"قَوِيّ",he:"חזק"},
-  {ar:"كَافَحَ",he:"נאבק ב-"},
-  {ar:"كَمَا",he:"כמו כן, כמו ש-"},
-  {ar:"لَجْنَة",he:"ועדה"},
-  {ar:"لَدَى",he:"אצל"},
-  {ar:"مُؤْتَمَر صُحُفِيّ",he:"מסיבת עיתונאים"},
-  {ar:"مُؤْتَمَر قِمَّة",he:"ועידת פסגה"},
-  {ar:"مُؤَخَّرًا",he:"לאחרונה"},
-  {ar:"مُبَاحَثَات",he:"דיונים"},
-  {ar:"مُبَادَرَة",he:"יוזמה"},
-  {ar:"مَجْمُوعَة",he:"קבוצה"},
-  {ar:"مُتَحَدِّث بِاسْم",he:"דובר בשם"},
-  {ar:"مِثْل",he:"כמו"},
-  {ar:"مَجَال",he:"תחום"},
-  {ar:"مُؤَسَّسَة",he:"חברה, מוסד"},
-  {ar:"مَدْرَسَة اِبْتِدَائِيَّة",he:"בית ספר יסודי"},
-  {ar:"مَدْرَسَة إِعْدَادِيَّة",he:"חטיבת ביניים"},
-  {ar:"مَدْرَسَة ثَانَوِيَّة",he:"בית ספר תיכון"},
-  {ar:"مُرَاسِل",he:"כתב"},
-  {ar:"مَرْحَلَة",he:"שלב"},
-  {ar:"مَسْأَلَة",he:"שאלה, בעיה"},
-  {ar:"مُسْتَشَار",he:"יועץ"},
-  {ar:"مُسْتَقْبَل",he:"עתיד"},
-  {ar:"مُسَلَّح",he:"חמוש, מזוין"},
-  {ar:"مَسِيرَة",he:"תהליך, צעדה, תהלוכה"},
-  {ar:"مَشْرُوع",he:"פרויקט, תכנית"},
-  {ar:"مَصْدَر",he:"מקור"},
-  {ar:"مُظَاهَرَة",he:"הפגנה"},
-  {ar:"مُعَارَضَة",he:"אופוזיציה"},
-  {ar:"مَعْلُومَات",he:"ידיעות, אינפורמציה"},
-  {ar:"مُفَاوَضَات",he:"משא ומתן"},
-  {ar:"مُقَابِل",he:"תמורת, לעומת"},
-  {ar:"مِن أَجْل",he:"למען, כדי"},
-  {ar:"مُنَاقَشَات",he:"דיונים"},
-  {ar:"مُنَاوَرَات",he:"תמרונים"},
-  {ar:"مَنْدُوب",he:"נציג"},
-  {ar:"مُنْذُ",he:"מאז, מזה, לפני"},
-  {ar:"مِهْنَة",he:"מקצוע"},
-  {ar:"نَاطِق بِاسْم",he:"דובר מטעם"},
-  {ar:"نَاقَشَ",he:"דן, התווכח"},
-  {ar:"نَامَ",he:"ישן"},
-  {ar:"نَجَاح",he:"הצלחה"},
-  {ar:"نَحْو",he:"בכיוון, לעבר, בערך"},
-  {ar:"نِسْبَة",he:"אחוז, שיעור"},
-  {ar:"نَصّ",he:"טקסט"},
-  {ar:"نَظِير",he:"עמית"},
-  {ar:"نِظَام",he:"משטר, שלטון, סדר"},
-  {ar:"نَقَلَ",he:"העביר"},
-  {ar:"هَدَفَ إِلَى",he:"שאף ל-"},
-  {ar:"هُوِيَّة",he:"זהות"},
-  {ar:"بِطَاقَة هُوِيَّة",he:"תעודת זהות"},
-  {ar:"وَاصَلَ فِي",he:"המשיך ב-"},
-  {ar:"وَجَبَ",he:"חובה ל-"},
-  {ar:"وَسِيلَة",he:"אמצעי"},
-  {ar:"وِكَالَة",he:"סוכנות"},
-  {ar:"وَضْع",he:"מצב"},
-  {ar:"وَطَن",he:"מולדת"},
-  {ar:"وَطَنِيّ",he:"לאומי"},
-  {ar:"وَقْف إِطْلَاق النَّار",he:"הפסקת אש"},
-  {ar:"اِتَّهَمَ",he:"האשים"},
-  {ar:"أَثَّرَ",he:"השפיע"},
-  {ar:"أَثْنَاء",he:"בזמן-, במשך-"},
-  {ar:"اِحْتَاجَ إِلَى",he:"נזקק ל-"},
-  {ar:"اِحْتَجَّ عَلَى",he:"מחה על"},
-  {ar:"اِحْتَرَمَ",he:"כיבד"},
-  {ar:"آخَر",he:"אחר, נוסף"},
-  {ar:"أَدَّى إِلَى",he:"גרם ל-, הביא לידי"},
-  {ar:"اِرْتَفَعَ",he:"עלה, התרומם"},
-  {ar:"اِزْدَادَ",he:"גדל, התרבה"},
-  {ar:"اِسْتَخْدَمَ",he:"השתמש ב-"},
-  {ar:"اِسْتَطَاعَ",he:"יכול, היה ביכולתו"},
-  {ar:"اِسْتَعَدَّ لِـ",he:"התכונן ל-"},
-  {ar:"أَسِير",he:"שבוי, אסיר"},
-  {ar:"أَصَابَ",he:"פגע ב-, פצע"},
-  {ar:"أُصِيبَ",he:"נפגע, נפצע"},
-  {ar:"مُصَاب",he:"פצוע"},
-  {ar:"أَصْبَحَ",he:"נהיה, נעשה"},
-  {ar:"أَظْهَرَ",he:"הראה"},
-  {ar:"إِعَادَة",he:"חידוש"},
-  {ar:"اِعْتِبَارًا مِن",he:"החל מ-"},
-  {ar:"اِعْتَبَرَ",he:"חשב את- ל-"},
-  {ar:"أَفَادَ",he:"מסר ידיעה, הודיע"},
-  {ar:"أَفْرَجَ عَن",he:"שחרר"},
-  {ar:"أَقَامَ",he:"הקים, ערך, שהה, התגורר"},
-  {ar:"أَقَرَّ",he:"אישר"},
-  {ar:"إِلَّا",he:"אלא, מלבד"},
-  {ar:"الْبَحْر الأَبْيَض الْمُتَوَسِّط",he:"הים התיכון"},
-  {ar:"الْبَحْر الأَحْمَر",he:"ים סוף"},
-  {ar:"الْتَقَى",he:"פגש"},
-  {ar:"الْعَامِّيَّة",he:"השפה המדוברת"},
-  {ar:"أَلْغَى",he:"ביטל"},
-  {ar:"الْفُصْحَى",he:"השפה הספרותית, התקנית"},
-  {ar:"إِمْكَانِيَّة",he:"אפשרות"},
-  {ar:"أَمِين عَامّ",he:"מזכ\"ל"},
-  {ar:"اِنْتَهَى",he:"הסתיים"},
-  {ar:"اِنْضَمَّ إِلَى",he:"הצטרף ל-"},
-  {ar:"أَوْضَحَ",he:"הבהיר, הסביר"},
-  {ar:"آيَة",he:"פסוק מן הקוראן"},
-  {ar:"إِيجَابِيّ",he:"חיובי"},
-  {ar:"أَيَّدَ",he:"תמך ב-"},
-  {ar:"بَاحِث",he:"חוקר"},
-  {ar:"بَثّ",he:"שידור"},
-  {ar:"بِدُون",he:"ללא, מבלי"},
-  {ar:"بَعْض",he:"מקצת, חלק"},
-  {ar:"بَل",he:"יתר על כן, אדרבה"},
-  {ar:"بَلَغَ",he:"הגיע ל-"},
-  {ar:"بِنَاءً عَلَى",he:"על סמך"},
-  {ar:"بِوَاسِطَة",he:"באמצעות"},
-  {ar:"بِيئَة",he:"סביבה"},
-  {ar:"بَيْنَمَا",he:"בעוד ש-"},
-  {ar:"تَابِعَ لِـ",he:"שייך ל-"},
-  {ar:"تَسَامُح",he:"סובלנות"},
-  {ar:"تَسْوِيَة",he:"הסדר"},
-  {ar:"تَضَمَّنَ",he:"כלל"},
-  {ar:"تَجَلَّى",he:"בא לידי ביטוי ב-"},
-  {ar:"تَمَنَّى",he:"איחל"},
-  {ar:"تَهْدِئَة",he:"רגיעה, הפסקת אש"},
-  {ar:"تُهْمَة",he:"אשמה"},
-  {ar:"جُزْء",he:"חלק"},
-  {ar:"جَمْعِيَّة",he:"אגודה, ארגון"},
-  {ar:"جُمْهُورِيَّة",he:"רפובליקה"},
-  {ar:"جِنْسِيَّة",he:"אזרחות, נתינות"},
-  {ar:"جِهَاز",he:"מכשיר, מנגנון"},
-  {ar:"جَوَاز سَفَر",he:"דרכון"},
-  {ar:"حَرَكَة",he:"תנועה"},
-  {ar:"حُرِّيَّة",he:"חופש, חירות"},
-  {ar:"حُرِّيَّة التَّعْبِير",he:"חופש הביטוי"},
-  {ar:"حَسَب",he:"לפי, בהתאם ל-"},
-  {ar:"حَصَلَ عَلَى",he:"השיג, קיבל"},
-  {ar:"حَقَّقَ",he:"חקר"},
-  {ar:"حَمَلَ",he:"נשא"},
-  {ar:"حَمْلَة",he:"מסע, קמפיין, מבצע"},
-  {ar:"حَيَاة",he:"חיים"},
-  {ar:"حِين",he:"בשעה ש-, בזמן ש-"},
-  {ar:"خُطَّة",he:"תכנית"},
-  {ar:"دِرَاسَة",he:"מחקר"},
-  {ar:"دَعَا",he:"הזמין, קרא ל-"},
-  {ar:"دَعْوَة",he:"הזמנה"},
-  {ar:"دَفَعَ",he:"שילם, דחף"},
-  {ar:"ذِكْرَى",he:"יום הזיכרון, יום השנה"},
-  {ar:"رَأْي",he:"דעה"},
-  {ar:"رَجُل أَعْمَال",he:"איש עסקים"},
-  {ar:"رَدَّ",he:"ענה, השיב"},
-  {ar:"رَدًّا عَلَى",he:"בתגובה ל-, בתשובה ל-"},
-  {ar:"رَغْبَةً فِي",he:"מתוך רצון/שאיפה ל-"},
-  {ar:"زَادَ عَن",he:"עלה על, התווסף ל-"},
-  {ar:"زَمِيل",he:"עמית"},
-  {ar:"اللَّاسَامِيَّة",he:"אנטישמיות"},
-  {ar:"سِجْن",he:"בית-כלא, בית-סוהר"},
-  {ar:"سَجِين",he:"אסיר"},
-  {ar:"سِرّ",he:"סוד"},
-  {ar:"سِعْر",he:"מחיר"},
-  {ar:"سَلْبِيّ",he:"שלילי"},
-  {ar:"سِوَى",he:"מלבד, חוץ מ-"},
-  {ar:"سَيْطَرَة",he:"שליטה"},
-  {ar:"شَاطِئ",he:"חוף"},
-  {ar:"شَامِل",he:"כולל, מקיף"},
-  {ar:"شَبَكَة",he:"רשת"},
-  {ar:"شَبَكَة التَّوَاصُل الاجْتِمَاعِيّ",he:"רשת חברתית"},
-  {ar:"شَرْط",he:"תנאי"},
-  {ar:"شَكّ",he:"ספק"},
-  {ar:"شَهَادَة",he:"עדות, תעודה"},
-  {ar:"شَهِدَ",he:"היה עד ל-"},
-  {ar:"شَيْء",he:"דבר"},
-  {ar:"صِحَّة",he:"בריאות, אמיתות"},
-  {ar:"صِرَاع",he:"מאבק"},
-  {ar:"صَلَّى",he:"התפלל"},
-  {ar:"صَهْيُونِيّ",he:"ציוני"},
-  {ar:"ضَحِيَّة",he:"קורבן"},
-  {ar:"ضِمْن",he:"בתוך"},
-  {ar:"طَالَبَ",he:"דרש מ-"},
-  {ar:"طِبّ",he:"רפואה"},
-  {ar:"طَرِيقَة",he:"אמצעי, דרך, שיטה"},
-  {ar:"ظَاهِرَة",he:"תופעה"},
-  {ar:"ظُرُوف",he:"תנאים, נסיבות"},
-  {ar:"عَاجِل",he:"דחוף, מבזק חדשותי"},
-  {ar:"عَبْر",he:"מעבר ל-, דרך"},
-  {ar:"عَدَم",he:"אי-, חוסר-, היעדר"},
-  {ar:"عَقِب",he:"עקב, בעקבות"},
-  {ar:"عِلْم",he:"ידע, מדע"},
-  {ar:"عِلْمِيّ",he:"מדעי"},
-  {ar:"عُنْف",he:"אלימות"},
-  {ar:"غَيَّرَ",he:"שינה"},
-  {ar:"غَيْر",he:"זולת, מלבד, חוץ מ-"},
-  {ar:"فَرْد",he:"איש"},
-  {ar:"فَسَاد",he:"שחיתות"},
-  {ar:"قَانُون",he:"חוק"},
-  {ar:"قَتَلَ",he:"הרג"},
-  {ar:"قَدَّرَ",he:"העריך"},
-  {ar:"قَنَاة",he:"ערוץ, תעלה, אפיק"},
-  {ar:"قِيَادَة",he:"מפקדה, הנהגה"},
-  {ar:"قِيَادِيّ",he:"בכיר, מפקד, מנהיג"},
-  {ar:"قِيمَة",he:"ערך"},
-  {ar:"كَافَّة",he:"כל"},
-  {ar:"كَشَفَ",he:"גילה, חשף"},
-  {ar:"كَهْرَبَاء",he:"חשמל"},
-  {ar:"كِيَان",he:"ישות"},
-  {ar:"لَا بُدَّ مِن",he:"אין מנוס מ-"},
-  {ar:"لَاجِئ",he:"פליט"},
-  {ar:"مَادَّة",he:"חומר, נושא"},
-  {ar:"مُبَاشَر",he:"ישיר"},
-  {ar:"مُبَاشَرَةً",he:"מיד, ישירות"},
-  {ar:"مَبْدَأ",he:"עיקרון, יסוד"},
-  {ar:"مَبْلَغ",he:"סכום"},
-  {ar:"مُتَبَادَل",he:"הדדי"},
-  {ar:"مَثَلًا",he:"למשל"},
-  {ar:"مَجَلَّة",he:"מגזין, כתב עת"},
-  {ar:"مَجْلِس",he:"מועצה"},
-  {ar:"مَحْكَمَة",he:"בית משפט"},
-  {ar:"مَحَلِّيّ",he:"מקומי"},
-  {ar:"مُدَّة",he:"פרק זמן"},
-  {ar:"مَزِيد مِن",he:"עוד, תוספת"},
-  {ar:"مَسْؤُولِيَّة",he:"אחריות"},
-  {ar:"مُسْتَوَى",he:"רמה, דרג, מישור"},
-  {ar:"مُسْتَوْطِن",he:"מתיישב, מתנחל"},
-  {ar:"مُشْتَبَه",he:"חשוד"},
-  {ar:"مُعَاهَدَة",he:"חוזה, הסכם, ברית"},
-  {ar:"مُعْظَم",he:"רוב"},
-  {ar:"مُعَيَّن",he:"ממונה, מסוים"},
-  {ar:"مَقَرّ",he:"מטה, מושב של מפקדה"},
-  {ar:"مُنَاسِب",he:"מתאים"},
-  {ar:"مَنْزِل",he:"בית, משכן"},
-  {ar:"مُهَاجِر",he:"מהגר"},
-  {ar:"مَهْرَجَان",he:"חגיגה, פסטיבל"},
-  {ar:"مُهِمَّة",he:"משימה, תפקיד"},
-  {ar:"مَوْقِع",he:"אתר באינטרנט, עמדה"},
-  {ar:"مَوْقِف",he:"תחנה, עמדה"},
-  {ar:"مِيدَان",he:"כיכר, שטח, שדה"},
-  {ar:"مِيزَانِيَّة",he:"תקציב"},
-  {ar:"مَشْرُوع مِيزَانِيَّة",he:"הצעת תקציב"},
-  {ar:"نَائِب",he:"סגן, ציר בפרלמנט"},
-  {ar:"نَشِيط",he:"פָׁעִיל"},
-  {ar:"نَشَاط",he:"פעילות"},
-  {ar:"نَفَى",he:"הכחיש, שלל"},
-  {ar:"نَفَّذَ",he:"ביצע"},
-  {ar:"نَفْس الـ",he:"אותו ה-"},
-  {ar:"نَوْع",he:"סוג, מין"},
-  {ar:"نَوَوِيّ",he:"גרעיני, אטומי"},
-  {ar:"هَاجَمَ",he:"תקף"},
-  {ar:"هَبَطَ",he:"נחת"},
-  {ar:"هُجُوم",he:"התקפה"},
-  {ar:"هَدَّدَ",he:"איים על"},
-  {ar:"هَكَذَا",he:"כך"},
-  {ar:"هَيْئَة",he:"ארגון, גוף, צוות"},
-  {ar:"وَاجَهَ",he:"עמד בפני, נתקל ב-"},
-  {ar:"وَحْدَهُ",he:"לבדו"},
-  {ar:"وَصَفَ",he:"תאר"},
-  {ar:"يُوجَد",he:"ישנו, נמצא"},
-  {ar:"أَب",he:"אב"},
-  {ar:"اِبْتَسَمَ",he:"חייר"},
-  {ar:"اِبْتَعَدَ عَن",he:"התרחק מ-"},
-  {ar:"إِبْرَاهِيم",he:"ש\"פ זכר"},
-  {ar:"اِبْن",he:"בן"},
-  {ar:"أَبْوَاب",he:"דלתות, שערים"},
-  {ar:"أَبْيَض",he:"לבן"},
-  {ar:"اِتَّجَهَ إِلَى",he:"פנה אל; שם פניו אל"},
-  {ar:"اِتَّحَدَ",he:"התאחד"},
-  {ar:"اِتَّصَلَ بِـ",he:"התקשר אל/ ל-"},
-  {ar:"اِتِّفَاق / اِتِّفَاقِيَّة",he:"הסכם"},
-  {ar:"اِتَّفَقُوا عَلَى",he:"הסכימו (לעשות)/ על"},
-  {ar:"الاثْنَيْن",he:"(יום) שני"},
-  {ar:"أَجَابَ عَلَى",he:"ענה על"},
-  {ar:"أَجَلَّ",he:"דחה (בזמן)"},
-  {ar:"أَجْهِزَة",he:"מכשירים"},
-  {ar:"أُجُور",he:"שכר"},
-  {ar:"أَحَد",he:"אחד; מישהו, איש"},
-  {ar:"الأَحَد",he:"(יום) ראשון"},
-  {ar:"أَحْرَق",he:"שרף"},
-  {ar:"إِحْرَام",he:"שם (כינוי)"},
-  {ar:"أَخ",he:"אח"},
-  {ar:"أُخْت",he:"אחות"},
-  {ar:"اِخْتَتَمَ",he:"סיים"},
-  {ar:"اِخْتَطَفَ",he:"חטף"},
-  {ar:"أَخَذَ",he:"לקח"},
-  {ar:"أَخَوَات",he:"אחיות"},
-  {ar:"أَخِير",he:"אחרון"},
-  {ar:"أَدْخَلَ",he:"הכניס את... ל-"},
-  {ar:"الأَرْبِعَاء",he:"(יום) רביעי"},
-  {ar:"الأُرْدُن",he:"ירדן"},
-  {ar:"أَرْض",he:"אדמה"},
-  {ar:"اِسْتَقَلَّ",he:"הפטר"},
-  {ar:"اِسْتَكْمَلَ",he:"(השלום) (דבר)"},
-  {ar:"اِسْتَمَرَّ",he:"נמשך"},
-  {ar:"اِسْتَوْطَنَ",he:"התיישב; התיישבות"},
-  {ar:"اِسْتَوْعَبَ",he:"קלט (עולים)"},
-  {ar:"اِسْتَيْقَظَ",he:"התעורר"},
-  {ar:"إِسْرَائِيل",he:"ישראל"},
-  {ar:"أَسْرَعَ",he:"מיהר"},
-  {ar:"أَسْعَار",he:"מחירים"},
-  {ar:"أُسْلُوب",he:"דרך, שיטה"},
-  {ar:"اِسْم",he:"שם"},
-  {ar:"إِسْمَاعِيل",he:"ש\"פ זכר"},
-  {ar:"اِشْتَاقَ إِلَى",he:"התגעגע אל/ ל-"},
-  {ar:"اِشْتَرَكَ فِي",he:"השתתף ב-"},
-  {ar:"أَشْخَاص",he:"אנשים; בני-אדם"},
-  {ar:"أَشْهُر",he:"חודשים"},
-  {ar:"أَصْوَات",he:"קולות"},
-  {ar:"أَطْعَمَ",he:"האכיל את... (ב-)"},
-  {ar:"أَطْفَال",he:"תינוקות; ילדים"},
-  {ar:"أَطْلَقَ",he:"שיגר"},
-  {ar:"أَطْلَقَ النَّار عَلَى",he:"ירה על"},
-  {ar:"اِعْتَذَرَ عَن",he:"התנצל על"},
-  {ar:"أَعْلَى",he:"גבוה יותר"},
-  {ar:"اِغْتَالَ",he:"(מתנקש) רצח את, התנקש ב-"},
-  {ar:"أَفْرِيقِيَا",he:"אפריקה"},
-  {ar:"أَفْضَل",he:"טוב יותר, עדיף"},
-  {ar:"إِقْتِصَاد",he:"כלכלה"},
-  {ar:"أَقَلَّ",he:"יותר"},
-  {ar:"اِكْتَشَفَ",he:"גילה"},
-  {ar:"أَكْثَر",he:"יותר"},
-  {ar:"أَكَلَ",he:"אכל"},
-  {ar:"أَلَّا",he:"שלא"},
-  {ar:"إِلَى",he:"אל"},
-  {ar:"اِلَّبَسَ",he:"הלביש את... (ב-)"},
-  {ar:"أَلْعَاب",he:"משחקים"},
-  {ar:"أَلْف",he:"אלף"},
-  {ar:"أُمّ",he:"אם"},
-  {ar:"أَمَام",he:"לפני (מקום); מול"},
-  {ar:"أَمْرَاض",he:"מחלות"},
-  {ar:"أَمْس",he:"אתמול"},
-  {ar:"أَمْس الأَوَّل",he:"שלשום"},
-  {ar:"أَمْطَار",he:"גשמים"},
-  {ar:"أَمَل",he:"קיווה"},
-  {ar:"أَمِير",he:"נסיך"},
-  {ar:"أَمِيرِكَا",he:"אמריקה"},
-  {ar:"إِنْسَان",he:"אדם"},
-  {ar:"اِنْخَفَضَ",he:"(מעלות החום/ המחיר) ירד"},
-  {ar:"اِنْقَلَبَ",he:"התהפך"},
-  {ar:"اِنْكَسَرَ",he:"נשבר"},
-  {ar:"اِنْهَمَّ بِـ",he:"התענין ב-"},
-  {ar:"أَوْ",he:"או"},
-  {ar:"أَوْرَثَ",he:"הוריש ל- את ..."},
-  {ar:"أُورُوبَّا",he:"אירופה"},
-  {ar:"أَوْسَط",he:"(המזרח ה)תיכון"},
-  {ar:"أَوْفَدَ",he:"שלח, שיגר"},
-  {ar:"أَوْلَاد",he:"ילדים"},
-  {ar:"أَيَّام",he:"ימים"},
-  {ar:"أَقَلّ",he:"פחות"},
-  {ar:"أَمِين",he:"מזכיר"},
-  {ar:"أَنْ",he:"ש- (יישה), לאמנם; ש/ כי"},
-  {ar:"إِنْ",he:"אם, אכן, אמנם; ש/ כי"},
-  {ar:"أَنَّ",he:"ש/ כי"},
-  {ar:"أَنَا",he:"אני"},
-  {ar:"أَنْبَاء",he:"ידיעות"},
-  {ar:"اِتَّجَحَ",he:"ייצר"},
-  {ar:"إِيرَان",he:"איראן"},
-  {ar:"إِيطَالِيَا",he:"איטליה"},
-  {ar:"أَيْقَظَ",he:"העיר"},
-  {ar:"أَيْن",he:"איפה"},
-  {ar:"بِـ",he:"ב-, באמצעות"},
-  {ar:"بَاب",he:"דלת; שער"},
-  {ar:"بَارِيس",he:"פריס (בירת צרפת)"},
-  {ar:"بَاص",he:"אוטובוס"},
-  {ar:"بَحَثَ عَن",he:"חיפש ב-, ד ב-"},
-  {ar:"بَحَثَ فِي",he:"חיפש ב-, ד ב-"},
-  {ar:"بَحْث",he:"דיון / לדון"},
-  {ar:"بَحْر",he:"ים"},
-  {ar:"الْبَحْرَيْن",he:"בחריין"},
-  {ar:"بُدَّ",he:"מנוס"},
-  {ar:"بَدَأَ",he:"התחיל / להתחיל"},
-  {ar:"بَدِيل",he:"תחליף (עַן)/ ל-"},
-  {ar:"بُرْكَة سِبَاحَة",he:"בריכת שחייה"},
-  {ar:"بَرِيد",he:"דואר"},
-  {ar:"بِرِيطَانِيَا",he:"בריטניה"},
-  {ar:"بُطَالَة",he:"אבטלה"},
-  {ar:"بُطُولَة",he:"אליפות"},
-  {ar:"بَعْد",he:"אחרי (זמן)"},
-  {ar:"بَعِيد عَن",he:"רחוק (מ-)"},
-  {ar:"بَغْدَاد",he:"בגדאד (בירת עיראק)"},
-  {ar:"تَعَاوَنَ مَعَ",he:"שיתף פעולה עם"},
-  {ar:"تَعَلَّقَ بِـ",he:"היה קשור ל-"},
-  {ar:"تَغَلَّبَ عَلَى",he:"התגבר על"},
-  {ar:"تَفَاوَضَ مَعَ",he:"ניהל משא ומתן עם"},
-  {ar:"تَقَدَّمَ",he:"התקדם"},
-  {ar:"تِلْمِيذ",he:"תלמיד"},
-  {ar:"ثُمَّ",he:"תם, נשלם, הסתיים"},
-  {ar:"تَمَارِين",he:"תרגילים"},
-  {ar:"تَمَكَّنَ مِن",he:"עלה בידו, הצליח"},
-  {ar:"تَنَازَلَ عَن",he:"ויתר על"},
-  {ar:"تَوَاصَلَ",he:"נמשך"},
-  {ar:"تَوَصَّلَ إِلَى",he:"הגיע ל(הישג)"},
-  {ar:"ثَلَاث",he:"שלוש"},
-  {ar:"الثُّلَاثَاء",he:"(יום) שלישי"},
-  {ar:"تَأَخَّرَ",he:"איחר, התעכב"},
-  {ar:"تَأَسَّسَ",he:"נוסד"},
-  {ar:"تَبَادَلَ",he:"החליף (זע\"ז)"},
-  {ar:"تَجَاهَلَ",he:"התעלם מ-"},
-  {ar:"تَحَسَّسَ",he:"התחת"},
-  {ar:"تَحْت",he:"תחת; מתחת"},
-  {ar:"تَحَدَّث",he:"שוחח; דיבר"},
-  {ar:"تَحَسَّنَ",he:"השתפר"},
-  {ar:"تَدَخَّلَ فِي",he:"התערב ב-"},
-  {ar:"تَرْبِيَة",he:"חינוך"},
-  {ar:"تَرَكَ",he:"עזב; השאיר"},
-  {ar:"تُرْكِيَا",he:"טורקיה"},
-  {ar:"تَزَوَّجَ مِن",he:"התחתן עם"},
-  {ar:"جَار",he:"שכן"},
-  {ar:"جَاوَبَ عَلَى",he:"ענה על"},
-  {ar:"جَدّ",he:"סב, סבא"},
-  {ar:"جِدًّا",he:"מאוד"},
-  {ar:"جَدِيد",he:"חדש"},
-  {ar:"جَرَاح",he:"פצעים"},
-  {ar:"جَرِيمَة",he:"פשע"},
-  {ar:"جَزِيرَة",he:"אי"},
-  {ar:"جَلَسَ",he:"ישב"},
-  {ar:"الجُمْعَة",he:"(יום) שישי"},
-  {ar:"جَمِيع",he:"כל ..."},
-  {ar:"جَمِيل",he:"יפה"},
-  {ar:"جَمِيلَة",he:"ש\"פ נקבה"},
-  {ar:"جَنُوب",he:"דרום"},
-  {ar:"جَوَائِز",he:"פרסים"},
-  {ar:"جِيرَان",he:"שכנים"},
-  {ar:"حَاجَة",he:"צורך"},
-  {ar:"حَادِث طُرُق",he:"תאונות דרכים"},
-  {ar:"حَاسُوب",he:"מחשב"},
-  {ar:"حَاضَرَ",he:"הרצה"},
-  {ar:"الحَاضِر",he:"(בזמן) המנוחה"},
-  {ar:"حَافِلَة",he:"אוטובוס"},
-  {ar:"حَبِيب",he:"אהוב"},
-  {ar:"حُجَّاج",he:"עולים לרגל (מוסלמים)"},
-  {ar:"حَدّ",he:"גבול (בין מדינות)"},
-  {ar:"حَذَّرَ",he:"הזהיר (מפני ...)"},
-  {ar:"حَفْلَة",he:"מסיבה, חגיגה"},
-  {ar:"حَقِيد",he:"נכד"},
-  {ar:"حَقْل",he:"שדה"},
-  {ar:"حُكُومَة",he:"ממשלה"},
-  {ar:"حَلَّ",he:"פתר"},
-  {ar:"خَارِجِيّ",he:"חיצוני"},
-  {ar:"خَافَ",he:"פחד"},
-  {ar:"خَال",he:"דוד (מצד האם)"},
-  {ar:"خُبَرَاء",he:"מומחים"},
-  {ar:"خَرَجَ",he:"יצא"},
-  {ar:"خُرُوج",he:"יציאה / לצאת"},
-  {ar:"خَطِير",he:"מסוכן"},
-  {ar:"خَطَفَ",he:"חטף"},
-  {ar:"خَفِيف",he:"קל"},
-  {ar:"خِلَال",he:"במשך; במהלך"},
-  {ar:"دَاخِلِيّ",he:"פנימי"},
-  {ar:"دَاعِي",he:"אין צורך ל-"},
-  {ar:"لَا دَاعِي لِـ",he:"אין סיבה ל-"},
-  {ar:"دِبْلُومَاسِيّ",he:"דיפלומטי"},
-  {ar:"دَخَنَ",he:"עישן"},
-  {ar:"دَرَّبَ",he:"אימן"},
-  {ar:"دَرَسَ",he:"לָׁמַׂד"},
-  {ar:"دَرَّسَ",he:"לִׁמֵׂד"},
-  {ar:"دَفَّعَ",he:"תשלום / לשלם"},
-  {ar:"دَقِيق",he:"מדוייק"},
-  {ar:"دَوْر",he:"תור, תפקיד"},
-  {ar:"دَوْلَة",he:"מדינה"},
-  {ar:"دُون",he:"מבלי, ללא"},
-  {ar:"ذَهَبَ",he:"הלך / ללכת"},
-  {ar:"ذُو",he:"בעל-"},
-  {ar:"رِئَاسَة",he:"נשיאות; משמרות"},
-  {ar:"رَاتِب",he:"משכורת"},
-  {ar:"رَأْس",he:"ראש"},
-  {ar:"رَئِيس الأُوزَرَاء",he:"ראש הממשלה"},
-  {ar:"رَجَالَ شُرَطَة",he:"שוטרים"},
-  {ar:"رَجَعَ",he:"חזר"},
-  {ar:"رَجُل",he:"איש; גבר"},
-  {ar:"رَخِيص",he:"זול"},
-  {ar:"رَدَّ عَلَى",he:"השיב, ענה על"},
-  {ar:"رِسَالَة",he:"מכתב, איגרת"},
-  {ar:"رَسْمِيًّا",he:"רשמית"},
-  {ar:"رِفَاق",he:"חברים"},
-  {ar:"رَفِيق",he:"חבר"},
-  {ar:"رُكَّاب",he:"נוסעים (בכלי רכב)"},
-  {ar:"رَمَضَان",he:"שם החודש התשיעי בשנה המוסלמית"},
-  {ar:"زَوَّاج",he:"משכורות"},
-  {ar:"رُوسِيَا",he:"רוסיה"},
-  {ar:"زَوْج",he:"בעל זוג, בעל"},
-  {ar:"زَوْجَة",he:"אשת זוג, אישה"},
-  {ar:"سَائِق",he:"נהג"},
-  {ar:"سُؤَال",he:"שאלה"},
-  {ar:"سَافَرَ إِلَى",he:"נסע ל-"},
-  {ar:"سَجَائِر",he:"סיגריות"},
-  {ar:"سَجَنَ",he:"אסר"},
-  {ar:"سَرَقَ",he:"גנב"},
-  {ar:"سَرِقَة",he:"גנבה / לגנוב"},
-  {ar:"أَلسُّعُودِيَّة",he:"ערב הסעודית"},
-  {ar:"سَفَر",he:"נסיעה / לנסוע"},
-  {ar:"سَفِينَة",he:"ספינה, אנייה"},
-  {ar:"سُكَّان",he:"תושבים"},
-  {ar:"سُلَّم",he:"סולם"},
-  {ar:"سِلْمِيّ",he:"של שלום"},
-  {ar:"سَمَّى",he:"קרא ל- (שם כלשהו)"},
-  {ar:"سَمَحَ لِـ بِـ",he:"הרשה ל- ל(עשות)"},
-  {ar:"سَمِعَ",he:"שמע"},
-  {ar:"الأَسُودَان",he:"סודאן"},
-  {ar:"سُورِيَا",he:"סוריה"},
-  {ar:"سَوْفَ",he:"מילה הקודמת לפועל להגדשת העתיד"},
-  {ar:"سُيَّاح",he:"תיירים"},
-  {ar:"سَيَّارَة إِسْعَاف",he:"אמבולנס"},
-  {ar:"شَابّ",he:"בחור, צעיר"},
-  {ar:"شَاحِنَة",he:"משאית"},
-  {ar:"شَارَعَ",he:"רחוב"},
-  {ar:"شَارَكَ فِي",he:"השתתף ב-"},
-  {ar:"شَرِبَ",he:"שתה"},
-  {ar:"شَرْق",he:"מזרח"},
-  {ar:"شَهِيّ",he:"טעים"},
-  {ar:"صِيَاعَة",he:"ייצור; תעשייה"},
-  {ar:"صَوَارِيخ",he:"טילים"},
-  {ar:"صَوْت",he:"קול"},
-  {ar:"صَوْم",he:"צום / לצום"},
-  {ar:"صَيْف",he:"קיץ"},
-  {ar:"الصِّين",he:"סין"},
-  {ar:"ضَرَائِب",he:"מסים"},
-  {ar:"ضَرْب",he:"הכה"},
-  {ar:"ضَرِيبَة",he:"מס"},
-  {ar:"ضَعِيف",he:"חלש"},
-  {ar:"ضَيَّعَ",he:"בזבז (זמן)"},
-  {ar:"ضَيْف",he:"אורח"},
-  {ar:"طَاوِلَة",he:"שולחן"},
-  {ar:"طَبَخَ",he:"בישל"},
-  {ar:"طَبِيب",he:"רופא"},
-  {ar:"طَرِيق",he:"דרך"},
-  {ar:"طُلَّاب",he:"סטודנטים; תלמידים"},
-  {ar:"طَلَبَ",he:"ביקש; דרישה"},
-  {ar:"طَلَب",he:"דרישה"},
-  {ar:"طَهْرَان",he:"טהראן (בירת איראן)"},
-  {ar:"طُوكْيُو",he:"טוקיו (בירת יפן)"},
-  {ar:"طَوِيل",he:"ארוך; גבוה"},
-  {ar:"ضَرَبَ",he:"הכה"},
-  {ar:"عَائِلَة",he:"משפחה"},
-  {ar:"عَارَضَ",he:"התנגד ל- (עניין)"},
-  {ar:"عَاصِمَة",he:"עיר בירה"},
-  {ar:"عِبْرِيَّة",he:"(השפה ה)עברית"},
-  {ar:"عُثْمَان",he:"ש\"פ זכר"},
-  {ar:"الْعِرَاق",he:"עיראק"},
-  {ar:"عَرَضَ عَلَى",he:"הציע ל(עשות)"},
-  {ar:"عَرَفَ",he:"ידע; הֵכִיר"},
-  {ar:"عَزَّزَ",he:"חיזוק"},
-  {ar:"عَزَفَ عَلَى",he:"ניגן על"},
-  {ar:"عُطْلَة",he:"חופשה"},
-  {ar:"عَقْد",he:"ערכה; לערוך;"},
-  {ar:"عَلَى",he:"על"},
-  {ar:"عَلَاقَة",he:"קשר; יחס"},
-  {ar:"عَن",he:"על, אודות"},
-  {ar:"عُنْوَان",he:"כתובת; כותרת"},
-  {ar:"عِيد",he:"חג"},
-  {ar:"عَيْن",he:"מינה; עין"},
-
-  {ar:"غَدًا",he:"מחר"},
-  {ar:"غَرَامَة",he:"קנס"},
-  {ar:"غُرْفَة",he:"חדר"},
-  {ar:"غَنِيّ",he:"עשיר"},
-  {ar:"فَاطِمَة",he:"ש\"פ נקבה"},
-  {ar:"فَتَحَ",he:"פתח"},
-  {ar:"فَتْح",he:"פתיחה / לפתוח"},
-  {ar:"فَحَصَ",he:"בדק"},
-  {ar:"فَرَّ",he:"ברח, נמלט"},
-  {ar:"فَرَضَ عَلَى",he:"הטיל ל- הגביל; קנס; עיצומים) על"},
-  {ar:"فَرْع",he:"סניף"},
-  {ar:"فِرَنْسَا",he:"צרפת"},
-  {ar:"فَضَّلَ",he:"העדיף"},
-  {ar:"فَلَسْطِين",he:"פלסטין/ פלשתין"},
-  {ar:"فَنَادِق",he:"מלונות"},
-  {ar:"فِنْجَان",he:"ספל"},
-  {ar:"فُنْدُق",he:"מלון"},
-  {ar:"فَهِمَ",he:"הבין"},
-  {ar:"فُو",he:"פה- (צורת הנסמך של פה)"},
-  {ar:"فَوْق",he:"מעל"},
-  {ar:"فِي",he:"ב-, בתוך"},
-  {ar:"فِيلْم",he:"סרט (קולנוע)"},
-  {ar:"قَادَ",he:"ב- נהג"},
-  {ar:"الْقَادِم",he:"(השבוע/ החודש) הבא/ הקרוב"},
-  {ar:"قَاعَة",he:"אולם"},
-  {ar:"قَاعِدَة",he:"בסיס"},
-  {ar:"قَامُوس",he:"מילון"},
-  {ar:"الْقَاهِرَة",he:"קהיר (בירת מצרים)"},
-  {ar:"قَبَضَ عَلَى",he:"תפס; עצר"},
-  {ar:"قَبْل",he:"לפני (זמן)"},
-  {ar:"قَدْ",he:"לפני פועל עבר: כבר; אכן, אמנם - לפני פועל בהווה/ עתיד:"},
-  {ar:"قَدَّمَ",he:"הגיש"},
-  {ar:"قَدِيم",he:"ישן"},
-  {ar:"قَرَأَ",he:"קרא"},
-  {ar:"قُرْب",he:"בקרבת ..."},
-  {ar:"قَرِيبًا",he:"בקרוב"},
-  {ar:"قِصَّة",he:"סיפור"},
-  {ar:"قَصِير",he:"נמוך; קצר"},
-  {ar:"قَطَعَ",he:"ניתק; (הנהר) חצה"},
-  {ar:"قَلْب",he:"לב"},
-  {ar:"قَلِيل",he:"מעט"},
-  {ar:"قُتِيلَة",he:"פצצה"},
-  {ar:"قَهْوَة",he:"קפה"},
-  {ar:"قَوَاعِد",he:"בסיסים"},
-  {ar:"كَأْس",he:"כוס; גביע"},
-  {ar:"كَأَيْلُو",he:"כאילו"},
-  {ar:"كُؤُوس",he:"כוסות; גביעים"},
-  {ar:"كَبِير",he:"גדול; בכיר"},
-  {ar:"كِتَاب",he:"ספר"},
-  {ar:"كَتَبَ",he:"כתב"},
-  {ar:"كَثِير",he:"רב"},
-  {ar:"كُرَة الْقَدَم",he:"כדורגל"},
-  {ar:"كُرَة الْيَد",he:"כדוריד"},
-  {ar:"كُرْسِيّ",he:"כיסא"},
-  {ar:"كَلّ",he:"חשף; גילה"},
-  {ar:"كَلَّ",he:"כל..."},
-  {ar:"كَيْف",he:"איך"},
-  {ar:"لَـ",he:"ל-, כדי ש-; בשל"},
-  {ar:"لَا",he:"לא; אל"},
-  {ar:"لَئِلَّا",he:"כדי ש(לא)"},
-  {ar:"لُبْنَان",he:"לבנון"},
-  {ar:"لَعَلَّ",he:"אולי; הלואי ש-"},
-  {ar:"لُغَة",he:"שפה"},
-  {ar:"لَكِنَّ",he:"אבל"},
-  {ar:"لِمَاذَا",he:"למה; מדוע; לשם מה"},
-  {ar:"لَنْ",he:"לא, בשום אופן לא"},
-  {ar:"لَيْسَ",he:"אינו / אינה"},
-  {ar:"مَا",he:"לא (שולל פועל עבר); כל עוד הוא ..."},
-  {ar:"مَا دَامَ",he:"לא חדל, עודנו, עדיין ..."},
-  {ar:"مَا زَالَ",he:"מים"},
-  {ar:"مُؤْتَمَر",he:"כינוס; ועידה"},
-  {ar:"الْمَاضِي",he:"(השבוע/ החודש) שעבר"},
-  {ar:"مُبَارَك",he:"מבורך"},
-  {ar:"مَبْعُوث",he:"שליח"},
-  {ar:"مَتَى",he:"מתי"},
-  {ar:"مُتَأَخِّر",he:"מאוחר"},
-  {ar:"مُتَّحِد",he:"מאוחד"},
-  {ar:"الْمُتَحَدِّث بِاسْم",he:"דובר ...מטעם ..."},
-  {ar:"مُتَفَائِل",he:"אופטימי"},
-  {ar:"مُتَفَوِّق",he:"מצטיין"},
-  {ar:"مُحَادَثَات",he:"שיחות"},
-  {ar:"مُخَدِّرَات",he:"סמים"},
-  {ar:"مُخَيَّم",he:"מחנה"},
-  {ar:"مُسْتَوْطَنَة",he:"התנחלות; ישוב"},
-  {ar:"مَسَاجِد",he:"מסגדים"},
-  {ar:"مَشَاكِل",he:"בעיות"},
-  {ar:"مَشْبُوه",he:"חשוד"},
-  {ar:"مَشْرُوع قَانُون",he:"הצעת חוק"},
-  {ar:"مَصَادِر",he:"מקורות"},
-  {ar:"مَصَانِع",he:"מפעלים"},
-  {ar:"مِصْر",he:"מצרים"},
-  {ar:"مُصْطَفَى",he:"ש\"פ זכר"},
-  {ar:"مَصْنَع",he:"מפעל"},
-  {ar:"مَطَاعِم",he:"מסעדות"},
-  {ar:"مَطَالِب",he:"דרישות"},
-  {ar:"مَطَابِخ",he:"מטבחים"},
-  {ar:"مَعَ",he:"עם"},
-  {ar:"الْمُعَارَضَة",he:"האופוזיציה"},
-  {ar:"مَدَارِس",he:"בתי-ספר"},
-  {ar:"مُدُن",he:"ערים"},
-  {ar:"مَدِينَة",he:"עיר"},
-  {ar:"مُرَشَّح",he:"מועמד"},
-  {ar:"مَرَض",he:"מחלה; חולה"},
-  {ar:"مَرِيض",he:"חולה"},
-  {ar:"مَرْيَم",he:"ש\"פ נקבה"},
-  {ar:"مَسَاء",he:"ערב"},
-  {ar:"مُسَاعَدَة",he:"עזרה; סיוע"},
-  {ar:"مَفَاتِيح",he:"מפתחות"},
-  {ar:"مَفَرّ",he:"מנוס"},
-  {ar:"مَقَال",he:"כתבה"},
-  {ar:"مَقْهَى",he:"בית קפה (מידוע)"},
-  {ar:"مَكَاتِب",he:"משרדים"},
-  {ar:"مَكْتَبَة",he:"ספרייה"},
-  {ar:"مَلَأَ",he:"מילא את... (ב-)"},
-  {ar:"مَلِك",he:"מלך"},
-  {ar:"مُمْكِن",he:"אפשרי, יתכן"},
-  {ar:"مَمْلَكَة",he:"ממלכה"},
-  {ar:"مِن",he:"מ-, מן"},
-  {ar:"مَن",he:"מי"},
-  {ar:"مَنَازِل",he:"בתים; דירות"},
-  {ar:"مَوْعِد",he:"מועד"},
-  {ar:"مَوَّل",he:"מימן"},
-  {ar:"نَارٌ",he:"אש"},
-  {ar:"نَبِيل",he:"ש\"פ זכר"},
-  {ar:"نَحْن",he:"אנחנו"},
-  {ar:"نَزَاع",he:"סכסוך"},
-  {ar:"نَسَّقَ",he:"תיאם"},
-  {ar:"نَظَرَ",he:"הביט"},
-  {ar:"نَظَّمَ",he:"ארגן"},
-  {ar:"نَفْط",he:"נפט"},
-  {ar:"نِقَاش",he:"דיון"},
-  {ar:"نَوْم",he:"שינה / לשון"},
-  {ar:"هَاجَرَ",he:"היגר"},
-  {ar:"هَدَمَ",he:"הרס"},
-  {ar:"هَذَا",he:"זה; הזה"},
-  {ar:"هَذِهِ",he:"זאת; הזאת"},
-  {ar:"هَرَب",he:"בריחה / לברוח"},
-  {ar:"هُرُوب",he:"בריחה / לברוח"},
-  {ar:"هَرَبَ",he:"ברח"},
-  {ar:"هَزَّة أَرْضِيَّة",he:"רעידת אדמה"},
-  {ar:"هَل",he:"האם"},
-  {ar:"هُم",he:"הם"},
-  {ar:"هُنَّ",he:"הן"},
-  {ar:"هُنَاك",he:"שם; יש"},
-  {ar:"الهِنْد",he:"הודו"},
-  {ar:"هُوَ",he:"הוא"},
-  {ar:"هُولَنْدَا",he:"הולנד"},
-  {ar:"هِيَ",he:"היא"},
-  {ar:"وَ",he:"ו-"},
-  {ar:"وَالِد",he:"אב; הורה"},
-  {ar:"وَثِيقَة",he:"מסמך"},
-  {ar:"وَجَّهَ",he:"הפנה"},
-  {ar:"وَحْش",he:"חיית פרא"},
-  {ar:"وَرَاء",he:"מאחורי"},
-  {ar:"وُزَرَاء",he:"שרים"},
-  {ar:"وَزَّعَ عَلَى",he:"חילק; פרס (ל-)"},
-  {ar:"وَزَن",he:"שקל"},
-  {ar:"وَزْن",he:"משקל"},
-  {ar:"وَزِير",he:"שר"},
-  {ar:"وَزِير التَّرْبِيَة وَالتَّعْلِيم",he:"שר החינוך והתרבות"},
-  {ar:"وَصَلَ",he:"הגיע, בא"},
-  {ar:"وَعَدَ",he:"הבטיח"},
-  {ar:"وَقَعَ عَلَى",he:"חתמו/ חתם על"},
-  {ar:"وَلَد",he:"ילד"},
-  {ar:"وَلَكِنَّ",he:"אבל"},
-  {ar:"يَا",he:"הוי (מילת פנייה)"},
-  {ar:"الْيَابَان",he:"יפן"},
-  {ar:"الْيَمَن",he:"תימן"},
-  {ar:"يَهُودِيّ",he:"יהודי"},
-  {ar:"يَوْم",he:"יום"},
-  {ar:"يُونَان",he:"יוון"}
-]);
-
-
-const Q1_WORDS=[
-  {ar:"في هذِهِ القِصّة نَرَى مَسِيرَة اسْتِعْبَاد النَّمِر القَوِيّ",he:"בסיפור הזה אנו רואים את תהליך שיעבוד הנמר החזק והטורף"},
-  {ar:"لِلمُرَوّض – وهُوَ الزّعِيم الدِكتَاتوريّ من خِلال عَشَرَة أيَّام.",he:"של המאלף, והוא המנהיג הדיקטטורי במהלך עשרה ימים"},
-  {ar:"في البِداية كانتْ أوَامِر المُرَوِّض سَهْلَة وبَسِيطَة.",he:"בהתחלה היו פקודות המאלף קלות ופשוטות"},
-  {ar:"مَثَلًا في اليَوْم الثانِي هو أمَرَهُ أنْ يَعْتَرِفَ بِأنَّهُ جائِع",he:"לדוגמה ביום השני הוא ציווה עליו להכיר בזה שהוא רעב"},
-  {ar:"أو في اليوم الثالِث هُو أمَرَهُ أنْ يَقِفَ في القَفَص والنَّمِر وَافَق على ذلك",he:"או ביום השלישי הוא ציווה עליו לעמוד בכלוב והנמר הסכים לזה"},
-  {ar:"ولكن رُوَيْدًا رُوَيْدًا تَتَغَيَّرُ الأَوَامِر وتُصْبِحُ مُهِينَةً ومُسْتَخِفّة",he:"אבל לאט לאט השתנו הפקודות והפכו למשפילות ומזלזלות"},
-  {ar:"مَثَلًا في اليَوْم الرّابِع يَأْمُرُهُ المُرَوّض أنْ يُقَلّدَ مَوَاء القِطط, وبَعْدَ ذلك هو يَأمُرُهُ أنْ يُقَلّدَ نَهيق الحمار",he:"לדוגמה ביום הרביעי ציווה המאלף לחקות את יללת החתולים, ואחרי זה ציווה לחקות את נעירת החמור"},
-  {ar:"في اليَوم التاسِع أصْبَحَ النمِر حَيَوَانًا نباتيًّا, يَعْنِي مَحَا طبِيعَتَهُ كَحَيَوَان مُفْترس",he:"ביום התשיעי הפך הנמר לחיה צמחונית, כלומר מחק את הטבע שלו כחיה טורפת"},
-  {ar:"وفي اليوم الأخير هو أصْبَحَ مُوَاطِنًا والقَفَص مَدِينة.",he:"וביום האחרון הוא הפך אזרח ואת הכלוב עיר"}
-];
-const Q2_WORDS=[
-  {ar:"يَنْتَقِدُ زَكريا تامر في هذه القِصّة السلطات الدِيكتاتوريّة في العالَم ولكنْ خاصَّةً في العَالَم العربيّ.",he:"מבקר זכריא תאמר בסיפור הזה את השלטונות הדיקטטורים בעולם אבל במיוחד בעולם הערבי"},
-  {ar:"تَسْلُبُ السُلطَات الدِكْتَاتوريّة الحُقُوق الأسَاسِيّة مِن الناس, مَثَلًا حَقّ التَعبير وَحَقّ التَنَقُّل وَحَقّ الإبْدَاع والتَفكير وإلى آخِرِهِ",he:"השלטונות הדיקטטורים גוזלים את הזכויות היסוד מהאנשים, לדוגמה הזכות לביטוי, תנועה, יצירה, חשיבה וכו'"},
-  {ar:"هذه السلطة تَنجحُ في اسْتِعباد المُوَاطِنِينَ بِوَاسطة عِدّة طُرُق",he:"השלטון הזה מצליח בשיעבוד האזרחים באמצעות מספר דרכים"},
-  {ar:"العُنْف - أجْهِزَة الأمْن في هذه الدولة تُمَارِسُ العُنف على كلّ الّذين يُحاوِلونَ مُعَارَضَة الزّعِيم.",he:"האלימות – מנגנוני הביטחון במדינה הזאת מפעילים אלימות על כל אלו שמנסים להתנגד למנהיג"},
-  {ar:"جِهاز التربية أو كَمَا يُسَمّيهِ تامر جِهاز التَرويض يَتَعَلّم تلاميذ المدرسة أنْ يُقَدِّروا ويُجِلّوا الزعيم",he:"מנגנון החינוך, או כמו שמכנה אותו זכריא תאמר מנגנון האילוף, מלמד את תלמידי בית הספר להעריך ולהעריץ את המנהיג"},
-  {ar:"الرِقابة - في كلّ الدُول الدِكْتاتُوريّة هُناكَ جِهاز رِقابة يَفْحَصُ كلّ ما يُنشَرُ, ويَغْسِل دِماغ المُوَاطِنِينَ.",he:"הצנזורה – בכל המדינות הדיקטטוריות יש מנגנון צנזורה שבודק כל מה שמפורסם ושוטף את מוח האזרחים"}
-];
-
-const Q3_WORDS=[
-  {ar:"تَعلّمنَا قِصّة 'النمور في اليوم العاشر' لِلكاتب السوريّ زكريا تامر",he:"למדנו את הסיפור 'הנמרים ביום העשירי' מאת הסופר הסורי זכריא תאמר"},
-  {ar:"في القِصّة شَخْصِيّتانِ مَركَزيَّانِ النّمر والمُروّض",he:"בסיפור יש שתי דמויות מרכזיות: הנמר והמאלף"},
-  {ar:"يُمَثّلُ النَّمر المُوَاطِنين المَقمُوعِين في الدَولة الدِّيكتاتوريّة والمُرَوِّض يُمَثِّلُ الزّعيم الدِيكتاتوريّ",he:"הנמר מייצג את האזרחים המדוכאים במדינה הדיקטטורית והמאלף מייצג את המנהיג הדיקטטורי"},
-  {ar:"المُروّض هُوَ إنسان عَاطِل, هَدَفُهُ الوَحِيد استعباد النّمر",he:"המאלף הוא אדם רע לב, שמטרתו היחידה היא שיעבוד הנמר"},
-  {ar:"هُوَ يَعْمَل كلّ ما في وُسعهِ لِكَيْ يَجْعَلَ النّمِر ضَعيفًا ومُتَعلّقًا به",he:"הוא עושה כל מה שביכולתו כדי להפוך את הנמר לחלש ותלוי בו"},
-  {ar:"هُوَ يُرِيد أنْ يُصْبِحَ النّمر عَبْدًا يُطِيعُ أوامِرَه",he:"הוא רוצה שהנמר יהפוך לעבד שמציית לפקודותיו"},
-  {ar:"تَغَيَّرَ النّمر كثيرًا من بِداية القِصّة. في البِداية هو كان مَخلوقًا قَوِيًّا وَفَخُورًا وَمُستَقِلّا",he:"הנמר השתנה מאוד מתחילת הסיפור. בהתחלה הוא היה יצור חזק וגאה ועצמאי"},
-  {ar:"ولكن رُوَيْدًا رُويدًا مَعَ مُرور الأيّام, ومع اشتداد جوعِه, تَتَغَيّرُ شَخْصيّتُهُ وهُوَ يَفْقِدُ ثِقتَهُ بِنَفسه, وَيَنْسَى قُوّته",he:"אבל לאט לאט עם חלוף הימים ועם התחזקות הרעב שלו משתנה אופיו והוא מאבד את בטחונו העצמי ושוכח את כוחו"}
-];
-
-
-const REST_ARUCHOS=[
-  {ar:"فْطُور",he:"ארוחת בוקר"},
-  {ar:"غَدَاء",he:"ארוחת צהרים"},
-  {ar:"عَشَاء",he:"ארוחת ערב"},
-  {ar:"فِطر",he:"אכל ארוחת בוקר"},
-  {ar:"تْغَدَّى",he:"אכל ארוחת צהרים"},
-  {ar:"تْعَشَّى",he:"אכל ארוחת ערב"},
-  {ar:"طَلَب",he:"הזמין (במסעדה)"},
-  {ar:"سُفْرَجيّ",he:"מלצר"},
-  {ar:"جَرْسون",he:"מלצר (צרפתית)"},
-  {ar:"مُقَبِّلات",he:"מנות ראשונות"},
-  {ar:"تِحْلاية",he:"קינוח"},
-  {ar:"قُلْ للطَّبَّاخ إنّو الأكْل كَان زَاكِي",he:"תגיד לטבח שהאוכל היה טעים"},
-  {ar:"القَعْدة كَانت حِلْوة",he:"הישיבה הייתה נעימה"}
-];
-const REST_MAACHALIM=[
-  {ar:"لَحْمة",he:"בשר"},
-  {ar:"لَحْم مَفْرُوم",he:"בשר טחון"},
-  {ar:"جَاجة",he:"עוף"},
-  {ar:"صُدُور الجَاج",he:"חזות עוף"},
-  {ar:"جاج مْسَحّب",he:"פרגיות"},
-  {ar:"كَبَاب",he:"כבאב"},
-  {ar:"شُقَف",he:"שישליק"},
-  {ar:"كَفْتَة",he:"קציצות"},
-  {ar:"خَرُوف",he:"כבש"},
-  {ar:"سَمَكَة",he:"דג"},
-  {ar:"أجْنِحَة",he:"כנפיים"},
-  {ar:"مَقْلِيّ",he:"מטוגן"},
-  {ar:"مَشْوِيّ",he:"על האש"},
-  {ar:"طَازَة",he:"טרי"},
-  {ar:"مَحَاشِي",he:"ממולאים"},
-  {ar:"دَوَالِي",he:"עלי גפן"},
-  {ar:"شورَبَة",he:"מרק"},
-  {ar:"شورَبَة عَدَس",he:"מרק עדשים"},
-  {ar:"بازيلّا",he:"אפונה"},
-  {ar:"فاصُوليَا",he:"שעועית"},
-  {ar:"قَرْنَبيط",he:"כרובית"},
-  {ar:"جَزَر",he:"גזר"},
-  {ar:"سَلَطَة",he:"סלט"},
-  {ar:"سَلَطَة مَلْفُوف وجَزَر",he:"סלט כרוב וגזר"},
-  {ar:"بَابَا غَنوج",he:"סלט חצילים"},
-  {ar:"بيضَة",he:"ביצה"},
-  {ar:"عِجّة",he:"חביתה"},
-  {ar:"بيضَة عين",he:"ביצת עין"},
-  {ar:"بيضَة لَخ",he:"ביצה מקושקשת"},
-  {ar:"بيضَة مَسْلُوقَة",he:"ביצה קשה"},
-  {ar:"جِبْنة",he:"גבינה"},
-  {ar:"خُبْز",he:"לחם"},
-  {ar:"كْماجة",he:"פיתה"},
-  {ar:"رُزّ",he:"אורז"},
-  {ar:"بَطَاطَا",he:"תפוחי אדמה"},
-  {ar:"بَطاطا حِلْوة",he:"בטטה"},
-  {ar:"حُمُّص",he:"חומוס"},
-  {ar:"مَعْكَرونة",he:"פסטה"},
-  {ar:"شوكو سُخن",he:"שוקו חם"},
-  {ar:"زِبْدة",he:"חמאה"},
-  {ar:"بَسْكوت بِقِطَع الشوكولاتة",he:"עוגיות שוקולד ציפס"}
-];
-const REST_YERAKOT=[
-  {ar:"بَنْدورَة",he:"עגבניה"},
-  {ar:"خْيَار",he:"מלפפון"},
-  {ar:"خَسّ",he:"חסה"},
-  {ar:"بَقْدونس",he:"פטרוזיליה"},
-  {ar:"كُزْبَرا",he:"כוסברה"},
-  {ar:"فْليفْلة خَضْرَاء",he:"פלפל ירוק"},
-  {ar:"فْليفْلة حَمْراء",he:"פלפל אדום"},
-  {ar:"بَصَل",he:"בצל"},
-  {ar:"كُوسَا",he:"קישוא"},
-  {ar:"بِتِنْجَان",he:"חציל"},
-  {ar:"مَلْفُوف",he:"כרוב"},
-  {ar:"فِجل",he:"צנון"},
-  {ar:"دُرَا",he:"תירס"}
-];
-const REST_PEROT=[
-  {ar:"تُفَّاح",he:"תפוחים"},
-  {ar:"حَمْضِيَّات",he:"פירות הדר"},
-  {ar:"موز",he:"בננות"},
-  {ar:"عِنَب",he:"ענבים"},
-  {ar:"يُوسف أفَنْدِي",he:"קלמנטינה"},
-  {ar:"جريبفْروت",he:"אשכולית"},
-  {ar:"كَرَز",he:"דובדבנים"},
-  {ar:"لوز",he:"שקדים"},
-  {ar:"جوز",he:"אגוזים"},
-  {ar:"بْهَارَات",he:"תבלינים"},
-  {ar:"فِلْفِل أحْمَر",he:"פפריקה"},
-  {ar:"كُرْكُم",he:"כורכום"},
-  {ar:"قِرْفة",he:"קינמון"},
-  {ar:"حَبّة البَرَكة",he:"קצח"}
-];
-const REST_TEAMIM=[
-  {ar:"مَالح",he:"מלוח"},
-  {ar:"حِلُو",he:"מתוק"},
-  {ar:"حَرّ",he:"חריף"},
-  {ar:"حَامض",he:"חמוץ"}
-];
-const REST_MITKON=[
-  {ar:"المُكَوِّنَات",he:"החומרים, המרכיבים"},
-  {ar:"قَلَاية",he:"מחבת"},
-  {ar:"طَنْجَرَة",he:"סיר"},
-  {ar:"خَلَّاط",he:"מיקסר"},
-  {ar:"جاط",he:"קערה"},
-  {ar:"مفرمة",he:"קרש חיתוך"},
-  {ar:"فُرْن",he:"תנור"},
-  {ar:"شَوَّاية",he:"גריל"},
-  {ar:"مَعْجُون البَندورَة",he:"רסק עגבניות"},
-  {ar:"عَجِينة",he:"בצק"},
-  {ar:"فَرَد",he:"שיטח, רידד"},
-  {ar:"دَخَّل",he:"הכניס"},
-  {ar:"طَلَّع",he:"הוציא"},
-  {ar:"شَغَّل",he:"הפעיל"},
-  {ar:"طفَّى",he:"כיבה"},
-  {ar:"نار واطِئ",he:"אש נמוכה"},
-  {ar:"طَبَق",he:"מאכל, מנה"},
-  {ar:"صَحْن",he:"צלחת"},
-  {ar:"كَاس",he:"כוס"},
-  {ar:"مِعْلَقَة صْغِيرة",he:"כפית"},
-  {ar:"مِعْلَقة كْبِيرة",he:"כף"},
-  {ar:"طْحِين",he:"קמח"},
-  {ar:"زَاكِي",he:"טעים"},
-  {ar:"خَلَط",he:"ערבב"},
-  {ar:"فَرَم",he:"חתך לחתיכות קטנות"},
-  {ar:"قَطَّع",he:"חתך לחתיכות גדולות"}
-];
-
-const REST_MEALA=[
-  {ar:"فْطُور",he:"ארוחת בוקר"},
-  {ar:"غَدَاء",he:"ארוחת צהרים"},
-  {ar:"عَشَاء",he:"ארוחת ערב"},
-  {ar:"فِطر",he:"אכל ארוחת בוקר"},
-  {ar:"تْغَدَّى",he:"אכל ארוחת צהרים"},
-  {ar:"تْعَشَّى",he:"אכל ארוחת ערב"},
-  {ar:"طَلَب",he:"הזמין (במסעדה)"},
-  {ar:"سُفْرَجيّ / سُفْرَجِيّة",he:"מלצר"},
-  {ar:"جَرْسون",he:"מלצר"},
-  {ar:"مُقَبِّلات",he:"מנות ראשונות"},
-  {ar:"تِحْلاية",he:"קינוח"},
-  {ar:"قُلْ للطَّبَّاخ إنّو الأكْل كَان زَاكِي",he:"תגיד לטבח שהאוכל היה טעים"},
-  {ar:"القَعْدة كَانت حِلْوة",he:"הישיבה הייתה נעימה"}
-];
-const REST_FOOD=[
-  {ar:"لَحْمة",he:"בשר"},
-  {ar:"لَحْم مَفْرُوم",he:"בשר טחון"},
-  {ar:"جَاجة / جَاج",he:"עוף"},
-  {ar:"صُدُور الجَاج",he:"חזות עוף"},
-  {ar:"جاج مْسَحّب",he:"פרגיות"},
-  {ar:"كَبَاب",he:"כבאב"},
-  {ar:"شُقَف",he:"שישליק"},
-  {ar:"كَفْتَة",he:"קציצות"},
-  {ar:"خَرُوف",he:"כבש"},
-  {ar:"سَمَكَة / سَمَك",he:"דג"},
-  {ar:"أجْنِحَة",he:"כנפיים"},
-  {ar:"مَقْلِيّ",he:"מטוגן"},
-  {ar:"مَشْوِيّ",he:"על האש"},
-  {ar:"طَازَة",he:"טרי"},
-  {ar:"مَحَاشِي",he:"ממולאים"},
-  {ar:"دَوَالِي",he:"עלי גפן"},
-  {ar:"شورَبَة",he:"מרק"},
-  {ar:"شورَبَة عَدَس",he:"מרק עדשים"},
-  {ar:"بازيلّا",he:"אפונה"},
-  {ar:"فاصُوليَا",he:"שעועית"},
-  {ar:"قَرْنَبيط / زَهْرَة",he:"כרובית"},
-  {ar:"جَزَر",he:"גזר"},
-  {ar:"سَلَطَة / سَلَطَات",he:"סלט"},
-  {ar:"سَلَطَة مَلْفُوف وجَزَر",he:"סלט כרוב וגזר"},
-  {ar:"بَابَا غَنوج",he:"סלט חצילים"},
-  {ar:"بيضَة / بيض",he:"ביצה"},
-  {ar:"عِجّة",he:"חביתה"},
-  {ar:"بيضَة عين",he:"ביצת עין"},
-  {ar:"بيضَة لَخ",he:"ביצה מקושקשת"},
-  {ar:"بيضَة مَسْلُوقَة",he:"ביצה קשה"},
-  {ar:"جِبْنة",he:"גבינה"},
-  {ar:"خُبْز",he:"לחם"},
-  {ar:"كْماجة / كْمَاج",he:"פיתה / פיתות"},
-  {ar:"رُزّ",he:"אורז"},
-  {ar:"بَطَاطَا",he:"תפוחי אדמה"},
-  {ar:"بَطاطا حِلْوة",he:"בטטה"},
-  {ar:"حُمُّص",he:"חומוס"},
-  {ar:"مَعْكَرونة",he:"פסטה"},
-  {ar:"شوكو سُخن",he:"שוקו חם"},
-  {ar:"زِبْدة",he:"חמאה"},
-  {ar:"بَسْكوت بِقِطَع الشوكولاتة",he:"עוגיות שוקולד ציפס"}
-];
-const REST_VEG=[
-  {ar:"بَنْدورَة",he:"עגבניה"},
-  {ar:"خْيَار",he:"מלפפון"},
-  {ar:"خَسّ",he:"חסה"},
-  {ar:"بَقْدونس",he:"פטרוזיליה"},
-  {ar:"كُزْبَرا",he:"כוסברה"},
-  {ar:"فْليفْلة خَضْرَاء / حَمْراء",he:"פלפל ירוק / אדום"},
-  {ar:"بَصَل",he:"בצל"},
-  {ar:"كُوسَا",he:"קישוא"},
-  {ar:"بِتِنْجَان",he:"חציל"},
-  {ar:"مَلْفُوف",he:"כרוב"},
-  {ar:"فِجل",he:"צנון"},
-  {ar:"دُرَا",he:"תירס"}
-];
-const REST_FRUIT=[
-  {ar:"تُفَّاح",he:"תפוחים"},
-  {ar:"حَمْضِيَّات",he:"פירות הדר"},
-  {ar:"موز",he:"בננות"},
-  {ar:"عِنَب",he:"ענבים"},
-  {ar:"يُوسف أفَنْدِي / كَرمنتينَة",he:"קלמנטינה"},
-  {ar:"جريبفْروت",he:"אשכולית"},
-  {ar:"كَرَز",he:"דובדבנים"},
-  {ar:"لوز",he:"שקדים"},
-  {ar:"جوز",he:"אגוזים"},
-  {ar:"بْهَارَات / تَوَابِل",he:"תבלינים"},
-  {ar:"فِلْفِل أحْمَر",he:"פפריקה"},
-  {ar:"كُرْكُم",he:"כורכום"},
-  {ar:"قِرْفة",he:"קינמון"},
-  {ar:"حَبّة البَرَكة",he:"קצח"}
-];
-const REST_TASTE=[
-  {ar:"مَالح",he:"מלוח"},
-  {ar:"حِلُو",he:"מתוק"},
-  {ar:"حَرّ",he:"חריף"},
-  {ar:"حَامض",he:"חמוץ"}
-];
-const REST_RECIPE=[
-  {ar:"المُكَوِّنَات",he:"החומרים, המרכיבים"},
-  {ar:"قَلَاية",he:"מחבת"},
-  {ar:"طَنْجَرَة / طَنَاجِر",he:"סיר"},
-  {ar:"خَلَّاط",he:"מיקסר"},
-  {ar:"جاط",he:"קערה"},
-  {ar:"مفرمة",he:"קרש חיתוך"},
-  {ar:"فُرْن",he:"תנור"},
-  {ar:"شَوَّاية",he:"גריל"},
-  {ar:"مَعْجُون البَندورَة / الطَّماطِم",he:"רסק עגבניות"},
-  {ar:"عَجِينة",he:"בצק"},
-  {ar:"فَرَد",he:"שיטח, רידד (בצק)"},
-  {ar:"دَخَّل",he:"הכניס"},
-  {ar:"طَلَّع",he:"הוציא"},
-  {ar:"شَغَّل",he:"הפעיל"},
-  {ar:"طفَّى",he:"כיבה"},
-  {ar:"نار واطِئ",he:"אש נמוכה"},
-  {ar:"طَبَق / أطبَاق",he:"מאכל, מנה"},
-  {ar:"صَحْن / صْحُون",he:"צלחת"},
-  {ar:"كَاس / كَاسات",he:"כוס"},
-  {ar:"مِعْلَقَة صْغِيرة",he:"כפית"},
-  {ar:"مِعْلَقة كْبِيرة",he:"כף"},
-  {ar:"طْحِين",he:"קמח"},
-  {ar:"زَاكِي",he:"טעים"},
-  {ar:"خَلَط",he:"ערבב"},
-  {ar:"فَرَم",he:"חתך לחתיכות קטנות"},
-  {ar:"قَطَّع",he:"חתך לחתיכות גדולות"}
-];
-
-const CHEESECAKE_ING=[
-  {ar:"750 غْرَام جِبْنة (9% بالمِئة)",he:"750 גרם גבינה 9 אחוז"},
-  {ar:"عُلْبة كْريمة حامضَة",he:"קופסת שמנת חמוצה"},
-  {ar:"عُلْبة كْريمة حِلُوة",he:"קופסת שמנת מתוקה"},
-  {ar:"6 بيض",he:"6 ביצים"},
-  {ar:"نُص كَاس طْحِين",he:"חצי כוס קמח"},
-  {ar:"كاس سُكر",he:"כוס סוכר"},
-  {ar:"بودينغ فانيلا",he:"פודינג וניל"},
-  {ar:"مَرجَرين",he:"מרגרינה"},
-  {ar:"نص كاس نَشا الدرة",he:"חצי כוס קורנפלור"}
-];
-const CHEESECAKE_STEPS=[
-  {ar:"بِنحطّ في جَاط الجِبنة مع الكْريمة الحِلْوة والكْريمَة الحَامِضَة ونُص كاس سُكَّر وبْنُخلُطْهم مَعَ بَعْض",he:"נשים בקערה את הגבינה עם השמנת החמוצה והשמנת המתוקה וחצי כוס סוכר ונערבב ביחד"},
-  {ar:"بَعْدين نِفْصِل بَياض البيض عَنِ الصفَار",he:"אחכ נפריד את החלבון של הביצים מהחלמון"},
-  {ar:"بِنْضِيف الصَّفَار عَلَى خَليط الجِبْنة وُبِنْضِيف كَمَان البودينغ والنَشَا ونُخْلطْهم مَعَ بَعْض",he:"נוסיף את הצהוב לתערובת הגבינה ונוסיף גם את הפודינג והקורנפלור ונערבב ביחד"},
-  {ar:"بنُخْلط بِالخَلّاط بَيَاض البيض وبنْضِيف نُص كَاس سُكَّر بِالتَّدْريج",he:"נערבב במיקסר את החלבון ונוסיף חצי כוס סוכר בהדרגה"},
-  {ar:"بَعْدين بِنْضيف مَخْلوط بَياض البيض لجَاط الجِبْنة وُبْنخْلطْهم مَع بَعْض",he:"אחר כך נוסיף את תערובת החלמון לקערת הגבינה ונערבב ביחד"},
-  {ar:"بِنْصُبّ الخَليط للقَالِب وبِندَخِّل عَلَى الفُرن لَمُدّة نص ساعَة – وهذا هُو الكَعْكة جَاهْزة",he:"ניצוק את התערובת לתבנית ונכניס לתנור למשך חצי שעה — וזהו העוגה מוכנה"}
-];
-
-const LISTS={
-  bagrut:{name:"אוצר מילים משרד החינוך + דן שובל (כל מה שצריך לבגרות!)",words:BAGRUT_WORDS,category:"bagrut"},
-  q1:{name:"שאלה 1 — תמצות הסיפור",words:Q1_WORDS,category:"adab"},
-  q2:{name:"שאלה 2 — הביקורת בסיפור",words:Q2_WORDS,category:"adab"},
-  q3:{name:"שאלה 3 — ההבדל בין הדמויות",words:Q3_WORDS,category:"adab"},
-  cheesecake_ing:{name:"מתכון עוגת גבינה — מצרכים",words:CHEESECAKE_ING,category:"restaurant"},
-  cheesecake_steps:{name:"מתכון עוגת גבינה — שלבי עבודה",words:CHEESECAKE_STEPS,category:"restaurant"},
-  rest_aruchos:{name:"הארוחות",words:REST_ARUCHOS,category:"restaurant"},
-  rest_maachalim:{name:"מאכלים",words:REST_MAACHALIM,category:"restaurant"},
-  rest_yerakot:{name:"ירקות",words:REST_YERAKOT,category:"restaurant"},
-  rest_perot:{name:"פירות ותבלינים",words:REST_PEROT,category:"restaurant"},
-  rest_teamim:{name:"טעמים",words:REST_TEAMIM,category:"restaurant"},
-  rest_mitkon:{name:"מתכון — כלים ופעלים",words:REST_MITKON,category:"restaurant"},
-  rest_meala:{name:"הארוחות",words:REST_MEALA,category:"restaurant"},
-  rest_food:{name:"מאכלים",words:REST_FOOD,category:"restaurant"},
-  rest_veg:{name:"ירקות خُضْرَة",words:REST_VEG,category:"restaurant"},
-  rest_fruit:{name:"פירות فَوَاكِه",words:REST_FRUIT,category:"restaurant"},
-  rest_taste:{name:"טעמים",words:REST_TASTE,category:"restaurant"},
-  rest_recipe:{name:"מתכון وَصْفة",words:REST_RECIPE,category:"restaurant"},
-};
-
-// ── Grade ranges (indices into sorted BAGRUT_WORDS) ─────────────────────────
-// We tag each word with its grade based on the original PDF split:
-// ט'=0..~270, י'=271..~490, י"א=491..~750, י"ב=751..end
-// Instead we store grade as metadata on words during sort
-const GRADE_RANGES = {
-  '9':  {start:0,   end:Math.floor(BAGRUT_WORDS.length*0.228)},
-  '10': {start:Math.floor(BAGRUT_WORDS.length*0.228), end:Math.floor(BAGRUT_WORDS.length*0.460)},
-  '11': {start:Math.floor(BAGRUT_WORDS.length*0.460), end:Math.floor(BAGRUT_WORDS.length*0.730)},
-  '12': {start:Math.floor(BAGRUT_WORDS.length*0.730), end:BAGRUT_WORDS.length},
-};
-
-// ── State ─────────────────────────────────────────────────────
-let listKey='bagrut',words=[...BAGRUT_WORDS];
-let mode='flashcard',dir='ar';
-let deck=shuffle(words),idx=0,isFlipped=false;
-let score=0,total=0,streak=0;
-let quizOptions=[],quizAnswered=false;
-let typeAnswered=false;
-let streakClicks=0;
-let currentGrade='all';
-// Know/Don't know
-let pileKnow=0,pileDontKnow=0;
-// Timer
-let timerSec=30,timerInterval=null,timerRunning=false;
-
-function getShow(w){return dir==='ar'?w.ar:w.he;}
-function getAnswer(w){return dir==='ar'?w.he:w.ar;}
-function showLang(){return dir==='ar'?'ערבית':'עברית';}
-function ansLang(){return dir==='ar'?'עברית':'ערבית';}
-
-function updateStats(){
-  document.getElementById('stat-score').textContent=score;
-  document.getElementById('stat-total').textContent=total;
-  document.getElementById('stat-streak').textContent=streak;
-  document.getElementById('progress-fill').style.width=Math.min(100,(idx/Math.max(1,deck.length))*100)+'%';
-}
-
-function resetGame(newWords,clearMistakes=false){
-  if(newWords)words=newWords;
-  const noShuffle=LISTS[listKey]?.category==='adab'||listKey==='cheesecake_ing'||listKey==='cheesecake_steps';
-  deck=noShuffle?[...words]:shuffle(words);idx=0;isFlipped=false;
-  score=0;total=0;streak=0;streakClicks=0;
-  quizAnswered=false;typeAnswered=false;
-  pileKnow=0;pileDontKnow=0;updatePiles();
-  
-  updateStats();
-  document.getElementById('word-count-header').textContent=words.length;
-}
-
-function showSection(id){
-  ['flashcard-section','quiz-section','type-section','exam-section','list-view-section'].forEach(s=>
-    document.getElementById(s).classList.toggle('hidden',s!==id));
-}
-function showScreen(id){
-  ['main-ui','score-screen'].forEach(s=>
-    document.getElementById(s).classList.toggle('hidden',s!==id));
-}
-
-function handleListChange(key){
-  listKey=key;
-  document.querySelectorAll('.list-btn').forEach(b=>b.classList.toggle('active',b.dataset.key===key));
-  document.getElementById('title').textContent=LISTS[key].name;
-  document.getElementById('grade-filter').classList.toggle('hidden',key!=='bagrut');
-  currentGrade='all';
-  document.querySelectorAll('.grade-btn').forEach(b=>b.classList.toggle('active',b.dataset.grade==='all'));
-  resetGame(LISTS[key].words);
-  loadCurrentMode();
-}
-
-function handleModeChange(m){
-  mode=m;
-  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));
-  resetTimer();
-  document.getElementById('timer-row').classList.toggle('hidden',m==='flashcard'||m==='exam');
-  resetGame();
-  loadCurrentMode();
-}
-
-function handleGradeChange(g){
-  currentGrade=g;
-  document.querySelectorAll('.grade-btn').forEach(b=>b.classList.toggle('active',b.dataset.grade===g));
-  let filtered;
-  if(g==='all'){filtered=[...LISTS[listKey].words];}
-  else{
-    const r=GRADE_RANGES[g];
-    filtered=BAGRUT_WORDS.slice(r.start,r.end);
+  // ---------- STATE ----------
+  const LS_KEY = 'quizlet_he_ar_v1';
+  const SCHEMA = 3;
+  const state = load() || {
+    schema: SCHEMA,
+    direction: 'ar2he',   // ar2he or he2ar
+    mode: 'flash',
+    filter: 'all',        // 'all' or 'hard'
+    order: 'sequential',  // 'shuffled' or 'sequential' (default: sequential per file order)
+    fillBlanksCount: 1,   // 1, 2, 3, or 'max'
+    fillInputMode: 'mc',  // 'type' or 'mc' (default: mc / אמריקאי)
+    currentDeckId: null,
+    customDecks: [],
+    difficult: {},        // { deckId: [cardKey, ...] }
+    progress: {},         // { deckId: { cardKey: { known: n, seen: n } } }
+  };
+  // Backfill fields for older saved state
+  if (!state.difficult) state.difficult = {};
+  if (!state.filter) state.filter = 'all';
+  if (!state.order) state.order = 'sequential';
+  if (state.fillBlanksCount == null) state.fillBlanksCount = 1;
+  if (!state.fillInputMode) state.fillInputMode = 'mc';
+  // Migration: schema 1 → 2 — make order default "sequential" unless user already chose otherwise
+  let _migrated = false;
+  if (!state.schema || state.schema < 2) {
+    // If they had the old default 'shuffled', flip to the new default.
+    // (Users who changed to 'sequential' keep it either way.)
+    if (state.order === 'shuffled') state.order = 'sequential';
+    state.schema = 2;
+    _migrated = true;
   }
-  resetGame(filtered);
-  loadCurrentMode();
-}
+  // Migration: schema 2 → 3 — flip default fill input mode to 'mc' (אמריקאי)
+  // for users who are still on the previous default of 'type'.
+  if (state.schema < 3) {
+    if (state.fillInputMode === 'type') state.fillInputMode = 'mc';
+    state.schema = 3;
+    _migrated = true;
+  }
 
+  function save() {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+    catch(e){ console.warn('Save failed', e); }
+  }
+  function load() {
+    try {
+      const s = localStorage.getItem(LS_KEY);
+      if (!s) return null;
+      return JSON.parse(s);
+    } catch(e){ return null; }
+  }
 
-function loadCurrentMode(){
-  showScreen('main-ui');
-  if(mode==='flashcard'){showSection('flashcard-section');loadFlashcard();}
+  function allDecks() {
+    return [...(window.DEFAULT_DECKS || []), ...state.customDecks];
+  }
+  function currentDeck() {
+    return allDecks().find(d => d.id === state.currentDeckId) || allDecks()[0];
+  }
+  function isCustomDeck(id) {
+    return state.customDecks.some(d => d.id === id);
+  }
 
-  else if(mode==='quiz'){showSection('quiz-section');loadQuiz();}
-  else if(mode==='exam'){showSection('exam-section');loadExam();}
-  else{showSection('type-section');loadType();}
-}
+  // Hard-cards tracking
+  function cardKey(card) { return (card.ar || '') + '|' + (card.he || ''); }
+  function hardSet(deckId) {
+    return new Set(state.difficult[deckId] || []);
+  }
+  function setHard(deckId, set) {
+    state.difficult[deckId] = Array.from(set);
+    save();
+  }
+  function markHard(deckId, card) {
+    const s = hardSet(deckId); s.add(cardKey(card)); setHard(deckId, s);
+  }
+  function unmarkHard(deckId, card) {
+    const s = hardSet(deckId); s.delete(cardKey(card)); setHard(deckId, s);
+  }
+  function clearHard(deckId) {
+    delete state.difficult[deckId]; save();
+  }
+  // Returns the cards the user is studying now (respects filter)
+  function activeCards() {
+    const deck = currentDeck();
+    if (!deck) return [];
+    if (state.filter === 'hard') {
+      const hs = hardSet(deck.id);
+      return deck.cards.filter(c => hs.has(cardKey(c)));
+    }
+    return deck.cards;
+  }
 
-function handleDirChange(d){
-  dir=d;
-  document.querySelectorAll('.dir-btn').forEach(b=>b.classList.toggle('active',b.dataset.dir===d));
-  idx=0;isFlipped=false;loadCurrentMode();
-}
+  // Setup first deck
+  if (!state.currentDeckId && allDecks().length) {
+    state.currentDeckId = allDecks()[0].id;
+  }
 
-// ── Flashcard ────────────────────────────────────────────────
-function loadFlashcard(){
-  const w=deck[idx%deck.length];
-  isFlipped=false;
-  const card=document.getElementById('flashcard');
-  card.classList.remove('flipped');
-  card.style.transition='none';
-  setTimeout(()=>card.style.transition='',20);
-  document.getElementById('fc-lang').textContent=showLang();
-  document.getElementById('fc-word').textContent=getShow(w);
-  document.getElementById('fc-hint').classList.remove('hidden');
-  document.getElementById('fc-lang-back').textContent=ansLang();
-  document.getElementById('fc-word-back').textContent=getAnswer(w);
-  document.getElementById('fc-counter').textContent=(idx%deck.length+1)+' / '+deck.length;
-  document.getElementById('fc-know-row').classList.add('hidden');
-  document.getElementById('fc-controls').classList.remove('hidden');
-  updateStats();
-}
-function flipCard(){
-  isFlipped=!isFlipped;
-  document.getElementById('flashcard').classList.toggle('flipped',isFlipped);
-  document.getElementById('fc-know-row').classList.toggle('hidden',!isFlipped);
-  document.getElementById('fc-controls').classList.toggle('hidden',isFlipped);
-}
-function nextCard(){idx=(idx+1)%deck.length;loadFlashcard();}
-function prevCard(){idx=Math.max(0,idx-1);loadFlashcard();}
-function markCard(known){
-  if(known){pileKnow++;}
-  else{pileDontKnow++;}
-  updatePiles();
-  idx=(idx+1)%deck.length;
-  loadFlashcard();
-}
-function updatePiles(){
-  document.getElementById('pile-know').textContent='✓ '+pileKnow;
-  document.getElementById('pile-dontknow').textContent='✗ '+pileDontKnow;
-  updateStats();
-}
+  // ---------- UI HELPERS ----------
+  const $ = (sel) => document.querySelector(sel);
+  const screen = $('#screen');
+  const toastHost = $('#toast-host');
+  const modalHost = $('#modal-host');
 
-// ── Quiz ─────────────────────────────────────────────────────
-function loadQuiz(){
-  if(idx>=deck.length){showDone();return;}
-  const cur=deck[idx];quizAnswered=false;
-  document.getElementById('q-lang').textContent=showLang()+' — מה הפירוש?';
-  document.getElementById('q-word').textContent=getShow(cur);
-  document.getElementById('quiz-next').classList.add('hidden');
-  const wrong=shuffle(words.filter(w=>w!==cur)).slice(0,3);
-  quizOptions=shuffle([{text:getAnswer(cur),correct:true},...wrong.map(w=>({text:getAnswer(w),correct:false}))]);
-  const grid=document.getElementById('options-grid');
-  grid.innerHTML='';
-  quizOptions.forEach((opt,i)=>{
-    const b=document.createElement('button');
-    b.className='opt-btn';
-    b.innerHTML=`<span class="opt-num">${i+1}</span>${opt.text}`;
-    b.onclick=()=>selectOption(i);
-    grid.appendChild(b);
-  });
-  updateStats();
-}
-function selectOption(i){
-  if(quizAnswered)return;
-  quizAnswered=true;total++;
-  const opt=quizOptions[i];
-  if(opt.correct){score++;streak++;}else{streak=0;}
-  document.querySelectorAll('.opt-btn').forEach((b,j)=>{
-    b.disabled=true;
-    if(quizOptions[j].correct)b.classList.add('correct');
-    else if(j===i&&!opt.correct)b.classList.add('wrong');
-  });
-  document.getElementById('quiz-next').classList.remove('hidden');
-  updateStats();
-}
-function nextQuiz(){idx++;loadQuiz();}
+  function toast(msg, ms) {
+    toastHost.innerHTML = '';
+    const el = document.createElement('div');
+    el.className = 'toast';
+    el.textContent = msg;
+    toastHost.appendChild(el);
+    setTimeout(() => el.remove(), ms || 1800);
+  }
 
-// ── Type ─────────────────────────────────────────────────────
-function loadType(){
-  if(idx>=deck.length){showDone();return;}
-  const w=deck[idx];typeAnswered=false;
-  document.getElementById('type-lang').textContent=showLang()+' — תרגם ל'+ansLang()+':';
-  document.getElementById('type-word').textContent=getShow(w);
-  const inp=document.getElementById('type-input');
-  inp.value='';inp.disabled=false;inp.className='';
-  document.getElementById('type-feedback').textContent='';
-  document.getElementById('hint-btn').classList.remove('hidden');
-  document.getElementById('type-submit').textContent='בדוק ✓';
-  document.getElementById('count-correct-btn').classList.add('hidden');
-  setTimeout(()=>inp.focus(),50);
-  updateStats();
-}
-function checkType(){
-  const inp=document.getElementById('type-input');
-  if(typeAnswered){idx++;loadType();return;}
-  if(!inp.value.trim())return;
-  const ans=getAnswer(deck[idx]);
-  const norm=s=>s.replace(/[ًٌٍَُِّْ]/g,'').trim();
-  const ok=norm(inp.value)===norm(ans)||inp.value.trim()===ans.trim();
-  typeAnswered=true;total++;
-  if(ok){score++;streak++;}else{streak=0;}
-  inp.disabled=true;inp.className=ok?'correct':'wrong';
-  const fb=document.getElementById('type-feedback');
-  fb.textContent=ok?'✅ מצוין!':'❌ הנכון: '+ans;
-  fb.style.color=ok?'#12b886':'#f87171';
-  document.getElementById('hint-btn').classList.add('hidden');
-  document.getElementById('type-submit').textContent='הבא →';
-  document.getElementById('count-correct-btn').classList.toggle('hidden', ok);
-  updateStats();
-}
-function countAsCorrect(){
-  score++;streak++;
-  document.getElementById('type-input').className='correct';
-  document.getElementById('type-feedback').textContent='✅ מצוין!';
-  document.getElementById('type-feedback').style.color='#12b886';
-  document.getElementById('count-correct-btn').classList.add('hidden');
-  updateStats();
-}
-function showHint(){
-  const ans=getAnswer(deck[idx]);
-  document.getElementById('type-input').value=ans.slice(0,Math.ceil(ans.length/3))+'...';
-}
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
 
-// ── List View ─────────────────────────────────────────────────
-let listViewOpen=false;
-function toggleListView(){
-  listViewOpen=!listViewOpen;
-  const btn=document.getElementById('list-toggle-btn');
-  const sec=document.getElementById('list-view-section');
-  btn.textContent=listViewOpen?'✕ סגור רשימה':'📋 הצג כרשימה';
-  btn.classList.toggle('active',listViewOpen);
-  sec.classList.toggle('hidden',!listViewOpen);
-  if(listViewOpen)loadListView();
-}
-let listViewData=[];
-const LV_PAGE_SIZE=50;
-let listViewPage=0,listViewFiltered=[];
-function loadListView(){
-  listViewData=words;
-  listViewFiltered=listViewData;
-  listViewPage=0;
-  document.getElementById('list-view-search').value='';
-  renderListView();
-}
-function renderListView(){
-  const data=listViewFiltered;
-  const total=data.length;
-  const pages=Math.ceil(total/LV_PAGE_SIZE);
-  const start=listViewPage*LV_PAGE_SIZE;
-  const slice=data.slice(start,start+LV_PAGE_SIZE);
-  const body=document.getElementById('list-view-body');
-  document.getElementById('list-view-count').textContent=
-    total+' מילים'+(pages>1?' · עמוד '+(listViewPage+1)+' מתוך '+pages:'');
-  body.innerHTML=slice.map((w,i)=>`
-    <tr>
-      <td class="lv-num">${start+i+1}</td>
-      <td class="lv-ar">${w.ar}</td>
-      <td class="lv-he">${w.he}</td>
-    </tr>`).join('');
-  // Pagination
-  const pg=document.getElementById('list-view-pagination');
-  if(pages<=1){pg.classList.add('hidden');return;}
-  pg.classList.remove('hidden');
-  let html='';
-  if(listViewPage>0) html+=`<button class="lv-page-btn" onclick="goLvPage(${listViewPage-1})">‹</button>`;
-  const from=Math.max(0,listViewPage-2), to=Math.min(pages-1,listViewPage+2);
-  for(let i=from;i<=to;i++)
-    html+=`<button class="lv-page-btn${i===listViewPage?' active':''}" onclick="goLvPage(${i})">${i+1}</button>`;
-  if(listViewPage<pages-1) html+=`<button class="lv-page-btn" onclick="goLvPage(${listViewPage+1})">›</button>`;
-  pg.innerHTML=html;
-}
-function goLvPage(p){
-  listViewPage=p;
-  renderListView();
-  document.getElementById('list-view-section').scrollIntoView({behavior:'smooth',block:'start'});
-}
-function filterListView(q){
-  const term=q.trim().toLowerCase().replace(/[ً-ٟ]/g,'');
-  listViewFiltered=!term?listViewData:listViewData.filter(w=>{
-    const ar=w.ar.replace(/[ً-ٟ]/g,'').toLowerCase();
-    return ar.includes(term)||w.he.toLowerCase().includes(term);
-  });
-  listViewPage=0;
-  renderListView();
-}
+  // ---------- TEXT NORMALIZATION (for search & fill comparison) ----------
+  function stripArabicDiacritics(s) {
+    // Remove fatha, kasra, damma, sukun, shadda, tanweens, dagger alef, etc.
+    return (s || '').replace(/[\u064B-\u0652\u0670\u06D6-\u06ED]/g, '');
+  }
+  function normalizeForCompare(s, lang) {
+    let t = (s || '').trim();
+    if (lang === 'ar') {
+      t = stripArabicDiacritics(t);
+      t = t.replace(/[إأآ]/g, 'ا');
+      t = t.replace(/ى/g, 'ي');
+      t = t.replace(/ة/g, 'ه');
+    }
+    // strip common punctuation
+    t = t.replace(/[.,;:!?()'"«»،؟٬٫\u2018\u2019\u201C\u201D\u2026]/g, '');
+    return t.trim().toLowerCase();
+  }
+  function matchesSearch(card, query) {
+    if (!query) return true;
+    const q = normalizeForCompare(query, 'ar');
+    const qHe = normalizeForCompare(query, 'he');
+    const ar = normalizeForCompare(card.ar, 'ar');
+    const he = normalizeForCompare(card.he, 'he');
+    return ar.includes(q) || he.includes(qHe);
+  }
 
-// ── Export to Word ────────────────────────────────────────────
-function exportToWord(){
-  const name=LISTS[listKey]?.name||'רשימת מילים';
-  const data=listViewFiltered||listViewData;
-  const rows=data.map((w,i)=>`
-    <tr>
-      <td style="width:30px;color:#999;font-size:11px;text-align:center">${i+1}</td>
-      <td style="font-size:15px;font-weight:bold;direction:rtl;padding:6px 10px">${w.ar}</td>
-      <td style="font-size:14px;direction:rtl;padding:6px 10px;color:#333">${w.he}</td>
-    </tr>`).join('');
-  const html=`
-    <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
-    <head><meta charset="UTF-8"><title>${name}</title>
-    <style>
-      body{font-family:Arial,sans-serif;direction:rtl}
-      h2{color:#005f87;border-bottom:2px solid #b0d4ee;padding-bottom:6px}
-      table{border-collapse:collapse;width:100%}
-      td,th{border:1px solid #d0e8f5;padding:6px 10px}
-      th{background:#e4f1fb;color:#005f87;font-size:12px}
-    </style></head>
-    <body>
-      <h2>${name}</h2>
-      <table>
-        <thead><tr><th>#</th><th>ערבית</th><th>עברית</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </body></html>`;
-  const blob=new Blob(['﻿'+html],{type:'application/msword'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download=(name+'.doc').replace(/[\/:*?"<>|]/g,'_');
-  a.click();
-}
+  // Returns indices [0..n-1] either shuffled or in order, per current setting
+  function makeOrder(n) {
+    const idx = Array.from({length: n}, (_, i) => i);
+    return state.order === 'sequential' ? idx : shuffle(idx);
+  }
 
-// ── Search ────────────────────────────────────────────────────
-function doSearch(q){
-  const box=document.getElementById('search-results');
-  const term=q.trim().toLowerCase().replace(/[ً-ٟ]/g,'');
-  if(!term){box.innerHTML='<div class="search-empty">התחל להקליד לחיפוש...</div>';return;}
-  const all=LISTS[listKey].words;
-  const results=all.filter(w=>{
-    const ar=w.ar.replace(/[ً-ٟ]/g,'').toLowerCase();
-    const he=w.he.toLowerCase();
-    return ar.includes(term)||he.includes(term);
-  }).slice(0,60);
-  if(!results.length){box.innerHTML='<div class="search-empty">לא נמצאו תוצאות</div>';return;}
-  box.innerHTML=results.map(w=>`<div class="search-row"><span class="search-ar">${w.ar}</span><span class="search-he">${w.he}</span></div>`).join('');
-}
+  function question(card) {
+    return state.direction === 'ar2he' ? card.ar : card.he;
+  }
+  function answer(card) {
+    return state.direction === 'ar2he' ? card.he : card.ar;
+  }
+  function qLangClass() { return state.direction === 'ar2he' ? 'ar' : 'he'; }
+  function aLangClass() { return state.direction === 'ar2he' ? 'he' : 'ar'; }
+  function qLangLabel() { return state.direction === 'ar2he' ? 'ערבית' : 'עברית'; }
+  function aLangLabel() { return state.direction === 'ar2he' ? 'עברית' : 'ערבית'; }
 
-// ── Timer ────────────────────────────────────────────────────
-function toggleTimer(){
-  if(timerRunning){
-    clearInterval(timerInterval);timerInterval=null;timerRunning=false;
-    document.querySelector('#timer-row .timer-btn').textContent='⏱ הפעל';
-    document.getElementById('timer-display').classList.remove('urgent');
-  } else {
-    timerRunning=true;
-    document.querySelector('#timer-row .timer-btn').textContent='⏸ עצור';
-    timerInterval=setInterval(()=>{
-      timerSec--;
-      document.getElementById('timer-display').textContent=timerSec;
-      if(timerSec<=5)document.getElementById('timer-display').classList.add('urgent');
-      if(timerSec<=0){
-        clearInterval(timerInterval);timerInterval=null;timerRunning=false;
-        document.getElementById('timer-display').classList.remove('urgent');
-        document.querySelector('#timer-row .timer-btn').textContent='⏱ הפעל';
-        if(mode==='quiz'||mode==='type')showDone();
+  // ---------- TOP CONTROLS ----------
+  function renderDeckSelect() {
+    const sel = $('#deck-select');
+    sel.innerHTML = '';
+    allDecks().forEach(d => {
+      const opt = document.createElement('option');
+      opt.value = d.id;
+      opt.textContent = d.name + ' (' + d.cards.length + ')';
+      if (d.id === state.currentDeckId) opt.selected = true;
+      sel.appendChild(opt);
+    });
+    const deck = currentDeck();
+    $('#deck-count').textContent = deck ? (deck.cards.length + ' כרטיסים') : '';
+  }
+
+  function renderFilterRow() {
+    const row = $('#filter-row');
+    const deck = currentDeck();
+    if (!deck) { row.innerHTML = ''; return; }
+    const hardCount = hardSet(deck.id).size;
+    const totalCount = deck.cards.length;
+    row.innerHTML = `
+      <button class="filter-btn all ${state.filter==='all'?'active':''}" data-f="all">
+        כל הכרטיסים <span class="count">${totalCount}</span>
+      </button>
+      <button class="filter-btn ${state.filter==='hard'?'active':''}" data-f="hard" ${hardCount===0?'disabled':''}>
+        🔖 לא ידעתי <span class="count">${hardCount}</span>
+      </button>
+      ${hardCount > 0 ? '<button class="reset-hard" id="btn-clear-hard" title="נקה רשימה">🗑</button>' : ''}
+    `;
+    row.querySelectorAll('.filter-btn').forEach(b => {
+      b.addEventListener('click', () => {
+        if (b.disabled) return;
+        state.filter = b.dataset.f; save(); render();
+      });
+    });
+    const clearBtn = document.getElementById('btn-clear-hard');
+    if (clearBtn) clearBtn.addEventListener('click', () => {
+      if (confirm('למחוק את רשימת "לא ידעתי" בחפיסה הנוכחית?')) {
+        clearHard(deck.id);
+        if (state.filter === 'hard') state.filter = 'all';
+        render();
       }
-    },1000);
+    });
   }
-}
-function resetTimer(){
-  clearInterval(timerInterval);timerInterval=null;timerRunning=false;
-  timerSec=30;
-  document.getElementById('timer-display').textContent='30';
-  document.getElementById('timer-display').classList.remove('urgent');
-  document.querySelector('#timer-row .timer-btn').textContent='⏱ טיימר';
-}
 
+  function setDirection(dir) {
+    state.direction = dir;
+    document.querySelectorAll('#dir-toggle button').forEach(b => {
+      b.classList.toggle('active', b.dataset.dir === dir);
+    });
+    save();
+    render();
+  }
 
-// ── Exam ─────────────────────────────────────────────────────
-let examDeck=[],examIdx=0,examScore=0,examAnswered=false,examMissed=[];
-let examTimerInterval=null,examTimerSec=0,examUseTimer=false,examSecPerQ=60;
+  function setMode(mode) {
+    state.mode = mode;
+    document.querySelectorAll('.mode-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.mode === mode);
+    });
+    save();
+    render();
+  }
 
-function loadExam(){
-  // Show setup screen
-  document.getElementById('exam-setup').classList.remove('hidden');
-  document.getElementById('exam-question').classList.add('hidden');
-}
-
-function toggleExamTimerInput(){
-  const on=document.getElementById('exam-timer-toggle').checked;
-  document.getElementById('exam-timer-input-row').classList.toggle('hidden',!on);
-}
-
-function startExam(){
-  const qCount=parseInt(document.getElementById('exam-q-range').value);
-  examUseTimer=document.getElementById('exam-timer-toggle').checked;
-  examSecPerQ=parseInt(document.getElementById('exam-timer-val').value)||60;
-  examDeck=shuffle(words).slice(0,Math.min(qCount,words.length));
-  examIdx=0;examScore=0;examMissed=[];
-  document.getElementById('exam-setup').classList.add('hidden');
-  document.getElementById('exam-question').classList.remove('hidden');
-  document.getElementById('exam-q-total').textContent=examDeck.length;
-  showExamQuestion();
-}
-
-function showExamQuestion(){
-  if(examIdx>=examDeck.length){showExamDone();return;}
-  clearInterval(examTimerInterval);
-  examAnswered=false;
-  const cur=examDeck[examIdx];
-  document.getElementById('exam-q-num').textContent=examIdx+1;
-  document.getElementById('exam-lang').textContent=showLang()+' — מה הפירוש?';
-  document.getElementById('exam-word').textContent=getShow(cur);
-  document.getElementById('exam-next').classList.add('hidden');
-  const wrong=shuffle(words.filter(w=>w!==cur)).slice(0,3);
-  const opts=shuffle([{text:getAnswer(cur),correct:true},...wrong.map(w=>({text:getAnswer(w),correct:false}))]);
-  const grid=document.getElementById('exam-grid');
-  grid.innerHTML='';
-  opts.forEach((opt,i)=>{
-    const b=document.createElement('button');
-    b.className='opt-btn';
-    b.innerHTML=`<span class="opt-num">${i+1}</span>${opt.text}`;
-    b.onclick=()=>selectExamOpt(i,opts,cur);
-    grid.appendChild(b);
+  // Event bindings for top bar
+  document.querySelectorAll('#dir-toggle button').forEach(b => {
+    b.addEventListener('click', () => setDirection(b.dataset.dir));
   });
-  // Timer per question
-  const timerEl=document.getElementById('exam-timer-live');
-  if(examUseTimer){
-    examTimerSec=examSecPerQ;
-    timerEl.classList.remove('hidden','urgent');
-    timerEl.textContent='⏱ '+examTimerSec;
-    examTimerInterval=setInterval(()=>{
-      examTimerSec--;
-      timerEl.textContent='⏱ '+examTimerSec;
-      if(examTimerSec<=5)timerEl.classList.add('urgent');
-      if(examTimerSec<=0){
-        clearInterval(examTimerInterval);
-        if(!examAnswered){
-          examAnswered=true;
-          examMissed.push(cur);
-          document.querySelectorAll('#exam-grid .opt-btn').forEach((b,j)=>{
-            b.disabled=true;
-            if(opts[j].correct)b.classList.add('correct');
-          });
-          document.getElementById('exam-next').classList.remove('hidden');
+  document.querySelectorAll('.mode-btn').forEach(b => {
+    b.addEventListener('click', () => setMode(b.dataset.mode));
+  });
+  $('#deck-select').addEventListener('change', (e) => {
+    state.currentDeckId = e.target.value;
+    save();
+    renderDeckSelect();
+    render();
+  });
+  $('#btn-decks').addEventListener('click', openDeckManager);
+  $('#btn-settings').addEventListener('click', openSettings);
+
+  // ---------- FLASHCARD MODE ----------
+  let flashState = null;
+  function renderFlash() {
+    const deck = currentDeck();
+    const cards = activeCards();
+    if (!deck || !cards.length) { renderEmpty(); return; }
+    const sessionKey = deck.id + '|' + state.filter + '|' + state.order + '|' + cards.length;
+    if (!flashState || flashState.sessionKey !== sessionKey) {
+      flashState = {
+        sessionKey,
+        deckId: deck.id,
+        cards: cards.slice(),
+        order: makeOrder(cards.length),
+        idx: 0,
+        flipped: false,
+        knownCount: 0,
+      };
+    }
+    const card = flashState.cards[flashState.order[flashState.idx]];
+    const total = flashState.order.length;
+    const pos = flashState.idx + 1;
+    const progPct = Math.round((flashState.idx / total) * 100);
+
+    screen.innerHTML = `
+      <div class="flash-progress">
+        ${pos} / ${total} &nbsp;·&nbsp; יודע: ${flashState.knownCount}
+        <div class="bar"><div class="fill" style="width:${progPct}%"></div></div>
+      </div>
+      <div class="card-wrap" style="position:relative;">
+        <div class="card${flashState.flipped ? ' flipped' : ''}" id="flash-card">
+          <div class="face front">
+            <span class="lang-label">${qLangLabel()}</span>
+            <div class="word ${qLangClass()}">${escapeHtml(question(card))}</div>
+            <div class="hint">הקש להיפוך · החלק ימין/שמאל לסימון</div>
+          </div>
+          <div class="face back">
+            <span class="lang-label">${aLangLabel()}</span>
+            <div class="word ${aLangClass()}">${escapeHtml(answer(card))}</div>
+            <div class="hint">הקש לחזור</div>
+          </div>
+        </div>
+        <div class="swipe-hint good" id="swipe-hint-good">✓</div>
+        <div class="swipe-hint bad" id="swipe-hint-bad">✗</div>
+      </div>
+      <div class="flash-controls">
+        <button class="btn-dunno" id="btn-dunno">🔁 לא יודע</button>
+        <button class="btn-know" id="btn-know">✔ יודע</button>
+      </div>
+      <div class="flash-nav">
+        <button id="btn-prev">◀ הקודם</button>
+        <button id="btn-order" title="החלף סדר">${state.order === 'sequential' ? '🔀 ערבב' : '📋 לפי סדר הקובץ'}</button>
+        <button id="btn-next">הבא ▶</button>
+      </div>
+    `;
+    attachFlashGestures();
+    $('#btn-know').addEventListener('click', () => {
+      flashState.knownCount++;
+      unmarkHard(flashState.deckId, card);
+      renderFilterRow();
+      advanceFlash();
+    });
+    $('#btn-dunno').addEventListener('click', () => {
+      markHard(flashState.deckId, card);
+      renderFilterRow();
+      advanceFlash();
+    });
+    $('#btn-next').addEventListener('click', () => advanceFlash());
+    $('#btn-prev').addEventListener('click', () => {
+      if (flashState.idx > 0) flashState.idx--;
+      flashState.flipped = false;
+      renderFlash();
+    });
+    $('#btn-order').addEventListener('click', () => {
+      state.order = (state.order === 'sequential') ? 'shuffled' : 'sequential';
+      save();
+      flashState = null; renderFlash();
+      toast(state.order === 'sequential' ? '📋 לפי סדר הקובץ' : '🔀 עורבב');
+    });
+  }
+  function attachFlashGestures() {
+    const card = $('#flash-card');
+    const hintGood = $('#swipe-hint-good');
+    const hintBad = $('#swipe-hint-bad');
+    if (!card) return;
+
+    let startX = null, startY = null, dx = 0, dy = 0, dragging = false, moved = false;
+    const THRESHOLD = 80;   // px to trigger action
+    const CLICK_THRESHOLD = 8; // px — below that counts as a tap
+
+    function onStart(e) {
+      const t = e.touches ? e.touches[0] : e;
+      startX = t.clientX; startY = t.clientY;
+      dx = 0; dy = 0; moved = false; dragging = true;
+      card.classList.add('dragging');
+    }
+    function onMove(e) {
+      if (!dragging) return;
+      const t = e.touches ? e.touches[0] : e;
+      dx = t.clientX - startX; dy = t.clientY - startY;
+      if (Math.abs(dx) > CLICK_THRESHOLD || Math.abs(dy) > CLICK_THRESHOLD) moved = true;
+      // Only treat as horizontal swipe if dx dominates
+      if (Math.abs(dx) > Math.abs(dy) && moved) {
+        e.preventDefault && e.preventDefault();
+        card.style.transform = `translateX(${dx}px) rotate(${dx/30}deg)`;
+        const ratio = Math.min(1, Math.abs(dx) / THRESHOLD);
+        if (dx > 0) { hintGood.style.opacity = ratio; hintBad.style.opacity = 0; }
+        else        { hintBad.style.opacity = ratio;  hintGood.style.opacity = 0; }
+      }
+    }
+    function onEnd() {
+      if (!dragging) return;
+      dragging = false;
+      card.classList.remove('dragging');
+      hintGood.style.opacity = 0; hintBad.style.opacity = 0;
+      card.style.transform = '';
+
+      // Tap → flip
+      if (!moved) {
+        flashState.flipped = !flashState.flipped;
+        card.classList.toggle('flipped', flashState.flipped);
+        return;
+      }
+      // Horizontal swipe beyond threshold
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > THRESHOLD) {
+        if (dx > 0) {
+          // Swipe right → "יודע"
+          const kb = $('#btn-know'); if (kb) kb.click();
+        } else {
+          // Swipe left → "לא יודע"
+          const db = $('#btn-dunno'); if (db) db.click();
         }
       }
-    },1000);
-  } else {
-    timerEl.classList.add('hidden');
+    }
+
+    card.addEventListener('touchstart', onStart, { passive: true });
+    card.addEventListener('touchmove', onMove, { passive: false });
+    card.addEventListener('touchend', onEnd);
+    card.addEventListener('touchcancel', onEnd);
+    card.addEventListener('mousedown', onStart);
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onEnd);
   }
-}
 
-function selectExamOpt(i,opts,cur){
-  if(examAnswered)return;
-  clearInterval(examTimerInterval);
-  examAnswered=true;
-  const opt=opts[i];
-  if(opt.correct){examScore++;}else{examMissed.push(cur);}
-  document.querySelectorAll('#exam-grid .opt-btn').forEach((b,j)=>{
-    b.disabled=true;
-    if(opts[j].correct)b.classList.add('correct');
-    else if(j===i&&!opt.correct)b.classList.add('wrong');
-  });
-  document.getElementById('exam-next').classList.remove('hidden');
-}
-
-function nextExam(){examIdx++;showExamQuestion();}
-
-function showExamDone(){
-  clearInterval(examTimerInterval);
-  const pct=Math.round((examScore/examDeck.length)*100);
-  const stars=pct>=90?'⭐⭐⭐':pct>=70?'⭐⭐':pct>=50?'⭐':'';
-  document.getElementById('score-pct').textContent=pct+'%';
-  document.getElementById('score-stars').textContent=stars;
-  document.getElementById('score-detail').textContent=examScore+' נכון מתוך '+examDeck.length;
-  document.getElementById('score-streak-txt').textContent='';
-  const sumEl=document.getElementById('exam-summary');
-  if(examMissed.length){
-    sumEl.classList.remove('hidden');
-    sumEl.innerHTML='<div style="font-weight:700;color:#e55;margin-bottom:6px">❌ מילים שטעית:</div>'+
-      examMissed.map(w=>`<div class="exam-miss-row"><span class="exam-miss-ar">${w.ar}</span><span class="exam-miss-he">${w.he}</span></div>`).join('');
-
-  } else {
-    sumEl.classList.add('hidden');
-    sumEl.innerHTML='';
+  function advanceFlash() {
+    flashState.flipped = false;
+    if (flashState.idx < flashState.order.length - 1) {
+      flashState.idx++;
+      renderFlash();
+    } else {
+      // Session done
+      const remaining = hardSet(flashState.deckId).size;
+      const extra = (state.filter === 'hard' && remaining === 0)
+        ? '<div style="margin-top:8px;color:var(--good);font-weight:700">ניקית את רשימת "לא ידעתי"! 🏆</div>'
+        : (state.filter === 'hard' ? `<div style="margin-top:8px;color:var(--muted)">נותרו ${remaining} מילים קשות</div>` : '');
+      screen.innerHTML = `
+        <div class="match-done">
+          <h3>🎉 כל הכבוד!</h3>
+          <div>סיימת את החפיסה. ידעת ${flashState.knownCount} מתוך ${flashState.order.length}.</div>
+          ${extra}
+          <button class="btn-primary" id="flash-restart" style="margin-top:14px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;padding:12px;border-radius:12px;font-weight:700;width:100%;">התחל שוב</button>
+        </div>
+      `;
+      $('#flash-restart').addEventListener('click', () => { flashState = null; render(); });
+    }
   }
-  showScreen('score-screen');
-  if(pct>=80)launchConfetti();
-}
 
-// ── Confetti ──────────────────────────────────────────────────
-function launchConfetti(){
-  const canvas=document.getElementById('confetti-canvas');
-  const ctx=canvas.getContext('2d');
-  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
-  const pieces=Array.from({length:120},()=>({
-    x:Math.random()*canvas.width,y:-10,
-    r:Math.random()*6+3,
-    color:`hsl(${Math.random()*360},80%,55%)`,
-    vx:(Math.random()-0.5)*4,
-    vy:Math.random()*4+2,
-    rot:Math.random()*360,vrot:(Math.random()-0.5)*8
-  }));
-  let frame=0;
-  function draw(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    pieces.forEach(p=>{
-      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);
-      ctx.fillStyle=p.color;ctx.fillRect(-p.r,-p.r/2,p.r*2,p.r);
-      ctx.restore();
-      p.x+=p.vx;p.y+=p.vy;p.rot+=p.vrot;p.vy+=0.05;
+  // ---------- MATCH MODE ----------
+  let matchState = null;
+  function renderMatch() {
+    const deck = currentDeck();
+    const cards = activeCards();
+    if (!deck || cards.length < 3) {
+      screen.innerHTML = `<div class="empty"><span class="emoji">🧩</span>צריך לפחות 3 כרטיסים${state.filter==='hard'?' ברשימת "לא ידעתי"':' בחפיסה'}<br/>למשחק התאמה.</div>`;
+      return;
+    }
+    const sessionKey = deck.id + '|' + state.filter + '|' + cards.length;
+    if (!matchState || matchState.sessionKey !== sessionKey) {
+      startMatch(deck, cards, sessionKey);
+    }
+    drawMatch();
+  }
+  function startMatch(deck, cards, sessionKey) {
+    const sampleSize = Math.min(6, cards.length);
+    const picked = shuffle(cards).slice(0, sampleSize);
+    const items = [];
+    picked.forEach((c, i) => {
+      items.push({ id: 'q'+i, pairId: i, text: question(c), lang: qLangClass() });
+      items.push({ id: 'a'+i, pairId: i, text: answer(c),   lang: aLangClass() });
     });
-    frame++;
-    if(frame<150)requestAnimationFrame(draw);
-    else ctx.clearRect(0,0,canvas.width,canvas.height);
+    matchState = {
+      sessionKey,
+      deckId: deck.id,
+      items: shuffle(items),
+      matched: new Set(),
+      selected: null,
+      wrong: null,
+      startTime: Date.now(),
+      finishedTime: null,
+    };
   }
-  draw();
-}
+  function drawMatch() {
+    const st = matchState;
+    const total = st.items.length / 2;
+    const doneCount = st.matched.size / 2;
+    const time = Math.round(((st.finishedTime || Date.now()) - st.startTime) / 1000);
 
-// ── Done ─────────────────────────────────────────────────────
-function showDone(){
-  const pct=total>0?Math.round((score/total)*100):0;
-  const stars=pct>=90?'⭐⭐⭐':pct>=70?'⭐⭐':pct>=50?'⭐':'';
-  document.getElementById('score-pct').textContent=pct+'%';
-  document.getElementById('score-stars').textContent=stars;
-  document.getElementById('score-detail').textContent=score+' נכון מתוך '+total;
-  document.getElementById('score-streak-txt').textContent='רצף: '+streak+' 🔥';
-  document.getElementById('exam-summary').classList.add('hidden');
-  showScreen('score-screen');
-  if(pct>=80)launchConfetti();
-}
-function restart(){resetGame();loadCurrentMode();}
+    let html = `
+      <div class="match-status">
+        הותאמו: <b>${doneCount}/${total}</b> &nbsp;·&nbsp; זמן: <span class="time">${time}s</span>
+      </div>
+      <div class="match-grid">
+    `;
+    st.items.forEach(it => {
+      const cls = [
+        'match-item',
+        it.lang,
+        st.matched.has(it.id) ? 'matched' : '',
+        st.selected === it.id ? 'selected' : '',
+        st.wrong && st.wrong.includes(it.id) ? 'wrong' : '',
+      ].filter(Boolean).join(' ');
+      html += `<div class="${cls}" data-id="${it.id}">${escapeHtml(it.text)}</div>`;
+    });
+    html += `</div>`;
 
-// ── Admin ────────────────────────────────────────────────────
-function handleStreakClick(){
-  streakClicks++;
-}
-
-function saveToStorage() {
-  try {
-    localStorage.setItem('vocab_bagrut', JSON.stringify(LISTS.bagrut.words));
-  } catch(e) {}
-}
-
-function loadFromStorage() {
-  try {
-    const b = localStorage.getItem('vocab_bagrut');
-    if (b) LISTS.bagrut.words = JSON.parse(b);
-  } catch(e) {}
-}
-
-// ── Init ─────────────────────────────────────────────────────
-loadFromStorage();
-words = [...LISTS[listKey].words];
-document.getElementById('word-count-header').textContent=words.length;
-document.getElementById('grade-filter').classList.remove('hidden');
-loadFlashcard();
-// ── Keyboard shortcuts ────────────────────────────────────────
-document.addEventListener('keydown', e => {
-  // Ignore if typing in an input
-  if (e.target.tagName === 'INPUT') return;
-
-  const key = e.key;
-
-  // Quiz mode: 1-4 to select answer, Enter for next
-  if (mode === 'quiz' || mode === 'mistakes') {
-    if (['1','2','3','4'].includes(key)) {
-      const i = parseInt(key) - 1;
-      const btns = document.querySelectorAll('#options-grid .opt-btn');
-      if (btns[i] && !btns[i].disabled) btns[i].click();
-      return;
+    if (doneCount === total) {
+      html += `
+        <div class="match-done">
+          <h3>🎉 סיימת ב-${time} שניות!</h3>
+          <button class="btn-primary" id="match-again" style="margin-top:10px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;padding:12px;border-radius:12px;font-weight:700;width:100%;">סבב חדש</button>
+        </div>
+      `;
     }
-    if (key === 'Enter' || key === ' ') {
-      e.preventDefault();
-      const nextBtn = document.querySelector('#quiz-next button');
-      if (nextBtn && !document.getElementById('quiz-next').classList.contains('hidden')) nextBtn.click();
-      return;
-    }
+
+    screen.innerHTML = html;
+    screen.querySelectorAll('.match-item:not(.matched)').forEach(el => {
+      el.addEventListener('click', () => matchClick(el.dataset.id));
+    });
+    const again = document.getElementById('match-again');
+    if (again) again.addEventListener('click', () => { matchState = null; renderMatch(); });
   }
+  function matchClick(id) {
+    const st = matchState;
+    if (st.matched.has(id)) return;
+    if (st.wrong) return;  // waiting to clear
+    if (st.selected === id) { st.selected = null; drawMatch(); return; }
+    if (!st.selected) { st.selected = id; drawMatch(); return; }
 
-  // Exam mode: 1-4 to select answer, Enter/Space for next
-  if (mode === 'exam') {
-    if (['1','2','3','4'].includes(key)) {
-      const i = parseInt(key) - 1;
-      const btns = document.querySelectorAll('#exam-grid .opt-btn');
-      if (btns[i] && !btns[i].disabled) btns[i].click();
-      return;
-    }
-    if (key === 'Enter' || key === ' ') {
-      e.preventDefault();
-      const nextBtn = document.querySelector('#exam-next button');
-      if (nextBtn && !document.getElementById('exam-next').classList.contains('hidden')) nextBtn.click();
-      return;
+    const a = st.items.find(x => x.id === st.selected);
+    const b = st.items.find(x => x.id === id);
+    if (a.pairId === b.pairId && a.id !== b.id) {
+      st.matched.add(a.id); st.matched.add(b.id);
+      st.selected = null;
+      if (st.matched.size === st.items.length) st.finishedTime = Date.now();
+      drawMatch();
+    } else {
+      st.wrong = [a.id, b.id];
+      drawMatch();
+      setTimeout(() => {
+        st.wrong = null; st.selected = null; drawMatch();
+      }, 500);
     }
   }
 
-  // Flashcard: Space/Enter to flip, ArrowRight for next, ArrowLeft for prev
-  if (mode === 'flashcard') {
-    if (key === ' ' || key === 'Enter') { e.preventDefault(); flipCard(); return; }
-    if (key === 'ArrowRight') { prevCard(); return; }
-    if (key === 'ArrowLeft') { nextCard(); return; }
+  // ---------- MULTIPLE CHOICE ----------
+  let mcState = null;
+  function renderMC() {
+    const deck = currentDeck();
+    const cards = activeCards();
+    if (!deck || cards.length < 4) {
+      // Fall back: if filter is hard but too few, need distractors from full deck
+      if (deck && state.filter === 'hard' && cards.length >= 1 && deck.cards.length >= 4) {
+        // allow MC with few hard cards, using full deck for distractors
+      } else {
+        screen.innerHTML = `<div class="empty"><span class="emoji">❓</span>צריך לפחות 4 כרטיסים${state.filter==='hard'?' ברשימת "לא ידעתי"':' בחפיסה'}<br/>למצב אמריקאי.</div>`;
+        return;
+      }
+    }
+    const sessionKey = deck.id + '|' + state.filter + '|' + state.order + '|' + cards.length;
+    if (!mcState || mcState.sessionKey !== sessionKey) {
+      mcState = {
+        sessionKey,
+        deckId: deck.id,
+        cards: cards.slice(),
+        order: makeOrder(cards.length),
+        idx: 0,
+        correct: 0,
+        wrong: 0,
+        answered: false,
+        chosen: null,
+      };
+    }
+    drawMC();
   }
-});
+  function drawMC() {
+    const deck = currentDeck();
+    const st = mcState;
+    if (st.idx >= st.order.length) {
+      screen.innerHTML = `
+        <div class="match-done">
+          <h3>🎉 סיימת!</h3>
+          <div>נכון: ${st.correct} &nbsp;·&nbsp; שגוי: ${st.wrong}</div>
+          <div style="margin-top:8px;color:var(--muted)">ציון: ${Math.round(st.correct/(st.correct+st.wrong)*100)}%</div>
+          <button class="btn-primary" id="mc-again" style="margin-top:14px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;padding:12px;border-radius:12px;font-weight:700;width:100%;">התחל שוב</button>
+        </div>
+      `;
+      document.getElementById('mc-again').addEventListener('click', () => { mcState = null; render(); });
+      return;
+    }
+    const card = st.cards[st.order[st.idx]];
+    // Generate 3 distractors from the FULL deck (so hard-filter has enough)
+    const others = deck.cards.filter(c => c !== card);
+    const distractors = shuffle(others).slice(0, 3);
+    // Build options if not yet built for this question
+    if (!st.options || st.questionIdx !== st.idx) {
+      const opts = shuffle([card, ...distractors]);
+      st.options = opts;
+      st.questionIdx = st.idx;
+      st.answered = false;
+      st.chosen = null;
+    }
 
-</script>
+    let html = `
+      <div class="mc-score">
+        <span>שאלה <b>${st.idx+1}/${st.order.length}</b></span>
+        <span>נכון: <b style="color:var(--good)">${st.correct}</b> · שגוי: <b style="color:var(--bad)">${st.wrong}</b></span>
+      </div>
+      <div class="mc-question">
+        <div class="word ${qLangClass()}">${escapeHtml(question(card))}</div>
+      </div>
+      <div class="mc-options">
+    `;
+    st.options.forEach((opt, i) => {
+      let cls = 'mc-option ' + aLangClass();
+      if (st.answered) {
+        if (opt === card) cls += ' correct';
+        else if (opt === st.chosen) cls += ' wrong';
+      }
+      html += `<button class="${cls}" data-idx="${i}">${escapeHtml(answer(opt))}</button>`;
+    });
+    html += `</div>`;
+    html += `<button class="mc-next-btn ${st.answered ? 'show' : ''}" id="mc-next">הבא ▶</button>`;
 
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js');
+    screen.innerHTML = html;
+    screen.querySelectorAll('.mc-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (st.answered) return;
+        const chosen = st.options[parseInt(btn.dataset.idx)];
+        st.chosen = chosen;
+        st.answered = true;
+        if (chosen === card) {
+          st.correct++;
+          unmarkHard(st.deckId, card);
+        } else {
+          st.wrong++;
+          markHard(st.deckId, card);
+        }
+        renderFilterRow();
+        drawMC();
+      });
+    });
+    const nextBtn = document.getElementById('mc-next');
+    if (nextBtn) nextBtn.addEventListener('click', () => {
+      st.idx++;
+      drawMC();
+    });
+  }
+
+  // ---------- LIST MODE ----------
+  let listState = null;
+  function renderList() {
+    const deck = currentDeck();
+    const cards = activeCards();
+    if (!deck || !cards.length) { renderEmpty(); return; }
+    if (!listState || listState.deckId !== deck.id) {
+      listState = {
+        deckId: deck.id,
+        hide: 'none',        // 'none' | 'ar' | 'he'
+        revealed: new Set(), // indices user tapped to reveal
+        search: '',
+      };
+    }
+    // Snapshot order once per deck+order-setting
+    const orderKey = deck.id + '|' + state.filter + '|' + state.order + '|' + cards.length;
+    if (listState.orderKey !== orderKey) {
+      listState.orderKey = orderKey;
+      const idxs = state.order === 'sequential'
+        ? cards.map((_, i) => i)
+        : shuffle(cards.map((_, i) => i));
+      listState.ordered = idxs.map(i => cards[i]);
+      listState.revealed = new Set();
+    }
+    drawList();
+  }
+  function drawList() {
+    const deck = currentDeck();
+    const st = listState;
+    const query = (st.search || '').trim();
+    const filtered = st.ordered
+      .map((c, i) => ({ c, i }))
+      .filter(({c}) => matchesSearch(c, query));
+    const totalShown = filtered.length;
+    const rows = filtered.map(({c, i}) => {
+      const arHidden = st.hide === 'ar' && !st.revealed.has('ar:' + i);
+      const heHidden = st.hide === 'he' && !st.revealed.has('he:' + i);
+      const ar = arHidden
+        ? `<span class="list-hidden" data-reveal="ar:${i}">• • •</span>`
+        : escapeHtml(c.ar);
+      const he = heHidden
+        ? `<span class="list-hidden" data-reveal="he:${i}">• • •</span>`
+        : escapeHtml(c.he);
+      return `<div class="list-row"><div class="list-num">${i+1}</div><div class="list-ar">${ar}</div><div class="list-he">${he}</div></div>`;
+    }).join('');
+    const emptySearch = query && totalShown === 0
+      ? `<div class="empty"><span class="emoji">🔎</span>אין התאמות ל"${escapeHtml(query)}"</div>`
+      : '';
+    screen.innerHTML = `
+      <div class="search-row">
+        <span>🔎</span>
+        <input id="list-search" placeholder="חיפוש בחפיסה (ערבית או עברית)..." dir="rtl" value="${escapeHtml(query)}" />
+        ${query ? '<button id="list-search-clear" title="נקה">✕</button>' : ''}
+      </div>
+      <div class="list-controls">
+        <button data-h="none" class="${st.hide==='none'?'active':''}">הכל</button>
+        <button data-h="he" class="${st.hide==='he'?'active':''}">הסתר עברית</button>
+        <button data-h="ar" class="${st.hide==='ar'?'active':''}">הסתר ערבית</button>
+        <button class="btn-export" id="btn-word-export">📄 Word</button>
+      </div>
+      ${query ? `<div class="tip" style="margin-bottom:6px;">${totalShown} מתוך ${st.ordered.length} כרטיסים</div>` : ''}
+      <div class="list-table">
+        <div class="list-header">
+          <div class="list-num">#</div>
+          <div class="list-ar">ערבית</div>
+          <div class="list-he">עברית</div>
+        </div>
+        ${rows}
+      </div>
+      ${emptySearch}
+    `;
+    const searchInput = document.getElementById('list-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        st.search = searchInput.value;
+        // re-draw but keep focus/caret
+        const pos = searchInput.selectionStart;
+        drawList();
+        const newInput = document.getElementById('list-search');
+        if (newInput) {
+          try { newInput.focus(); newInput.setSelectionRange(pos, pos); } catch(_){}
+        }
+      });
+    }
+    const clearBtn = document.getElementById('list-search-clear');
+    if (clearBtn) clearBtn.addEventListener('click', () => { st.search = ''; drawList(); });
+    screen.querySelectorAll('.list-controls [data-h]').forEach(b => {
+      b.addEventListener('click', () => {
+        st.hide = b.dataset.h;
+        st.revealed = new Set();
+        drawList();
+      });
+    });
+    screen.querySelectorAll('[data-reveal]').forEach(el => {
+      el.addEventListener('click', () => {
+        st.revealed.add(el.dataset.reveal);
+        drawList();
+      });
+    });
+    document.getElementById('btn-word-export').addEventListener('click', () => {
+      // export only what's visible (respects search filter)
+      exportDeckToWord(deck, filtered.map(x => x.c));
+    });
+  }
+
+  // ---------- WORD EXPORT ----------
+  function exportDeckToWord(deck, orderedCards) {
+    const cards = orderedCards || deck.cards;
+    const title = deck.name || 'חפיסה';
+    const rowsHtml = cards.map((c, i) => `
+      <tr>
+        <td style="width:40px;text-align:center;">${i+1}</td>
+        <td class="ar" dir="rtl" lang="ar">${escapeHtml(c.ar)}</td>
+        <td class="he" dir="rtl" lang="he">${escapeHtml(c.he)}</td>
+      </tr>
+    `).join('');
+    const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="UTF-8" />
+<title>${escapeHtml(title)}</title>
+<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:RightToLeft/></w:WordDocument></xml><![endif]-->
+<style>
+  @page { size: A4; margin: 2cm; mso-page-orientation: portrait; }
+  body { font-family: Arial, "Noto Sans Hebrew", sans-serif; direction: rtl; font-size: 11pt; }
+  h1 { font-size: 18pt; text-align: center; margin-bottom: 16pt; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { border: 1px solid #333; padding: 8pt; vertical-align: top; }
+  th { background: #1e293b; color: #fff; font-size: 12pt; }
+  td.ar { font-size: 16pt; font-family: "Arial", "Traditional Arabic", "Simplified Arabic", sans-serif; }
+  td.he { font-size: 12pt; }
+  tr:nth-child(even) td { background: #f4f4f4; }
+</style>
+</head>
+<body dir="rtl" lang="he">
+  <h1>${escapeHtml(title)}</h1>
+  <div style="text-align:center;margin-bottom:12pt;color:#555;font-size:10pt;">
+    ${cards.length} כרטיסים · יוצא מקוויזלטים לבגרות
+  </div>
+  <table dir="rtl">
+    <tr>
+      <th style="width:40px;">#</th>
+      <th>ערבית</th>
+      <th>עברית</th>
+    </tr>
+    ${rowsHtml}
+  </table>
+</body>
+</html>`;
+    const bom = '\uFEFF';
+    const blob = new Blob([bom + html], { type: 'application/msword;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const safeName = title.replace(/[\\/:*?"<>|]+/g, '_');
+    a.href = url; a.download = safeName + '.doc';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    toast('הקובץ הורד');
+  }
+
+  // ---------- FILL-IN-THE-BLANK MODE ----------
+  let fillState = null;
+  function pickBlankWords(text, count) {
+    const words = (text || '').split(/\s+/).filter(Boolean);
+    if (!words.length) return [];
+    // Rank by normalized length (desc)
+    const ranked = words.map((w, i) => ({
+      index: i,
+      word: w,
+      len: normalizeForCompare(w, 'ar').length,
+    })).sort((a, b) => b.len - a.len);
+    let n;
+    if (count === 'max') {
+      // take all reasonably-sized words (>= 2 chars after normalization)
+      n = ranked.filter(r => r.len >= 2).length;
+      if (n === 0) n = words.length;
+    } else {
+      n = Math.min(count, words.length);
+    }
+    const picked = ranked.slice(0, Math.max(1, n));
+    picked.sort((a, b) => a.index - b.index); // restore reading order
+    return picked.map(p => ({ index: p.index, word: p.word }));
+  }
+  function getDistractors(deck, currentCard, targetWord, count, lang) {
+    const normTarget = normalizeForCompare(targetWord, lang);
+    const seen = new Set([normTarget]);
+    const pool = [];
+    (deck.cards || []).forEach(c => {
+      if (c === currentCard) return;
+      const txt = (lang === 'ar' ? c.ar : c.he) || '';
+      txt.split(/\s+/).filter(Boolean).forEach(w => {
+        const norm = normalizeForCompare(w, lang);
+        if (norm.length >= 2 && !seen.has(norm)) {
+          seen.add(norm);
+          pool.push({ w, diff: Math.abs(norm.length - normTarget.length) });
+        }
+      });
+    });
+    if (!pool.length) return [];
+    pool.sort((a, b) => a.diff - b.diff);
+    const narrowed = pool.slice(0, Math.max(30, count * 8));
+    const shuffled = shuffle(narrowed);
+    return shuffled.slice(0, count).map(x => x.w);
+  }
+  function renderFill() {
+    const deck = currentDeck();
+    const cards = activeCards();
+    if (!deck || !cards.length) { renderEmpty(); return; }
+    const sessionKey = deck.id + '|' + state.filter + '|' + state.order + '|' + state.direction + '|' + state.fillBlanksCount + '|' + state.fillInputMode + '|' + cards.length;
+    if (!fillState || fillState.sessionKey !== sessionKey) {
+      fillState = {
+        sessionKey,
+        deckId: deck.id,
+        cards: cards.slice(),
+        order: makeOrder(cards.length),
+        idx: 0,
+        correct: 0,
+        wrong: 0,
+        answered: false,
+        blanks: null,    // [{ index, word, userAnswer, options, chosen, wasCorrect }]
+      };
+    }
+    drawFill();
+  }
+  function buildFillBlanks(card, blankLang) {
+    const blankText = card[blankLang] || '';
+    const count = state.fillBlanksCount;
+    const picked = pickBlankWords(blankText, count);
+    if (!picked.length) return null;
+    const deck = currentDeck();
+    return picked.map(({ index, word }) => {
+      const blank = {
+        index, word,
+        userAnswer: '',
+        chosen: null,
+        wasCorrect: null,
+      };
+      if (state.fillInputMode === 'mc') {
+        const distractors = getDistractors(deck, card, word, 3, blankLang);
+        const allOptions = [word, ...distractors];
+        // De-dup (normalized)
+        const seen = new Set();
+        const unique = allOptions.filter(o => {
+          const n = normalizeForCompare(o, blankLang);
+          if (seen.has(n)) return false;
+          seen.add(n); return true;
+        });
+        // Pad if too few
+        while (unique.length < 4 && distractors.length > 0) {
+          unique.push(distractors[Math.floor(Math.random() * distractors.length)]);
+        }
+        blank.options = shuffle(unique).slice(0, 4);
+      }
+      return blank;
+    });
+  }
+  function drawFill() {
+    const st = fillState;
+    if (st.idx >= st.order.length) {
+      const pct = Math.round(st.correct / Math.max(1, st.correct + st.wrong) * 100);
+      screen.innerHTML = `
+        <div class="match-done">
+          <h3>🎉 סיימת את תרגול ההשלמה!</h3>
+          <div>נכון: ${st.correct} &nbsp;·&nbsp; שגוי: ${st.wrong}</div>
+          <div style="margin-top:8px;color:var(--muted)">ציון: ${pct}%</div>
+          <button class="btn-primary" id="fill-restart" style="margin-top:14px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;padding:12px;border-radius:12px;font-weight:700;width:100%;">התחל שוב</button>
+        </div>
+      `;
+      document.getElementById('fill-restart').addEventListener('click', () => { fillState = null; render(); });
+      return;
+    }
+    const card = st.cards[st.order[st.idx]];
+    const hintLang = state.direction === 'ar2he' ? 'he' : 'ar';
+    const blankLang = state.direction === 'ar2he' ? 'ar' : 'he';
+    const hintText = card[hintLang] || '';
+    const blankText = card[blankLang] || '';
+
+    // Build blanks for this card if not built yet
+    if (!st.blanks) {
+      st.blanks = buildFillBlanks(card, blankLang);
+      if (!st.blanks || !st.blanks.length) {
+        // skip empty
+        st.idx++; st.blanks = null; st.answered = false;
+        drawFill(); return;
+      }
+    }
+
+    const words = blankText.split(/\s+/).filter(Boolean);
+    const blanksByIndex = {};
+    st.blanks.forEach((b, bi) => { blanksByIndex[b.index] = { ...b, bi }; });
+
+    const sentenceHtml = words.map((w, i) => {
+      const b = blanksByIndex[i];
+      if (b) {
+        if (st.answered) {
+          const cls = b.wasCorrect ? 'blank revealed-correct' : 'blank revealed-wrong';
+          return `<span class="${cls}">${escapeHtml(b.word)}</span>`;
+        }
+        return `<span class="blank">${b.bi + 1}️⃣</span>`;
+      }
+      return escapeHtml(w);
+    }).join(' ');
+
+    const total = st.order.length;
+    const pct = Math.round(st.idx / total * 100);
+
+    let feedbackHtml = '';
+    if (st.answered) {
+      const correctCount = st.blanks.filter(b => b.wasCorrect).length;
+      const allOk = correctCount === st.blanks.length;
+      if (allOk) {
+        feedbackHtml = `<div class="fill-feedback correct">✓ כל התשובות נכונות!</div>`;
+      } else {
+        const wrongBlanks = st.blanks
+          .map((b, i) => ({ b, i }))
+          .filter(x => !x.b.wasCorrect);
+        const wrongInfo = wrongBlanks.map(({b, i}) =>
+          `חוסר ${i+1}: <span class="correct-answer">${escapeHtml(b.word)}</span>`
+        ).join('');
+        feedbackHtml = `<div class="fill-feedback wrong">✗ נכון: ${correctCount}/${st.blanks.length}${wrongInfo}</div>`;
+      }
+    }
+
+    const hintLabel = hintLang === 'he' ? 'רמז (עברית)' : 'رمز (ערבית)';
+    const blankLabel = blankLang === 'he' ? 'השלם (עברית)' : 'השלם (ערבית)';
+
+    const countOptions = [
+      { val: 1, label: '1 חוסר' },
+      { val: 2, label: '2 חוסרים' },
+      { val: 3, label: '3 חוסרים' },
+      { val: 'max', label: 'הכל' },
+    ];
+    const modeOptions = [
+      { val: 'type', label: '⌨️ הקלדה' },
+      { val: 'mc', label: '❓ אמריקאי' },
+    ];
+    const countBtns = countOptions.map(o =>
+      `<button data-fc="${o.val}" class="${state.fillBlanksCount === o.val ? 'active' : ''}">${o.label}</button>`
+    ).join('');
+    const modeBtns = modeOptions.map(o =>
+      `<button data-fm="${o.val}" class="${state.fillInputMode === o.val ? 'active' : ''}">${o.label}</button>`
+    ).join('');
+
+    // Build blanks UI
+    let blanksUI = '';
+    if (state.fillInputMode === 'type') {
+      blanksUI = '<div class="fill-blanks">' + st.blanks.map((b, i) => {
+        const cls = st.answered
+          ? (b.wasCorrect ? 'correct' : 'wrong')
+          : '';
+        const val = escapeHtml(b.userAnswer || '');
+        const disabled = st.answered ? 'disabled' : '';
+        return `
+          <div class="fill-blank-group">
+            <div class="blank-label">חוסר ${i+1}</div>
+            <input data-bi="${i}" class="${blankLang} ${cls}" dir="rtl" value="${val}" ${disabled} placeholder="הקלד את המילה..." autocomplete="off" autocorrect="off" spellcheck="false" />
+          </div>
+        `;
+      }).join('') + '</div>';
+    } else {
+      // MC mode
+      blanksUI = '<div class="fill-blanks">' + st.blanks.map((b, i) => {
+        const opts = (b.options || []).map((opt, oi) => {
+          let cls = 'fill-option-btn ' + blankLang;
+          if (st.answered) {
+            cls += ' disabled';
+            if (normalizeForCompare(opt, blankLang) === normalizeForCompare(b.word, blankLang)) cls += ' correct';
+            else if (b.chosen === opt) cls += ' wrong';
+          } else if (b.chosen === opt) cls += ' selected';
+          return `<button data-bi="${i}" data-oi="${oi}" class="${cls}">${escapeHtml(opt)}</button>`;
+        }).join('');
+        return `
+          <div class="fill-blank-group">
+            <div class="blank-label">חוסר ${i+1}</div>
+            <div class="fill-options-grid">${opts}</div>
+          </div>
+        `;
+      }).join('') + '</div>';
+    }
+
+    // All blanks need an answer for submit to be enabled
+    const allAnswered = st.blanks.every(b =>
+      state.fillInputMode === 'type' ? (b.userAnswer || '').trim().length > 0 : b.chosen != null
+    );
+
+    screen.innerHTML = `
+      <div class="flash-progress">
+        ${st.idx+1} / ${total} &nbsp;·&nbsp; נכון: ${st.correct} · שגוי: ${st.wrong}
+        <div class="bar"><div class="fill" style="width:${pct}%"></div></div>
+      </div>
+      <div class="fill-mode-toggles">
+        <div class="toggle-wrap">
+          <div class="toggle-label">כמות חוסרים</div>
+          <div class="toggle-group">${countBtns}</div>
+        </div>
+        <div class="toggle-wrap">
+          <div class="toggle-label">צורת מענה</div>
+          <div class="toggle-group">${modeBtns}</div>
+        </div>
+      </div>
+      <div class="fill-prompt">
+        <div class="label">${hintLabel}</div>
+        <div class="hint-text ${hintLang}">${escapeHtml(hintText)}</div>
+        <div class="label" style="margin-top:12px;">${blankLabel}</div>
+        <div class="sentence ${blankLang}">${sentenceHtml}</div>
+      </div>
+      ${feedbackHtml}
+      ${blanksUI}
+      ${!st.answered ? `
+        <div class="fill-submit-bar">
+          <button id="fill-submit" ${allAnswered ? '' : 'disabled'}>בדוק</button>
+        </div>
+        <div class="fill-actions">
+          <button id="fill-skip">דלג</button>
+          <button id="fill-reveal" class="primary">הצג תשובה</button>
+        </div>
+      ` : `
+        <div class="fill-actions">
+          <button id="fill-mark-dunno">❌ סמן "לא ידעתי"</button>
+          <button id="fill-next" class="primary" style="display:inline-block;">הבא ▶</button>
+        </div>
+      `}
+    `;
+
+    // Wire toggles (changing resets session)
+    screen.querySelectorAll('[data-fc]').forEach(b => {
+      b.addEventListener('click', () => {
+        const v = b.dataset.fc;
+        state.fillBlanksCount = (v === 'max') ? 'max' : parseInt(v);
+        save();
+        fillState = null; renderFill();
+      });
+    });
+    screen.querySelectorAll('[data-fm]').forEach(b => {
+      b.addEventListener('click', () => {
+        state.fillInputMode = b.dataset.fm;
+        save();
+        fillState = null; renderFill();
+      });
+    });
+
+    if (!st.answered) {
+      if (state.fillInputMode === 'type') {
+        const inputs = screen.querySelectorAll('.fill-blank-group input');
+        inputs.forEach((inp, i) => {
+          inp.addEventListener('input', () => {
+            st.blanks[i].userAnswer = inp.value;
+            const submit = document.getElementById('fill-submit');
+            if (submit) submit.disabled = !st.blanks.every(b => (b.userAnswer || '').trim().length > 0);
+          });
+          inp.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              const next = inputs[i + 1];
+              if (next) try { next.focus(); } catch(_){}
+              else {
+                const submit = document.getElementById('fill-submit');
+                if (submit && !submit.disabled) submit.click();
+              }
+            }
+          });
+        });
+        if (inputs[0]) try { inputs[0].focus(); } catch(_){}
+      } else {
+        // MC mode: click to select
+        screen.querySelectorAll('.fill-option-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const bi = parseInt(btn.dataset.bi);
+            const oi = parseInt(btn.dataset.oi);
+            st.blanks[bi].chosen = st.blanks[bi].options[oi];
+            drawFill();
+          });
+        });
+      }
+
+      const submit = document.getElementById('fill-submit');
+      if (submit) submit.addEventListener('click', () => submitFill(card, blankLang));
+      document.getElementById('fill-skip').addEventListener('click', () => {
+        st.idx++; st.blanks = null; st.answered = false;
+        drawFill();
+      });
+      document.getElementById('fill-reveal').addEventListener('click', () => {
+        st.answered = true;
+        st.blanks.forEach(b => {
+          b.wasCorrect = false;
+        });
+        st.wrong++;
+        markHard(st.deckId, card);
+        renderFilterRow();
+        drawFill();
+      });
+    } else {
+      document.getElementById('fill-mark-dunno').addEventListener('click', () => {
+        markHard(st.deckId, card);
+        renderFilterRow();
+        toast('סומן כ"לא ידעתי"');
+      });
+      document.getElementById('fill-next').addEventListener('click', () => {
+        st.idx++; st.blanks = null; st.answered = false;
+        drawFill();
+      });
+    }
+  }
+  function submitFill(card, blankLang) {
+    const st = fillState;
+    let allOk = true;
+    st.blanks.forEach(b => {
+      const user = state.fillInputMode === 'type'
+        ? normalizeForCompare(b.userAnswer || '', blankLang)
+        : normalizeForCompare(b.chosen || '', blankLang);
+      const target = normalizeForCompare(b.word, blankLang);
+      b.wasCorrect = user.length > 0 && user === target;
+      if (!b.wasCorrect) allOk = false;
+    });
+    st.answered = true;
+    if (allOk) {
+      st.correct++;
+      unmarkHard(st.deckId, card);
+    } else {
+      st.wrong++;
+      markHard(st.deckId, card);
+    }
+    renderFilterRow();
+    drawFill();
+  }
+
+  // ---------- EMPTY STATE ----------
+  function renderEmpty() {
+    screen.innerHTML = `
+      <div class="empty">
+        <span class="emoji">📭</span>
+        החפיסה ריקה. לחץ על 📚 כדי ליצור או לערוך חפיסה.
+      </div>
+    `;
+  }
+
+  // ---------- MAIN RENDER ----------
+  function render() {
+    renderDeckSelect();
+    renderFilterRow();
+    flashState = null; matchState = null; mcState = null; listState = null; fillState = null;
+    const deck = currentDeck();
+    if (!deck || !deck.cards.length) { renderEmpty(); return; }
+    // If filter was 'hard' but no hard cards exist → fall back to 'all'
+    if (state.filter === 'hard' && hardSet(deck.id).size === 0) {
+      state.filter = 'all';
+      renderFilterRow();
+    }
+    if (state.mode === 'flash') renderFlash();
+    else if (state.mode === 'list') renderList();
+    else if (state.mode === 'fill') renderFill();
+    else if (state.mode === 'match') renderMatch();
+    else if (state.mode === 'mc') renderMC();
+  }
+
+  // ---------- DECK MANAGER MODAL ----------
+  function openDeckManager() {
+    const html = `
+      <div class="modal-overlay">
+        <div class="modal">
+          <button class="close-x" id="close-modal">×</button>
+          <h2>📚 ניהול חפיסות</h2>
+          <div id="deck-list"></div>
+          <button class="btn-primary" id="btn-new-deck">+ חפיסה חדשה</button>
+          <button class="btn-secondary" id="btn-import">📥 ייבוא מ-CSV / טקסט</button>
+          <div class="tip">פורמט: כל שורה — "ערבית , עברית" או מופרד ב-Tab</div>
+        </div>
+      </div>
+    `;
+    showModal(html);
+    drawDeckList();
+    document.getElementById('btn-new-deck').addEventListener('click', newDeckFlow);
+    document.getElementById('btn-import').addEventListener('click', importFlow);
+  }
+  function drawDeckList() {
+    const container = document.getElementById('deck-list');
+    if (!container) return;
+    container.innerHTML = '';
+    allDecks().forEach(d => {
+      const el = document.createElement('div');
+      el.className = 'deck-list-item';
+      const isCustom = isCustomDeck(d.id);
+      el.innerHTML = `
+        <div class="info">
+          <div class="name">${escapeHtml(d.name)}</div>
+          <div class="meta">${d.cards.length} כרטיסים ${isCustom ? '(משלך)' : '(מובנה)'}</div>
+        </div>
+        <div class="actions">
+          <button data-a="edit">${isCustom ? 'ערוך' : 'צפה'}</button>
+          ${isCustom ? '<button data-a="del">🗑</button>' : ''}
+        </div>
+      `;
+      el.querySelector('[data-a="edit"]').addEventListener('click', () => openDeckEditor(d.id));
+      const delBtn = el.querySelector('[data-a="del"]');
+      if (delBtn) delBtn.addEventListener('click', () => {
+        if (confirm('למחוק את החפיסה "' + d.name + '"?')) {
+          state.customDecks = state.customDecks.filter(x => x.id !== d.id);
+          if (state.currentDeckId === d.id) state.currentDeckId = allDecks()[0]?.id;
+          save();
+          drawDeckList();
+          renderDeckSelect();
+          render();
+        }
+      });
+      container.appendChild(el);
+    });
+  }
+  function newDeckFlow() {
+    const name = prompt('שם החפיסה:');
+    if (!name) return;
+    const id = 'custom_' + Date.now();
+    state.customDecks.push({ id, name: name.trim(), description: '', cards: [] });
+    state.currentDeckId = id;
+    save();
+    closeModal();
+    setTimeout(() => openDeckEditor(id), 50);
+  }
+  function openDeckEditor(deckId) {
+    const deck = allDecks().find(d => d.id === deckId);
+    if (!deck) return;
+    const isCustom = isCustomDeck(deckId);
+    const html = `
+      <div class="modal-overlay">
+        <div class="modal">
+          <button class="close-x" id="close-modal">×</button>
+          <h2>${escapeHtml(deck.name)}</h2>
+          <div class="tip">${deck.cards.length} כרטיסים · ${isCustom ? 'ניתנת לעריכה' : 'חפיסה מובנית (קריאה בלבד)'}</div>
+          ${isCustom ? `
+            <label>הוסף כרטיס חדש</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:6px;">
+              <input id="new-ar" placeholder="ערבית" dir="rtl" />
+              <input id="new-he" placeholder="עברית" dir="rtl" />
+              <button id="btn-add-card" style="background:var(--accent);color:#fff;padding:0 14px;border-radius:10px;font-weight:700;">+</button>
+            </div>
+            <label>או ייבא רשימה (שורה לכל כרטיס; פסיק או Tab בין השפות)</label>
+            <textarea id="bulk-input" placeholder="أَب , אב&#10;يَوْم , יום"></textarea>
+            <button class="btn-secondary" id="btn-bulk-add">הוסף הכל</button>
+          ` : ''}
+          <label>כרטיסים בחפיסה</label>
+          <div class="search-row" style="margin-bottom:8px;">
+            <span>🔎</span>
+            <input id="deck-card-search" placeholder="חיפוש כרטיס..." dir="rtl" />
+            <button id="deck-card-search-clear" title="נקה" style="display:none;">✕</button>
+          </div>
+          <div id="card-list" style="max-height:40vh;overflow-y:auto;"></div>
+          <button class="btn-secondary" id="btn-export-word">📄 ייצא ל-Word (.doc)</button>
+          ${isCustom ? `
+            <button class="btn-secondary" id="btn-export">📤 ייצא ל-CSV</button>
+          ` : `<button class="btn-secondary" id="btn-clone">📋 העתק כחפיסה שלי</button>`}
+          <button class="btn-primary" id="btn-use-deck">השתמש בחפיסה זו</button>
+        </div>
+      </div>
+    `;
+    showModal(html);
+    drawCardList(deckId);
+    // Deck editor search
+    const deckSearchInput = document.getElementById('deck-card-search');
+    const deckSearchClear = document.getElementById('deck-card-search-clear');
+    let deckSearchQuery = '';
+    if (deckSearchInput) {
+      deckSearchInput.addEventListener('input', () => {
+        deckSearchQuery = deckSearchInput.value;
+        if (deckSearchClear) deckSearchClear.style.display = deckSearchQuery ? 'inline-block' : 'none';
+        drawCardList(deckId, deckSearchQuery);
+      });
+    }
+    if (deckSearchClear) {
+      deckSearchClear.addEventListener('click', () => {
+        deckSearchInput.value = '';
+        deckSearchQuery = '';
+        deckSearchClear.style.display = 'none';
+        drawCardList(deckId, '');
+        deckSearchInput.focus();
+      });
+    }
+    document.getElementById('btn-use-deck').addEventListener('click', () => {
+      state.currentDeckId = deckId; save(); closeModal(); render();
+    });
+    document.getElementById('btn-export-word').addEventListener('click', () => {
+      exportDeckToWord(deck);
+    });
+    if (isCustom) {
+      document.getElementById('btn-add-card').addEventListener('click', () => {
+        const ar = document.getElementById('new-ar').value.trim();
+        const he = document.getElementById('new-he').value.trim();
+        if (!ar || !he) { toast('יש למלא את שתי השפות'); return; }
+        deck.cards.push({ ar, he });
+        save(); drawCardList(deckId);
+        document.getElementById('new-ar').value = '';
+        document.getElementById('new-he').value = '';
+      });
+      document.getElementById('btn-bulk-add').addEventListener('click', () => {
+        const text = document.getElementById('bulk-input').value;
+        const added = parseBulk(text, deck);
+        save(); drawCardList(deckId);
+        document.getElementById('bulk-input').value = '';
+        toast(`נוספו ${added} כרטיסים`);
+      });
+      document.getElementById('btn-export').addEventListener('click', () => exportDeck(deck));
+    } else {
+      document.getElementById('btn-clone').addEventListener('click', () => {
+        const id = 'custom_' + Date.now();
+        state.customDecks.push({ id, name: deck.name + ' (עותק)', description: deck.description, cards: deck.cards.slice() });
+        state.currentDeckId = id;
+        save(); closeModal(); render();
+        toast('הועתק לחפיסות שלך');
+      });
+    }
+  }
+  function drawCardList(deckId, searchQuery) {
+    const deck = allDecks().find(d => d.id === deckId);
+    const container = document.getElementById('card-list');
+    if (!container || !deck) return;
+    container.innerHTML = '';
+    if (!deck.cards.length) {
+      container.innerHTML = '<div class="tip">אין כרטיסים עדיין.</div>';
+      return;
+    }
+    const isCustom = isCustomDeck(deckId);
+    const query = (searchQuery || '').trim();
+    const filtered = deck.cards
+      .map((c, idx) => ({ c, idx }))
+      .filter(({c}) => matchesSearch(c, query));
+    if (query && filtered.length === 0) {
+      container.innerHTML = `<div class="tip">אין התאמות ל"${escapeHtml(query)}"</div>`;
+      return;
+    }
+    if (query) {
+      const info = document.createElement('div');
+      info.className = 'tip';
+      info.style.marginBottom = '6px';
+      info.textContent = `${filtered.length} מתוך ${deck.cards.length} כרטיסים`;
+      container.appendChild(info);
+    }
+    filtered.forEach(({c, idx}) => {
+      const el = document.createElement('div');
+      el.className = 'card-list-item';
+      el.innerHTML = `
+        <div class="ar">${escapeHtml(c.ar)}</div>
+        <div class="he">${escapeHtml(c.he)}</div>
+        ${isCustom ? `<button data-i="${idx}">✕</button>` : '<span></span>'}
+      `;
+      const del = el.querySelector('button');
+      if (del) del.addEventListener('click', () => {
+        deck.cards.splice(idx, 1); save(); drawCardList(deckId, query);
+      });
+      container.appendChild(el);
+    });
+  }
+  function parseBulk(text, deck) {
+    let added = 0;
+    text.split('\n').forEach(line => {
+      line = line.trim();
+      if (!line) return;
+      let parts;
+      if (line.includes('\t')) parts = line.split('\t');
+      else if (line.includes(',')) parts = line.split(/,(.+)/);
+      else return;
+      const ar = (parts[0] || '').trim();
+      const he = (parts[1] || '').trim();
+      if (ar && he) { deck.cards.push({ ar, he }); added++; }
+    });
+    return added;
+  }
+  function exportDeck(deck) {
+    const lines = ['ערבית\tעברית'];
+    deck.cards.forEach(c => lines.push(c.ar + '\t' + c.he));
+    const blob = new Blob([lines.join('\n')], { type: 'text/tab-separated-values;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = (deck.name || 'deck') + '.tsv';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    toast('הורד לקובץ');
+  }
+  function importFlow() {
+    const html = `
+      <div class="modal-overlay">
+        <div class="modal">
+          <button class="close-x" id="close-modal">×</button>
+          <h2>📥 ייבוא חפיסה חדשה</h2>
+          <label>שם החפיסה</label>
+          <input id="imp-name" placeholder="למשל: יחידה 3" />
+          <label>הדבק רשימה (שורה לכל כרטיס; פסיק או Tab)</label>
+          <textarea id="imp-text" placeholder="أَب , אב&#10;يَوْم , יום"></textarea>
+          <button class="btn-primary" id="btn-do-import">ייבא</button>
+        </div>
+      </div>
+    `;
+    showModal(html);
+    document.getElementById('btn-do-import').addEventListener('click', () => {
+      const name = document.getElementById('imp-name').value.trim() || 'חפיסה חדשה';
+      const text = document.getElementById('imp-text').value;
+      const id = 'custom_' + Date.now();
+      const deck = { id, name, description: '', cards: [] };
+      const n = parseBulk(text, deck);
+      if (!n) { toast('לא נמצאו כרטיסים תקפים'); return; }
+      state.customDecks.push(deck);
+      state.currentDeckId = id;
+      save(); closeModal(); render();
+      toast(`נוצרה חפיסה עם ${n} כרטיסים`);
+    });
+  }
+
+  // ---------- SETTINGS MODAL ----------
+  function openSettings() {
+    const html = `
+      <div class="modal-overlay">
+        <div class="modal">
+          <button class="close-x" id="close-modal">×</button>
+          <h2>⚙️ הגדרות</h2>
+          <label>כיוון לימוד</label>
+          <select id="set-dir">
+            <option value="ar2he" ${state.direction==='ar2he'?'selected':''}>ערבית → עברית</option>
+            <option value="he2ar" ${state.direction==='he2ar'?'selected':''}>עברית → ערבית</option>
+          </select>
+          <div class="tip">ניתן לשנות כיוון גם מהכפתור העליון.</div>
+          <label>סדר הכרטיסים</label>
+          <select id="set-order">
+            <option value="shuffled" ${state.order==='shuffled'?'selected':''}>🔀 אקראי (מעורבב)</option>
+            <option value="sequential" ${state.order==='sequential'?'selected':''}>📋 לפי סדר הקובץ</option>
+          </select>
+          <div class="tip">משפיע על מצבי "כרטיסיות" ו"אמריקאי". משחק ה"התאמה" תמיד דוגם אקראית.</div>
+          <button class="btn-secondary" id="btn-reset">אפס נתונים מקומיים</button>
+          <div class="tip">מוחק חפיסות משלך והעדפות. חפיסות מובנות יישארו.</div>
+        </div>
+      </div>
+    `;
+    showModal(html);
+    document.getElementById('set-dir').addEventListener('change', (e) => {
+      setDirection(e.target.value);
+    });
+    document.getElementById('set-order').addEventListener('change', (e) => {
+      state.order = e.target.value;
+      save();
+      render();
+      toast(state.order === 'sequential' ? '📋 לפי סדר הקובץ' : '🔀 אקראי');
+    });
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      if (confirm('למחוק את כל הנתונים המקומיים?')) {
+        localStorage.removeItem(LS_KEY);
+        location.reload();
+      }
+    });
+  }
+
+  // ---------- MODAL PLUMBING ----------
+  function showModal(html) {
+    modalHost.innerHTML = html;
+    const overlay = modalHost.querySelector('.modal-overlay');
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+    const x = document.getElementById('close-modal');
+    if (x) x.addEventListener('click', closeModal);
+  }
+  function closeModal() { modalHost.innerHTML = ''; }
+
+  function escapeHtml(s) {
+    if (s == null) return '';
+    return String(s).replace(/[&<>"']/g, (c) => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    })[c]);
+  }
+
+  // ---------- SERVICE WORKER ----------
+  if ('serviceWorker' in navigator && navigator.serviceWorker) {
+    window.addEventListener('load', () => {
+      try { navigator.serviceWorker.register('sw.js').catch(()=>{}); } catch(_){}
+    });
+  }
+
+  // ---------- KEYBOARD SHORTCUTS ----------
+  document.addEventListener('keydown', (e) => {
+    // Skip if typing in input/textarea/select (except for Escape)
+    const tag = (e.target && e.target.tagName) || '';
+    const typingInField = /^(INPUT|TEXTAREA|SELECT)$/i.test(tag);
+
+    // Always allow Escape to close modal
+    if (e.key === 'Escape') {
+      if (modalHost.querySelector('.modal-overlay')) { closeModal(); e.preventDefault(); return; }
+    }
+    // Ignore other shortcuts while typing
+    if (typingInField) return;
+    // Ignore when a modal is open (let user pick / click normally)
+    if (modalHost.querySelector('.modal-overlay')) return;
+
+    if (state.mode === 'flash') {
+      if (e.key === ' ' || e.key === 'Enter') {
+        const card = document.getElementById('flash-card');
+        if (card) { card.click(); e.preventDefault(); }
+      } else if (e.key === 'ArrowLeft') {
+        // RTL: left arrow → next (moves with the layout flow)
+        const n = document.getElementById('btn-next'); if (n) { n.click(); e.preventDefault(); }
+      } else if (e.key === 'ArrowRight') {
+        const p = document.getElementById('btn-prev'); if (p) { p.click(); e.preventDefault(); }
+      } else if (e.key === '1') {
+        const d = document.getElementById('btn-dunno'); if (d) { d.click(); e.preventDefault(); }
+      } else if (e.key === '2') {
+        const k = document.getElementById('btn-know'); if (k) { k.click(); e.preventDefault(); }
+      }
+    } else if (state.mode === 'mc') {
+      const n = parseInt(e.key);
+      if (n >= 1 && n <= 4) {
+        const opts = document.querySelectorAll('.mc-option');
+        if (opts[n-1] && !opts[n-1].classList.contains('correct') && !opts[n-1].classList.contains('wrong')) {
+          opts[n-1].click(); e.preventDefault();
+        }
+      } else if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowLeft') {
+        const nx = document.getElementById('mc-next');
+        if (nx && nx.classList.contains('show')) { nx.click(); e.preventDefault(); }
+      }
+    } else if (state.mode === 'fill') {
+      // Enter: if "next" is visible, advance; otherwise let the per-input
+      // handler in drawFill drive the submit/focus-move behavior.
+      if (e.key === 'Enter') {
+        const next = document.getElementById('fill-next');
+        if (next) { next.click(); e.preventDefault(); }
+      }
+    }
+
+    // '/' to focus search when available
+    if (e.key === '/') {
+      const s = document.querySelector('.search-row input');
+      if (s) { s.focus(); e.preventDefault(); }
+    }
   });
-}
+
+  // ---------- KICKOFF ----------
+  // Sync toggle UI from state
+  document.querySelectorAll('#dir-toggle button').forEach(b => {
+    b.classList.toggle('active', b.dataset.dir === state.direction);
+  });
+  document.querySelectorAll('.mode-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.mode === state.mode);
+  });
+
+  render();
+
+  // Expose for debugging
+  window.__app = { state, render };
+})();
 </script>
 </body>
 </html>

@@ -1,0 +1,30 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node (if you add tooling later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python (if you add scripts)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Build / temp
+dist/
+build/
+.cache/
+*.log
+tmp/

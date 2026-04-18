@@ -1,26 +1,16 @@
 {
-  "name": "הקוויזלט של רואי",
-  "short_name": "מילון ערבית",
-  "description": "משחק אוצר מילים ערבי-עברי לבגרות",
+  "name": "קוויזלטים לבגרות",
+  "short_name": "קוויזלטים",
+  "description": "אפליקציית כרטיסיות ללימוד עברית-ערבית לקראת בגרות",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0d1117",
-  "theme_color": "#d4a843",
-  "dir": "rtl",
-  "lang": "he",
   "orientation": "portrait",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "lang": "he",
+  "dir": "rtl",
   "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ]
 }
