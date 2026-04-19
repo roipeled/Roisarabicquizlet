@@ -937,6 +937,9 @@
     state.schema = 3;
     _migrated = true;
   }
+  // Strip legacy TTS fields if present from an older build
+  delete state.ttsAuto;
+  delete state.ttsRate;
 
   function save() {
     try { localStorage.setItem(LS_KEY, JSON.stringify(state)); }
@@ -949,6 +952,8 @@
       return JSON.parse(s);
     } catch(e){ return null; }
   }
+  // Persist migrations immediately so they don't run every load
+  if (_migrated) save();
 
   function allDecks() {
     return [...(window.DEFAULT_DECKS || []), ...state.customDecks];
@@ -1672,22 +1677,23 @@
   function pickBlankWords(text, count) {
     const words = (text || '').split(/\s+/).filter(Boolean);
     if (!words.length) return [];
-    // Rank by normalized length (desc)
-    const ranked = words.map((w, i) => ({
+    // Eligible words: normalized length >= 2 (skip trivial prepositions/particles)
+    const eligible = words.map((w, i) => ({
       index: i,
       word: w,
       len: normalizeForCompare(w, 'ar').length,
-    })).sort((a, b) => b.len - a.len);
+    })).filter(r => r.len >= 2);
+    // Fallback: if none pass the filter, use all words
+    const pool = eligible.length ? eligible : words.map((w, i) => ({ index: i, word: w }));
     let n;
     if (count === 'max') {
-      // take all reasonably-sized words (>= 2 chars after normalization)
-      n = ranked.filter(r => r.len >= 2).length;
-      if (n === 0) n = words.length;
+      n = pool.length;
     } else {
-      n = Math.min(count, words.length);
+      n = Math.min(count, pool.length);
     }
-    const picked = ranked.slice(0, Math.max(1, n));
-    picked.sort((a, b) => a.index - b.index); // restore reading order
+    // RANDOM pick (different on every refresh) — shuffle pool, take first N
+    const picked = shuffle(pool).slice(0, Math.max(1, n));
+    picked.sort((a, b) => a.index - b.index); // restore reading order for display
     return picked.map(p => ({ index: p.index, word: p.word }));
   }
   function getDistractors(deck, currentCard, targetWord, count, lang) {
@@ -2445,7 +2451,8 @@
   render();
 
   // Expose for debugging
-  window.__app = { state, render };
+  window.__app = { state, render, getFillState: () => fillState };
+
 })();
 </script>
 </body>

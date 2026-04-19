@@ -1,5 +1,5 @@
 // Service worker - cache shell for offline use
-const CACHE = 'quizlet-he-ar-v6';
+const CACHE = 'quizlet-he-ar-v9';
 const ASSETS = [
   './',
   './index.html',
